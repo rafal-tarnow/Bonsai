@@ -48,6 +48,7 @@ private:
     void initWindowList();
     void initActiveWindow();
     void setActiveWindow(WId newActiveWindow);
+    void updateWindowName(WId id, const QString &newName);
 
 private:
     QList<ListItem> m_items;

@@ -43,6 +43,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES AudioBackend.cpp
     SOURCES FavoriteAppsListModel.hpp
     SOURCES FavoriteAppsListModel.cpp
+    SOURCES ThemesModel.hpp
+    SOURCES ThemesModel.cpp
 )
 
 add_library(BonsaiBackendLib STATIC "")

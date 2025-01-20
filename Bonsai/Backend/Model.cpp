@@ -1,13 +1,71 @@
 #include "Model.hpp"
 
-#include <KX11Extras>
-#include <kwindowinfo.h>
-
 #include <X11/Xatom.h>
 #include <X11/Xdefs.h>
 
 #include <QFile>
 #include <QTimer>
+
+#include <KX11Extras>
+#include <kwindowinfo.h>
+
+QDebug operator<<(QDebug dbg, const KWindowInfo &info) {
+    if (!info.valid()) {
+        dbg.nospace() << "KWindowInfo(Invalid data)";
+        return dbg.space();
+    }
+
+    auto windowTypeToString = [](NET::WindowType type) -> QString {
+        switch (type) {
+        case NET::Unknown: return "Unknown";
+        case NET::Normal: return "Normal";
+        case NET::Desktop: return "Desktop";
+        case NET::Dock: return "Dock";
+        case NET::Toolbar: return "Toolbar";
+        case NET::Menu: return "Menu";
+        case NET::Dialog: return "Dialog";
+        case NET::Override: return "Override";
+        case NET::TopMenu: return "TopMenu";
+        case NET::Utility: return "Utility";
+        case NET::Splash: return "Splash";
+        case NET::DropdownMenu: return "DropdownMenu";
+        case NET::PopupMenu: return "PopupMenu";
+        case NET::Tooltip: return "Tooltip";
+        case NET::Notification: return "Notification";
+        case NET::ComboBox: return "ComboBox";
+        case NET::DNDIcon: return "DNDIcon";
+        case NET::OnScreenDisplay: return "OnScreenDisplay";
+        case NET::CriticalNotification: return "CriticalNotification";
+        case NET::AppletPopup: return "AppletPopup";
+        default: return "Other";
+        }
+    };
+
+    dbg.nospace() << "KWindowInfo:\n"
+                  << "\tWindow ID: " << info.win() << "\n"
+                  << "\tValid: " << info.valid() << "\n"
+                  << "\tName: " << info.name() << "\n"
+                  << "\tVisible Name: " << info.visibleName() << "\n"
+                  << "\tIcon Name: " << info.iconName() << "\n"
+                  << "\tDesktop: " << info.desktop() << "\n"
+                  << "\tState: " << info.state() << "\n"
+                  << "\tMinimized: " << info.isMinimized() << "\n"
+                  << "\tOn Current Desktop: " << info.isOnCurrentDesktop() << "\n"
+                  << "\tFrame Geometry: " << info.frameGeometry() << "\n"
+                  << "\tGeometry: " << info.geometry() << "\n"
+                  << "\tClient Machine: " << info.clientMachine() << "\n"
+                  << "\tWindow Class Name: " << info.windowClassName() << "\n"
+                  << "\tWindow Class Class: " << info.windowClassClass() << "\n"
+                  << "\tGTK Application ID: " << info.gtkApplicationId() << "\n"
+                  << "\tTransient For: " << info.transientFor() << "\n"
+                  << "\tActivities: " << info.activities().join(", ") << "\n"
+                  << "\tWindow Type: "
+                  << windowTypeToString(info.windowType(NET::AllTypesMask)) << "\n"; // Dodano typ okna
+
+    return dbg.space();
+}
+
+
 
 TaskbarIconsProvider::TaskbarIconsProvider()
     : QQuickImageProvider(QQuickImageProvider::Pixmap)
@@ -68,39 +126,63 @@ MyListModel::MyListModel(QObject *parent)
     connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, [this](WId id) {
         this->removeItem(id);
     });
+
+    connect(KX11Extras::self(), &KX11Extras::windowChanged, this, [this](WId id, NET::Properties properties, NET::Properties2 properties2) {
+
+#warning "There is problem with NET::WMVisibleName value, there is difference in value in KF6 and KF5 library version, I dont know how to solve this by now"
+        if (properties & NET::WMWindowType || properties & 0x8000) { //KWindowSystem 5
+            //if (properties & NET::WMWindowType || properties & NET::WMVisibleName) { //KWindowSystem 6
+            KWindowInfo info(id, NET::WMWindowType | NET::WMVisibleName);
+            if (!info.valid()) {
+                return;
+            }
+
+#warning "What if window was Desktop or Dock and has changed to normal window? "
+            if (properties & NET::WMWindowType) {
+                NET::WindowType type = info.windowType(NET::AllTypesMask);
+                if (type == NET::Desktop || type == NET::Dock) {
+                    this->removeItem(id);
+                }
+            }
+
+            #warning "There is problem with NET::WMVisibleName value, there is difference in value in KF6 and KF5 library version, I dont know how to solve this by now"
+            if (properties & 0x8000) { //KWindowSystem 5
+            //if (properties & NET::WMVisibleName) { //KWindowSystem 6
+                updateWindowName(id, info.visibleName());
+            }
+        }
+    });
 }
 
-void MyListModel::addItem(const WId id){
-    KWindowInfo info(id, NET::WMName | NET::WMVisibleName, NET::WM2DesktopFileName | NET::WM2WindowClass | NET::WM2WindowRole);
-    if(!info.valid()){
+void MyListModel::addItem(const WId id)
+{
+    KWindowInfo info(id, NET::WMWindowType | NET::WMVisibleName);
+    if (!info.valid()){
         return;
     }
-    qDebug() << "INFOOOOOOOOOOOOOOOOOO: ";
-    qDebug() << "                       "  << info.desktopFileName();
-    qDebug() << "                       "  << info.windowClassClass();
-    qDebug() << "                       "  << info.windowClassName();
-    qDebug() << "                       "  << info.windowRole();
-    QUrl imageUrl = QUrl(QString("image://backendtaskbaricons/") + QString::number(id));
-    addItem(id, /*info.name() + */info.visibleName(), imageUrl);
+    if((info.windowType(NET::AllTypesMask) != NET::Desktop) && (info.windowType(NET::AllTypesMask) != NET::Dock))
+    {
+        QUrl imageUrl = QUrl(QString("image://backendtaskbaricons/") + QString::number(id));
+        addItem(id, info.visibleName(), imageUrl);
+    }
 }
 
-void MyListModel::addItem(const WId id, const QString &text, const QUrl &image) {
+void MyListModel::addItem(const WId id, const QString &text, const QUrl &image)
+{
 
-    if (text == "Bonsai") {
-#warning "WARNING TODO: thic code must be changed to correct way"
-#warning "TODO make this condidion more generic"
-        KX11Extras::setType(id, NET::WindowType::Desktop);
-        return;
-    }
+    qDebug() << "TaskbarModel::addItem :" << id << ";" << text << ";" << image;
 
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_items.append({id, text, image});
     endInsertRows();
 }
 
-void MyListModel::removeItem(const WId id) {
-    for (int i = 0; i < m_items.size(); ++i) {
-        if (m_items[i].id == id) {
+void MyListModel::removeItem(const WId id)
+{
+    for (int i = 0; i < m_items.size(); ++i)
+    {
+        if (m_items[i].id == id)
+        {
             beginRemoveRows(QModelIndex(), i, i);
             m_items.removeAt(i);
             endRemoveRows();
@@ -109,13 +191,14 @@ void MyListModel::removeItem(const WId id) {
     }
 }
 
-
-int MyListModel::rowCount(const QModelIndex &parent) const {
+int MyListModel::rowCount(const QModelIndex &parent) const
+{
     Q_UNUSED(parent);
     return m_items.count();
 }
 
-QVariant MyListModel::data(const QModelIndex &index, int role) const {
+QVariant MyListModel::data(const QModelIndex &index, int role) const
+{
     if (!index.isValid() || index.row() >= m_items.count())
         return QVariant();
 
@@ -135,7 +218,8 @@ QVariant MyListModel::data(const QModelIndex &index, int role) const {
     }
 }
 
-QHash<int, QByteArray> MyListModel::roleNames() const {
+QHash<int, QByteArray> MyListModel::roleNames() const
+{
     QHash<int, QByteArray> roles;
     roles[WindowNameRole] = "windowName";
     roles[WindowIconRole] = "windowIcon";
@@ -146,24 +230,39 @@ QHash<int, QByteArray> MyListModel::roleNames() const {
 
 void MyListModel::initWindowList()
 {
+    qDebug() << __PRETTY_FUNCTION__;
     QList<WId> windows = KX11Extras::windows();
     WId wId;
-    for (auto it = windows.cbegin(), end = windows.cend(); it != end; ++it) {
+    for (auto it = windows.cbegin(), end = windows.cend(); it != end; ++it)
+    {
         wId = (*it);
-        addItem(wId);
+        //get window info
+        KWindowInfo info(wId, NET::WMWindowType);
+        if (!info.valid())
+        {
+            continue;
+        }
+        //don't add Desktop and Dock windows to taskbar list
+        if((info.windowType(NET::AllTypesMask) != NET::Desktop) && (info.windowType(NET::AllTypesMask) != NET::Dock)){
+            addItem(wId);
+        }
     }
 }
 
 void MyListModel::initActiveWindow()
 {
     WId activeWindow = KX11Extras::activeWindow();
-    for (int i = 0; i < m_items.size(); ++i) {
-        if (m_items[i].id == activeWindow) {
+    for (int i = 0; i < m_items.size(); ++i)
+    {
+        if (m_items[i].id == activeWindow)
+        {
             m_items[i].windowActive = true;
             QModelIndex index = createIndex(i, 0);
             emit dataChanged(index, index, { WindowActiveRole });
             break;
-        }else{
+        }
+        else
+        {
             m_items[i].windowActive = false;
         }
     }
@@ -171,7 +270,8 @@ void MyListModel::initActiveWindow()
 
 void MyListModel::setActiveWindow(WId newActiveWindow)
 {
-    for (int i = 0; i < m_items.size(); ++i) {
+    for (int i = 0; i < m_items.size(); ++i)
+    {
         bool wasActive = m_items[i].windowActive;
         bool shouldBeActive = (m_items[i].id == newActiveWindow);
 
@@ -182,5 +282,19 @@ void MyListModel::setActiveWindow(WId newActiveWindow)
         }
     }
 }
+
+void MyListModel::updateWindowName(WId id, const QString &newName) {
+    for (int i = 0; i < m_items.size(); ++i) {
+        if (m_items[i].id == id) {
+            if (m_items[i].text != newName) {
+                m_items[i].text = newName;
+                QModelIndex index = createIndex(i, 0);
+                emit dataChanged(index, index, { WindowNameRole });
+            }
+            break;
+        }
+    }
+}
+
 
 

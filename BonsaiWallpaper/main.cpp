@@ -10,6 +10,8 @@
 #include <QtQuick3D/qquick3d.h>
 #include <QWindow>
 
+
+
 #include "../Bonsai/Backend/Backend.hpp"
 #include "../Bonsai/Backend/AppsListModel.hpp"
 #include "../Bonsai/Backend/BackendAppsIconsProvider.hpp"
@@ -20,6 +22,8 @@
 
 int main(int argc, char *argv[])
 {
+    QString modulePath = "/home/rafal/Bonsai/themes/gnome";
+
     QGuiApplication::setApplicationName("bonsai");
     QGuiApplication::setOrganizationName("Bonsai");
 
@@ -28,6 +32,10 @@ int main(int argc, char *argv[])
 
 
     QGuiApplication app(argc, argv);
+
+    // QStringList paths;
+    // paths << "/home/rafal/Bonsai/themes/windows_xp/icons";
+    // QIcon::setThemeSearchPaths(paths);
 
 
     // Odczyt zmiennej środowiskowej DISPLAY
@@ -41,15 +49,7 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(QQuick3D::idealSurfaceFormat());
 
     QQmlApplicationEngine engine;
-
-
-
-    QProcess appMenu;
-    appMenu.start("/home/rafal/Dokumenty/TEST/lumina_x11/build/Desktop_Qt_6_8_0-Debug/layouts");
-
-
-
-
+    engine.addImportPath(modulePath);
 
 
 
@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
 
     FavoriteAppsProxyModel favoriteAppsModel;
     favoriteAppsModel.setSourceModel(&appsListModel);
+
 
     Backend backend;
     backend.setQmlEngine(&engine);
@@ -100,7 +101,10 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("Bonsai.Wallpaper", "Main");
+        //engine.loadFromModule("GnomeModule", "Main");
+        //engine.load("/home/rafal/Bonsai/themes/gnome/Main.qml");
+        engine.loadFromModule("Bonsai.Wallpaper", "Main");
+
 
     // Upewnij się, że główny obiekt QML jest załadowany
     if (engine.rootObjects().isEmpty())

@@ -14,7 +14,11 @@ Window {
     height: Screen.height
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnBottomHint //| Qt.X11BypassWindowManagerHint
     visibility: Window.FullScreen
-    title: qsTr("Bonsai")
+    title: qsTr("Bonsai 1")
+
+    Component.onCompleted: {
+        backend.setX11WindowTypeAsDesktop(root)
+    }
 
     //----------------------------------------
 
@@ -44,6 +48,9 @@ Window {
             // turn off kwin panel effects
             backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadingpopups")
             backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_scale")
+
+            //console.log("QML : backend.setX11WindowTypeAsDesktop(root)")
+            //backend.setX11WindowTypeAsDesktop(root)
         }
     }
 
@@ -51,7 +58,7 @@ Window {
         id: wallpaper
         anchors.fill: parent
         //source: "file:////home/rafal/Obrazy/bonsai.png"
-        source: "file:////home/rafal/Obrazy/xp_fhd.jpg"
+        source: "file:/home/rafal/Obrazy/xp_fhd.jpg"
         //! [offscreenSurface]
         //layer.enabled: true
 
@@ -349,7 +356,7 @@ Window {
 
         property size dimensions: Qt.size(width, height)
         onDimensionsChanged: {
-            backend.reservePanelBottomArea(panel.x, panel.y, panel.width, panel.height)
+            backend.reservePanelBottomArea(root, panel.x, panel.y, panel.width, panel.height)
         }
 
 
@@ -570,4 +577,47 @@ Window {
         visible: false
 
     }
+
+
+    Button{
+        anchors.top: parent.top
+        anchors.right: parent.right
+        text: "Gnome"
+        onClicked: {
+            backend.setActiveFrontend("Gnome")
+        }
+    }
+
+    // ListView {
+    //     id: themesList
+    //     anchors.top: parent.top
+    //     anchors.right: parent.right
+    //     width: 200
+    //     height: 200
+    //     clip: true
+    //     model: backend.themesModel
+
+    //     delegate: Rectangle {
+    //         required property string themeId
+    //         required property string themeName
+    //         required property bool themeActive
+    //         height: 50
+    //         width: themesList.width
+    //         border.width: 1
+
+    //         Row{
+    //             anchors.fill: parent
+    //             RadioButton{
+    //                 checked: themeActive
+    //                 onClicked: {
+    //                     //backend.themesModel.setActiveTheme(themeId)
+    //                     backend.setActiveTheme(themeId)
+    //                 }
+    //             }
+    //             Text{
+    //                 text: themeName
+    //             }
+    //         }
+    //     }
+    // }
 }

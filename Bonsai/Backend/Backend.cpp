@@ -31,6 +31,33 @@ void Backend::setQmlEngine(QQmlApplicationEngine *engine)
     qmlEngine = engine;
 }
 
+ThemesModel *Backend::getThemesModel()
+{
+    return &themesModel;
+}
+
+void Backend::setActiveFrontend(const QString &themeId)
+{
+    themesModel.setActiveFrontend(themeId);
+    if(qmlEngine){
+
+        //close all root QQuickWindows
+        for (QObject* rootObject : qmlEngine->rootObjects()) {
+            if (QQuickWindow* window = qobject_cast<QQuickWindow*>(rootObject)) {
+                window->close();
+                window->deleteLater();
+            }
+        }
+
+        qmlEngine->clearComponentCache();
+        if(themeId == "Gnome"){
+            qmlEngine->load("/home/rafal/Bonsai/themes/gnome/Main.qml");
+        }else if(themeId == "Windows XP"){
+            qmlEngine->loadFromModule("Bonsai.Wallpaper", "Main");
+        }
+    }
+}
+
 void Backend::logout() {
     QCoreApplication::exit(0);
 }
@@ -106,16 +133,97 @@ void Backend::runCommand(const QString &cmd) {
     process.startDetached(program, filteredArgs);
 }
 
-void Backend::reservePanelBottomArea(int x, int y, int width, int height)
+void Backend::reservePanelLeftArea(QQuickWindow * window, int x, int y, int width, int height)
+{
+    //We call this method in the next iteration of the event loop because, if we run it directly from
+    //QML while the QML file is still loading, the window ID has not yet been initialized. We need to
+    //wait until the window is created before we can set the area occupied by the panel.
+    QMetaObject::invokeMethod(this, [=]() {
+        if (window) {
+            reservePanelLeftArea(window->winId(), y, y + height, width);
+        } else {
+            qDebug() << "window id is empty";
+        }
+    }, Qt::QueuedConnection);
+
+}
+
+void Backend::reservePanelLeftArea(WId windowId, int x, int y, int width, int height)
+{
+    KX11Extras::setExtendedStrut(
+        windowId,
+        width,  // Left width
+        y,      // Left start
+        y + height,  // Left end
+        0, 0, 0,     // Right strut (unused)
+        0, 0, 0,     // Top strut (unused)
+        0, 0, 0      // Bottom strut (unused)
+        );
+}
+
+void Backend::reservePanelLeftArea(WId windowId, int start_y, int stop_y, int width)
+{
+    KX11Extras::setExtendedStrut(
+        windowId,
+        width,       // Left width
+        start_y,     // Left start
+        stop_y,      // Left end
+        0, 0, 0,     // Right strut (unused)
+        0, 0, 0,     // Top strut (unused)
+        0, 0, 0      // Bottom strut (unused)
+        );
+}
+
+void Backend::reservePanelTopArea(QQuickWindow *window, int x, int y, int width, int height)
 {
     //We call this method in the next iteration of the event loop because, if we run it directly from
     //QML while the QML file is still loading, the window ID has not yet been initialized. We need to
     //wait until the window is created before we can set the area occupied by the panel.
 
     QMetaObject::invokeMethod(this, [=]() {
-        std::optional<WId> windowId = getWindowId();
-        if (windowId.has_value()) {
-            reservePanelBottomArea(windowId.value(), x, width, height);
+        if (window) {
+            reservePanelTopArea(window->winId(), x, x + width, height);
+        } else {
+            qDebug() << "window id is empty";
+        }
+    }, Qt::QueuedConnection);
+}
+
+void Backend::reservePanelTopArea(WId windowId, int x, int y, int width, int height)
+{
+    KX11Extras::setExtendedStrut(
+        windowId,
+        0, 0, 0,            // Left strut (unused)
+        0, 0, 0,            // Right strut (unused)
+        height,             // Top width
+        x,                  // Top start
+        x + width,          // Top end
+        0, 0, 0             // Bottom strut (unused)
+        );
+}
+
+void Backend::reservePanelTopArea(WId windowId, int start_x, int stop_x, int height)
+{
+    KX11Extras::setExtendedStrut(
+        windowId,
+        0, 0, 0,            // Left strut (unused)
+        0, 0, 0,            // Right strut (unused)
+        height,             // Top width
+        start_x,            // Top start
+        stop_x,             // Top end
+        0, 0, 0             // Bottom strut (unused)
+        );
+}
+
+void Backend::reservePanelBottomArea(QQuickWindow *window, int x, int y, int width, int height)
+{
+    //We call this method in the next iteration of the event loop because, if we run it directly from
+    //QML while the QML file is still loading, the window ID has not yet been initialized. We need to
+    //wait until the window is created before we can set the area occupied by the panel.
+
+    QMetaObject::invokeMethod(this, [=]() {
+        if (window) {
+            reservePanelBottomArea(window->winId(), x, width, height);
         } else {
             qDebug() << "window id is empty";
         }
@@ -146,6 +254,22 @@ void Backend::reservePanelBottomArea(WId windowId, int start_x, int stop_x, int 
         start_x,            //bottom start
         stop_x              // bottom end
         );
+}
+
+void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    if(window){
+        KX11Extras::setType(window->winId(), NET::WindowType::Desktop);
+    }
+}
+
+void Backend::setX11WindowTypeAsDock(QQuickWindow *window)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    if(window){
+        KX11Extras::setType(window->winId(), NET::WindowType::Dock);
+    }
 }
 
 QString Backend::platformName() const {
@@ -184,23 +308,6 @@ void Backend::setMeasureCpuLoad(bool enable) {
         if (m_cpuFile.isOpen()) {
             m_cpuFile.close();  // Zamknięcie pliku
         }
-    }
-}
-
-std::optional<WId> Backend::getWindowId()
-{
-    // Pobierz główny obiekt QML (powinno to być główne okno aplikacji)
-    if(qmlEngine == nullptr){
-        return std::nullopt;
-    }
-
-    QObject *object = qmlEngine->rootObjects().first();
-    QWindow *window = qobject_cast<QWindow *>(object);
-
-    if (window) {
-        return window->winId();
-    } else {
-        return std::nullopt;
     }
 }
 

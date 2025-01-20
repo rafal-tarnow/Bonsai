@@ -68,6 +68,9 @@ Image{
                         width: 32
                         height: 32
                         fillMode: Image.PreserveAspectFit
+                        Component.onCompleted: {
+                            console.log("WARING TODO: fix model and icon source, icon should return full path to icon in icon provider")
+                        }
                     }
 
                     Text {
