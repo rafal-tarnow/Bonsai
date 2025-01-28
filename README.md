@@ -182,6 +182,13 @@ project kmix-fork:
 6. kde-builder kmix-fork //build fork
 
 
+Dependencies:
+1. kwin
+2. oxygen icon theme
+3. qterminal
+4. pcman-qt
+5. qdbus
+
 
 
 

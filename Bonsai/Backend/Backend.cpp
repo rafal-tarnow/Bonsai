@@ -41,7 +41,7 @@ void Backend::setActiveFrontend(const QString &themeId)
     themesModel.setActiveFrontend(themeId);
     if(qmlEngine){
 
-        //close all root QQuickWindows
+        //close all root QQuickWindows, if we dont close all windows, when we switch frontend, thhey sometimes stay some windows, for example some side panel windows
         for (QObject* rootObject : qmlEngine->rootObjects()) {
             if (QQuickWindow* window = qobject_cast<QQuickWindow*>(rootObject)) {
                 window->close();

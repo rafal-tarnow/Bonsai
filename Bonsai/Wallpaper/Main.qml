@@ -17,7 +17,7 @@ Window {
     title: qsTr("Bonsai 1")
 
     Component.onCompleted: {
-        backend.setX11WindowTypeAsDesktop(root)
+
     }
 
     //----------------------------------------
@@ -41,15 +41,20 @@ Window {
 
     Timer {
         id: initTimer
-        interval: 5000 //czekaj 5 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        interval: 1 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
         running: true
         repeat: false
         onTriggered: {
-            // turn off kwin panel effects
+
+            backend.setX11WindowTypeAsDesktop(root)
             backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadingpopups")
             backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_scale")
 
-            //console.log("QML : backend.setX11WindowTypeAsDesktop(root)")
+            // turn off kwin panel effects
+            // backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadingpopups")
+            // backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_scale")
+
+            //console.log("QML : backend.setX11Wi   ndowTypeAsDesktop(root)")
             //backend.setX11WindowTypeAsDesktop(root)
         }
     }

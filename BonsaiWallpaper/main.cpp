@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
 
     QProcess process;
     process.start("kwin");
+    process.waitForStarted();
 
 
     QGuiApplication app(argc, argv);
