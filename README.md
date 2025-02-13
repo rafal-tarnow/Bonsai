@@ -191,6 +191,9 @@ Dependencies:
 
 
 
+export PATH=/home/rafal/Qt/Qt_6_8_2/Tools/CMake/bin:$PATH
+export PATH=/home/rafal/Qt/Qt_6_8_2/6.8.2/gcc_64/bin:$PATH
+
 
 
 

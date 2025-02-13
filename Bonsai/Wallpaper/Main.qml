@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick3D
 import QtWebEngine
 import Bonsai.Backend
-import "file:///home/rafal/Bonsai/themes/windows_xp/"
+
 
 Window {
     id: root
@@ -63,7 +63,7 @@ Window {
         id: wallpaper
         anchors.fill: parent
         //source: "file:////home/rafal/Obrazy/bonsai.png"
-        source: "file:/home/rafal/Obrazy/xp_fhd.jpg"
+        source: "file:/home/rafal/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
         //! [offscreenSurface]
         //layer.enabled: true
 
