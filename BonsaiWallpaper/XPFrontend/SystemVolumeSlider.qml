@@ -14,17 +14,17 @@ Window {
         anchors.fill: parent
         visible: true
 
-        leftTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/top_left.bmp"
-        leftMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/middle_left.bmp"
-        leftBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/bottom_left.bmp"
+        leftTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/top_left.bmp"
+        leftMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/middle_left.bmp"
+        leftBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/bottom_left.bmp"
 
-        middleTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/top_middle.bmp"
-        middleMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/middle_middle.bmp"
-        middleBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/bottom_middle.bmp"
+        middleTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/top_middle.bmp"
+        middleMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/middle_middle.bmp"
+        middleBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/bottom_middle.bmp"
 
-        rightTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/top_right.bmp"
-        rightMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/middle_right.bmp"
-        rightBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/bottom_right.bmp"
+        rightTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/top_right.bmp"
+        rightMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/middle_right.bmp"
+        rightBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/bottom_right.bmp"
 
         Text{
             id: volumeText
@@ -70,9 +70,9 @@ Window {
                 implicitHeight: control.orientation === Qt.Horizontal ? (4) : (200)
                 width: control.orientation === Qt.Horizontal ? (control.availableWidth) : implicitWidth
                 height: control.orientation === Qt.Horizontal ? (implicitHeight) : (control.availableHeight)
-                topSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_background_top.bmp"
-                middleSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_background_middle.bmp"
-                bottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_background_bottom.bmp"
+                topSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_background_top.bmp"
+                middleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_background_middle.bmp"
+                bottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_background_bottom.bmp"
             }
 
 
@@ -83,7 +83,7 @@ Window {
                 width: 22
                 height: 11
 
-                source: "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_normal.bmp"
+                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_normal.bmp"
 
                 MouseArea {
                     anchors.fill: parent
@@ -92,19 +92,19 @@ Window {
 
                     onEntered: {
                         console.log("onEntered()")
-                        customHandle.source = "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_hover.bmp";
+                        customHandle.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_hover.bmp";
                     }
 
                     onExited: {
                         console.log("onExited()")
 
-                        customHandle.source = "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_normal.bmp";
+                        customHandle.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_normal.bmp";
 
                     }
 
                     onPressed: (mouse) => {
                         console.log("onPressed()")
-                        customHandle.source = "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_pressed.bmp";
+                        customHandle.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_pressed.bmp";
                         mouse.accepted = false; // Pozwala przesuwać suwak
                     }
 
@@ -112,8 +112,8 @@ Window {
                         console.log("onRelease()")
 
                         customHandle.source = (containsMouse)
-                        ? "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_hover.bmp"
-                        : "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_normal.bmp";
+                        ? "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_hover.bmp"
+                        : "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/slider/slider_handle_normal.bmp";
                         mouse.accepted = false; // Pozwala przesuwać suwak
                     }
                 }
@@ -155,16 +155,16 @@ Window {
                 source: {
                     if (muteMouseArea.pressed) {
                         return audioBackend.prefferedOutputMuted
-                            ? "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_pressed_checked.bmp"
-                            : "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_pressed.bmp";
+                            ? "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_pressed_checked.bmp"
+                            : "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_pressed.bmp";
                     } else if (muteMouseArea.containsMouse) {
                         return audioBackend.prefferedOutputMuted
-                            ? "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_hover_checked.bmp"
-                            : "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_hover.bmp";
+                            ? "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_hover_checked.bmp"
+                            : "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_hover.bmp";
                     } else {
                         return audioBackend.prefferedOutputMuted
-                            ? "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_normal_checked.bmp"
-                            : "file:/home/rafal/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_normal.bmp";
+                            ? "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_normal_checked.bmp"
+                            : "file:/" + HOME + "/Bonsai/themes/windows_xp/system_volume_dialog/mute_checkbox/mute_normal.bmp";
                     }
                 }
             }

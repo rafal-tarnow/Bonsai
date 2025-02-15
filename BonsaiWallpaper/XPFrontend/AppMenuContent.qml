@@ -8,7 +8,7 @@ Image{
 
     width: 380
     height: 478
-    source: "file:/home/rafal/Bonsai/themes/windows_xp/start_menu/start_menu.png"
+    source: "file:/" + HOME + "/Bonsai/themes/windows_xp/start_menu/start_menu.png"
 
 
     signal hideRequest()
@@ -183,7 +183,7 @@ Image{
         width: 174
 
         property bool activeHover: allProgramsButtonMouseArea.containsMouse? (true) : (appsListMenu.visible ? true : false)
-        source: activeHover? "file:/home/rafal/Bonsai/themes/windows_xp/start_menu/all_programs_button_hover.png" : "file:/home/rafal/Bonsai/themes/windows_xp/start_menu/all_programs_button_normal.png"
+        source: activeHover? "file:/" + HOME + "/Bonsai/themes/windows_xp/start_menu/all_programs_button_hover.png" : "file:/" + HOME + "/Bonsai/themes/windows_xp/start_menu/all_programs_button_normal.png"
 
         Text{
             id: allProgramsText
@@ -328,7 +328,7 @@ Image{
                 anchors.bottomMargin: 1
                 fillMode: Image.TileVertically
                 width: 6
-                source: "file:/home/rafal/Bonsai/themes/windows_xp/app_list/app_list_right_border.png"
+                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/app_list/app_list_right_border.png"
             }
 
             ListView {
@@ -514,7 +514,7 @@ Image{
 
                 fillMode: Image.TileVertically
                 height: 1
-                source: "file:/home/rafal/Bonsai/themes/windows_xp/app_list/search_separator.png"
+                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/app_list/search_separator.png"
             }
 
             TextField {
@@ -574,7 +574,7 @@ Image{
                 y: 3
                 width: 24
                 height: 24
-                source: "file:/home/rafal/Bonsai/themes/windows_xp/power_off_button.png"
+                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/power_off_button.png"
             }
 
             Text{
@@ -600,11 +600,11 @@ Image{
             hoverEnabled:  true
             onEntered: {
                 turnOffButtonBackground.color = "#ff316ac5"
-                appMenuTurnOffButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/power_off_button_hover.png"
+                appMenuTurnOffButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/power_off_button_hover.png"
             }
             onExited: {
                 turnOffButtonBackground.color = "#00316ac5"
-                appMenuTurnOffButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/power_off_button.png"
+                appMenuTurnOffButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/power_off_button.png"
             }
             onPressed: {
                 turnOffButtonContent.x = 1;
@@ -640,7 +640,7 @@ Image{
                 y: 3
                 width: 24
                 height: 24
-                source: "file:/home/rafal/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
+                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
             }
 
             Text{
@@ -666,11 +666,11 @@ Image{
             hoverEnabled:  true
             onEntered: {
                 logoutButtonBackground.color = "#ff316ac5"
-                appMenuLogoutButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/menu_start_logout_hover.png"
+                appMenuLogoutButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/menu_start_logout_hover.png"
             }
             onExited: {
                 logoutButtonBackground.color = "#00316ac5"
-                appMenuLogoutButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
+                appMenuLogoutButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
             }
             onPressed: {
                 logoutButtonContent.x = 1;

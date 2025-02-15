@@ -34,17 +34,17 @@ Item{
         height: parent.height
         visible: parent.buttonState === TaskbarButton.ButtonState.Normal
 
-        leftTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/top_left.png"
-        leftMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/middle_left.png"
-        leftBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/bottom_left.png"
+        leftTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/top_left.png"
+        leftMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/middle_left.png"
+        leftBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/bottom_left.png"
 
-        middleTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/top_middle.png"
-        middleMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/middle_middle.bmp"
-        middleBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/bottom_middle.png"
+        middleTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/top_middle.png"
+        middleMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/middle_middle.bmp"
+        middleBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/bottom_middle.png"
 
-        rightTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/top_right.png"
-        rightMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/middle_right.png"
-        rightBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_normal/bottom_right.png"
+        rightTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/top_right.png"
+        rightMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/middle_right.png"
+        rightBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_normal/bottom_right.png"
     }
 
     TiledImage{
@@ -53,17 +53,17 @@ Item{
         height: parent.height
         visible: parent.buttonState === TaskbarButton.ButtonState.NormalHover
 
-        leftTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/left_top.bmp"
-        leftMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/left_middle.bmp"
-        leftBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/left_bottom.bmp"
+        leftTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/left_top.bmp"
+        leftMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/left_middle.bmp"
+        leftBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/left_bottom.bmp"
 
-        middleTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/middle_top.bmp"
-        middleMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/middle_middle.bmp"
-        middleBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/middle_bottom.bmp"
+        middleTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/middle_top.bmp"
+        middleMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/middle_middle.bmp"
+        middleBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/middle_bottom.bmp"
 
-        rightTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/right_top.bmp"
-        rightMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/right_middle.bmp"
-        rightBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_hover/right_bottom.bmp"
+        rightTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/right_top.bmp"
+        rightMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/right_middle.bmp"
+        rightBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_hover/right_bottom.bmp"
     }
 
     TiledImage{
@@ -72,17 +72,17 @@ Item{
         height: parent.height
         visible: parent.buttonState === TaskbarButton.ButtonState.Pressed
 
-        leftTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/left_top.bmp"
-        leftMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/left_middle.bmp"
-        leftBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/left_bottom.bmp"
+        leftTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/left_top.bmp"
+        leftMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/left_middle.bmp"
+        leftBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/left_bottom.bmp"
 
-        middleTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/middle_top.bmp"
-        middleMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/middle_middle.bmp"
-        middleBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/middle_bottom.bmp"
+        middleTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/middle_top.bmp"
+        middleMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/middle_middle.bmp"
+        middleBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/middle_bottom.bmp"
 
-        rightTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/right_top.bmp"
-        rightMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/right_middle.bmp"
-        rightBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed/right_bottom.bmp"
+        rightTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/right_top.bmp"
+        rightMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/right_middle.bmp"
+        rightBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed/right_bottom.bmp"
     }
 
     TiledImage{
@@ -91,17 +91,17 @@ Item{
         height: parent.height
         visible: parent.buttonState === TaskbarButton.ButtonState.PressedHover
 
-        leftTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/left_top.bmp"
-        leftMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/left_middle.bmp"
-        leftBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/left_bottom.bmp"
+        leftTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/left_top.bmp"
+        leftMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/left_middle.bmp"
+        leftBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/left_bottom.bmp"
 
-        middleTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/middle_top.bmp"
-        middleMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/middle_middle.bmp"
-        middleBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/middle_bottom.bmp"
+        middleTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/middle_top.bmp"
+        middleMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/middle_middle.bmp"
+        middleBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/middle_bottom.bmp"
 
-        rightTopSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/right_top.bmp"
-        rightMiddleSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/right_middle.bmp"
-        rightBottomSource: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/right_bottom.bmp"
+        rightTopSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/right_top.bmp"
+        rightMiddleSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/right_middle.bmp"
+        rightBottomSource: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/background_button_pressed_hover/right_bottom.bmp"
     }
 
     Image{

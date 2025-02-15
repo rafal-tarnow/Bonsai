@@ -46,12 +46,12 @@ Window {
 
     FontLoader {
         id: tahomaRegular
-        source: "file:/home/rafal/Bonsai/themes/windows_xp/fonts/tahoma.ttf"
+        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/fonts/tahoma.ttf"
     }
 
     FontLoader {
         id: tahomaBold
-        source: "file:/home/rafal/Bonsai/themes/windows_xp/fonts/tahomabd.ttf"
+        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/fonts/tahomabd.ttf"
     }
 
     Timer {
@@ -77,8 +77,8 @@ Window {
     Image {
         id: wallpaper
         anchors.fill: parent
-        //source: "file:/home/rafal/Obrazy/bonsai.png"
-        source: "file:/home/rafal/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
+        //source: "file:/" + HOME + "/Obrazy/bonsai.png"
+        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
         //! [offscreenSurface]
         //layer.enabled: true
 
@@ -368,7 +368,7 @@ Window {
         anchors.right: parent.right
         anchors.left: parent.left
         height: 30
-        source: "file:/home/rafal/Bonsai/themes/windows_xp/task_bar_background.bmp"
+        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/task_bar_background.bmp"
 
         // Component.onCompleted: {
 
@@ -387,7 +387,7 @@ Window {
             anchors.bottom: parent.bottom
             height: parent.height
             width: 101
-            source: "file:/home/rafal/Bonsai/themes/windows_xp/images/start_normal.bmp"
+            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp"
             fillMode: Image.TileHorizontally // lub inna opcja w zależności od wymagań
 
             Component.onCompleted: {
@@ -404,7 +404,7 @@ Window {
                     function onVisibleChanged() {
                         if(appMenu.visible === false ){
                             if(!startButtonMouseArea.containsMouse){
-                                startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                                startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
                             }
                         }
                     }
@@ -412,16 +412,16 @@ Window {
 
                 onEntered: {
                     if(appMenu.visible){
-                        startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
                     }else{
-                        startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_hover.bmp";
+                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_hover.bmp";
                     }
                 }
                 onExited: {
                     if(appMenu.visible){
-                        startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
                     }else{
-                        startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
                     }
                 }
                 onPressed: {
@@ -430,23 +430,23 @@ Window {
 
                     if(appMenu.visible){
                         //backend.minimalizeAllWindows()
-                        startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
                     }else{
                         if (containsMouse) {
-                            startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_hover.bmp";
+                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_hover.bmp";
                         } else {
-                            startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
                         }
                     }
                 }
                 onReleased: {
                     if(appMenu.visible){
-                        startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
                     }else{
                         if (containsMouse) {
-                            startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_hover.bmp";
+                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_hover.bmp";
                         } else {
-                            startImage.source = "file:/home/rafal/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
                         }
                     }
                 }
@@ -514,7 +514,7 @@ Window {
             anchors.bottom: notificationAreaBackground.bottom
             height: notificationAreaBackground.height
             width: 10
-            source: "file:/home/rafal/Bonsai/themes/windows_xp/taskpanel_separator.bmp"
+            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskpanel_separator.bmp"
             fillMode: Image.TileHorizontally
         }
 
@@ -524,7 +524,7 @@ Window {
             anchors.bottom: parent.bottom
             height: parent.height
             width: 104
-            source: "file:/home/rafal/Bonsai/themes/windows_xp/clock_background.bmp"
+            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/clock_background.bmp"
             fillMode: Image.TileHorizontally
 
             Image{
@@ -534,7 +534,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 width:16
                 height:16
-                source: "file:/home/rafal/Bonsai/themes/windows_xp/taskbar/notification_area/speaker.bmp"
+                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/notification_area/speaker.bmp"
                 fillMode: Image.Stretch
 
                 MouseArea{
@@ -582,7 +582,7 @@ Window {
     }
 
     // ShapeTest{
-    //import "file:/home/rafal/Bonsai/themes/windows_xp/"
+    //import "file:/" + HOME + "/Bonsai/themes/windows_xp/"
     //      test qml component form filesystem
     //     x:0
     //  r4e   y:0
