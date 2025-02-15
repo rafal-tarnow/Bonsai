@@ -1,6 +1,7 @@
 #include <QQuickImageProvider>
 #include <QIcon>
 #include <QPixmap>
+#include <QString>
 
 class BackendAppsIconsProvider : public QQuickImageProvider
 {
@@ -9,6 +10,11 @@ public:
         : QQuickImageProvider(QQuickImageProvider::Pixmap)
     {
 #warning "ikony powinny być ustawinae w qml"
+
+        QString homePath = qgetenv("HOME");
+        QStringList searchPaths;
+        searchPaths << QString(homePath + "/Bonsai/icons");
+        QIcon::setThemeSearchPaths(searchPaths);
         QIcon::setThemeName("oxygen");
         //QIcon::setThemeName("Windows XP");
     }

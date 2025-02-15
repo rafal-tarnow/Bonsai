@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 {
 
     QString homePath = qgetenv("HOME");
-    homePath = homePath + "/mmm";
     QString modulePath = homePath + "/Bonsai/themes/gnome";
 
     QGuiApplication::setApplicationName("bonsai");
