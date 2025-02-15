@@ -53,7 +53,7 @@ void Backend::setActiveFrontend(const QString &themeId)
         if(themeId == "Gnome"){
             qmlEngine->load("/home/rafal/Bonsai/themes/gnome/Main.qml");
         }else if(themeId == "Windows XP"){
-            qmlEngine->loadFromModule("Bonsai.Wallpaper", "Main");
+            qmlEngine->loadFromModule("XPFrontend", "Main");
         }
     }
 }

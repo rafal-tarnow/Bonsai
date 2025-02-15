@@ -574,7 +574,7 @@ Image{
                 y: 3
                 width: 24
                 height: 24
-                source: "file:////home/rafal/Bonsai/themes/windows_xp/power_off_button.png"
+                source: "file:/home/rafal/Bonsai/themes/windows_xp/power_off_button.png"
             }
 
             Text{
@@ -600,11 +600,11 @@ Image{
             hoverEnabled:  true
             onEntered: {
                 turnOffButtonBackground.color = "#ff316ac5"
-                appMenuTurnOffButton.source = "file:////home/rafal/Bonsai/themes/windows_xp/power_off_button_hover.png"
+                appMenuTurnOffButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/power_off_button_hover.png"
             }
             onExited: {
                 turnOffButtonBackground.color = "#00316ac5"
-                appMenuTurnOffButton.source = "file:////home/rafal/Bonsai/themes/windows_xp/power_off_button.png"
+                appMenuTurnOffButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/power_off_button.png"
             }
             onPressed: {
                 turnOffButtonContent.x = 1;
@@ -640,7 +640,7 @@ Image{
                 y: 3
                 width: 24
                 height: 24
-                source: "file:////home/rafal/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
+                source: "file:/home/rafal/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
             }
 
             Text{
@@ -666,11 +666,11 @@ Image{
             hoverEnabled:  true
             onEntered: {
                 logoutButtonBackground.color = "#ff316ac5"
-                appMenuLogoutButton.source = "file:////home/rafal/Bonsai/themes/windows_xp/menu_start_logout_hover.png"
+                appMenuLogoutButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/menu_start_logout_hover.png"
             }
             onExited: {
                 logoutButtonBackground.color = "#00316ac5"
-                appMenuLogoutButton.source = "file:////home/rafal/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
+                appMenuLogoutButton.source = "file:/home/rafal/Bonsai/themes/windows_xp/menu_start_logout_normal.png"
             }
             onPressed: {
                 logoutButtonContent.x = 1;

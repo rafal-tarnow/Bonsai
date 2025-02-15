@@ -19,11 +19,13 @@
 #include "../Bonsai/Backend/FavoriteAppsListModel.hpp"
 
 #include <QtQml/QQmlExtensionPlugin>
-Q_IMPORT_QML_PLUGIN(BonsaiWallpaperPlugin)
+Q_IMPORT_QML_PLUGIN(XPFrontendPlugin)
 
 int main(int argc, char *argv[])
 {
-    QString modulePath = "/home/rafal/Bonsai/themes/gnome";
+
+    QString homePath = qgetenv("HOME");
+    QString modulePath = homePath + "/Bonsai/themes/gnome";
 
     QGuiApplication::setApplicationName("bonsai");
     QGuiApplication::setOrganizationName("Bonsai");
@@ -83,6 +85,7 @@ int main(int argc, char *argv[])
 
     engine.addImageProvider(QLatin1String("backend_app_icon"), new BackendAppsIconsProvider);
 
+    engine.rootContext()->setContextProperty("HOME", homePath);
     //Apps List models
     engine.rootContext()->setContextProperty("appsListModel", &filterProxyModel);
     engine.rootContext()->setContextProperty("favoriteAppsModel", &favoriteAppsModel);
@@ -104,7 +107,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
         //engine.loadFromModule("GnomeModule", "Main");
         //engine.load("/home/rafal/Bonsai/themes/gnome/Main.qml");
-        engine.loadFromModule("BonsaiWallpaper", "Main");
+        engine.loadFromModule("XPFrontend", "Main");
         //engine.loadFromModule("KikoWallpaper", "Main");
 
 

@@ -1,10 +1,29 @@
 cmake_minimum_required(VERSION 3.16)
 
-# set(KF6Config_DIR /home/tom/kde/usr/lib/x86_64-linux-gnu/cmake/KF6Config)
-# set(KF6WindowSystem_DIR /home/tom/kde/usr/lib/x86_64-linux-gnu/cmake/KF6WindowSystem)
+set(KDE_INSTALL_PREFIX "$ENV{HOME}/kde/usr/lib/x86_64-linux-gnu/cmake")
 
-# set(CMAKE_PREFIX_PATH "/home/tom/kde/usr/lib/x86_64-linux-gnu/cmake;${CMAKE_PREFIX_PATH}")
-# set(CMAKE_PREFIX_PATH "/home/tom/kde/usr/lib/cmake;${CMAKE_PREFIX_PATH}")
+set(KF6Codecs_DIR ${KDE_INSTALL_PREFIX}/KF6Codecs)
+set(KF6ColorScheme_DIR ${KDE_INSTALL_PREFIX}/KF6ColorScheme)
+set(KF6ConfigWidgets_DIR ${KDE_INSTALL_PREFIX}/KF6ConfigWidgets)
+set(KF6Config_DIR ${KDE_INSTALL_PREFIX}/KF6Config)
+set(KF6CoreAddons_DIR ${KDE_INSTALL_PREFIX}/KF6CoreAddons)
+set(KF6DBusAddons_DIR ${KDE_INSTALL_PREFIX}/KF6DBusAddons)
+set(KF6Declarative_DIR ${KDE_INSTALL_PREFIX}/KF6Declarative)
+set(KF6DocTools_DIR ${KDE_INSTALL_PREFIX}/KF6DocTools)
+set(KF6GlobalAccel_DIR ${KDE_INSTALL_PREFIX}/KF6GlobalAccel)
+set(KF6I18n_DIR ${KDE_INSTALL_PREFIX}/KF6I18n)
+set(KF6KCMUtils_DIR ${KDE_INSTALL_PREFIX}/KF6KCMUtils)
+set(KF6Package_DIR ${KDE_INSTALL_PREFIX}/KF6Package)
+set(KF6PulseAudioQt_DIR ${KDE_INSTALL_PREFIX}/KF6PulseAudioQt)
+set(KF6StatusNotifierItem_DIR ${KDE_INSTALL_PREFIX}/KF6StatusNotifierItem)
+set(KF6Svg_DIR ${KDE_INSTALL_PREFIX}/KF6Svg)
+set(KF6WidgetsAddons_DIR ${KDE_INSTALL_PREFIX}/KF6WidgetsAddons)
+set(KF6WindowSystem_DIR ${KDE_INSTALL_PREFIX}/KF6WindowSystem)
+set(KF6i18n_DIR ${KDE_INSTALL_PREFIX}/KF6I18n)
+set(Plasma_DIR ${KDE_INSTALL_PREFIX}/Plasma)
+
+# set(CMAKE_PREFIX_PATH ${HOME_DIR}/kde/usr/lib/x86_64-linux-gnu/cmake;${CMAKE_PREFIX_PATH})
+# set(CMAKE_PREFIX_PATH ${HOME_DIR}/kde/usr/lib/cmake;${CMAKE_PREFIX_PATH})
 
 
 set(BONSAI_VERSION 1.0.0)

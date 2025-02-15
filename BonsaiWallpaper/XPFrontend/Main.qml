@@ -77,7 +77,7 @@ Window {
     Image {
         id: wallpaper
         anchors.fill: parent
-        //source: "file:////home/rafal/Obrazy/bonsai.png"
+        //source: "file:/home/rafal/Obrazy/bonsai.png"
         source: "file:/home/rafal/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
         //! [offscreenSurface]
         //layer.enabled: true
@@ -368,7 +368,7 @@ Window {
         anchors.right: parent.right
         anchors.left: parent.left
         height: 30
-        source: "file:////home/rafal/Bonsai/themes/windows_xp/task_bar_background.bmp"
+        source: "file:/home/rafal/Bonsai/themes/windows_xp/task_bar_background.bmp"
 
         // Component.onCompleted: {
 
@@ -582,7 +582,7 @@ Window {
     }
 
     // ShapeTest{
-    //import "file:///home/rafal/Bonsai/themes/windows_xp/"
+    //import "file:/home/rafal/Bonsai/themes/windows_xp/"
     //      test qml component form filesystem
     //     x:0
     //  r4e   y:0

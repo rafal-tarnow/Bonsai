@@ -32,7 +32,7 @@ target_link_libraries(appBonsaiWallpaper
 )
 
 target_link_libraries(appBonsaiWallpaper PRIVATE BonsaiBackend)
-target_link_libraries(appBonsaiWallpaper PRIVATE BonsaiWallpaperplugin)
+target_link_libraries(appBonsaiWallpaper PRIVATE XPFrontendplugin)
 target_link_libraries(appBonsaiWallpaper PRIVATE plasma-volume)
 
 include(GNUInstallDirs)
@@ -52,4 +52,4 @@ qt_generate_deploy_qml_app_script(
 install(SCRIPT ${deploy_script})
 
 
-add_subdirectory(./BonsaiWallpaper/)
+add_subdirectory(./XPFrontend/)
