@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-# set(KF6Config_DIR /home/rafal/kde/usr/lib/x86_64-linux-gnu/cmake/KF6Config)
-# set(KF6WindowSystem_DIR /home/rafal/kde/usr/lib/x86_64-linux-gnu/cmake/KF6WindowSystem)
-set(CMAKE_PREFIX_PATH "/home/rafal/kde/usr/lib/x86_64-linux-gnu/cmake;${CMAKE_PREFIX_PATH}")
-set(CMAKE_PREFIX_PATH "/home/rafal/kde/usr/lib/cmake;${CMAKE_PREFIX_PATH}")
+# set(KF6Config_DIR /home/tom/kde/usr/lib/x86_64-linux-gnu/cmake/KF6Config)
+# set(KF6WindowSystem_DIR /home/tom/kde/usr/lib/x86_64-linux-gnu/cmake/KF6WindowSystem)
+
+# set(CMAKE_PREFIX_PATH "/home/tom/kde/usr/lib/x86_64-linux-gnu/cmake;${CMAKE_PREFIX_PATH}")
+# set(CMAKE_PREFIX_PATH "/home/tom/kde/usr/lib/cmake;${CMAKE_PREFIX_PATH}")
 
 
 set(BONSAI_VERSION 1.0.0)
@@ -51,12 +52,10 @@ ecm_setup_version(${BONSAI_VERSION}
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/BonsaiConfigVersion.cmake"
     SOVERSION ${PROJECT_VERSION_MAJOR})
 
+
+add_subdirectory(Bonsai/Backend/)
 add_subdirectory(third_party/plasma-pa/)
 add_subdirectory(BonsaiWallpaper/)
-add_subdirectory(Bonsai/Backend/)
-add_subdirectory(Bonsai/Wallpaper/)
-
-
 
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

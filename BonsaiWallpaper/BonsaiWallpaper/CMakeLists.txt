@@ -1,12 +1,9 @@
-set(BACKEND_QML_MODULE "Bonsai.Wallpaper")
-set(QML_IMPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}")
+qt_standard_project_setup(REQUIRES 6.8)
 
-find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Qml Quick )
-
-qt_standard_project_setup(REQUIRES 6.5)
+qt_add_library(BonsaiWallpaper STATIC)
 
 qt_add_qml_module(BonsaiWallpaper
-    URI Bonsai.Wallpaper
+    URI BonsaiWallpaper
     VERSION 1.0
     QML_FILES Main.qml
     QML_FILES TaskbarButton.qml
@@ -23,9 +20,4 @@ qt_add_qml_module(BonsaiWallpaper
 )
 
 
-target_link_libraries(BonsaiWallpaper PRIVATE plasma-volume)
-
-
-add_library(BonsaiWallpaperLib STATIC "")
-target_link_libraries(BonsaiWallpaperLib PRIVATE BonsaiWallpaper)
 

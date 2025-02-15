@@ -13,13 +13,6 @@ qt_add_executable(appBonsaiWallpaper
     main.cpp
 )
 
-qt_add_qml_module(appBonsaiWallpaper
-    URI BonsaiWallpaper
-    VERSION 1.0
-    QML_FILES
-)
-
-
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
@@ -39,7 +32,7 @@ target_link_libraries(appBonsaiWallpaper
 )
 
 target_link_libraries(appBonsaiWallpaper PRIVATE BonsaiBackend)
-target_link_libraries(appBonsaiWallpaper PRIVATE BonsaiWallpaper)
+target_link_libraries(appBonsaiWallpaper PRIVATE BonsaiWallpaperplugin)
 target_link_libraries(appBonsaiWallpaper PRIVATE plasma-volume)
 
 include(GNUInstallDirs)
@@ -57,3 +50,6 @@ qt_generate_deploy_qml_app_script(
 
 # Instalacja skryptu (gdzie skrypt będzie uruchomiony podczas instalacji)
 install(SCRIPT ${deploy_script})
+
+
+add_subdirectory(./BonsaiWallpaper/)

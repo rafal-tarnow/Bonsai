@@ -1,8 +1,23 @@
+// import QtQuick
+
+// Window {
+//     width: 640
+//     height: 480
+//     visible: true
+//     title: qsTr("Hello World")
+//     Text{
+//         anchors.centerIn: parent
+//         text: "Module Wallpaper second XXXL"
+//     }
+// }
+
+
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick3D
 import QtWebEngine
-import Bonsai.Backend
+//import BonsaiBackend
 
 
 Window {

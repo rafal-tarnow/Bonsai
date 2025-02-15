@@ -9,8 +9,7 @@
 #include <QDir>
 #include <QtQuick3D/qquick3d.h>
 #include <QWindow>
-
-
+#include <QtWebEngineQuick>
 
 #include "../Bonsai/Backend/Backend.hpp"
 #include "../Bonsai/Backend/AppsListModel.hpp"
@@ -19,6 +18,8 @@
 #include "../Bonsai/Backend/AudioBackend.hpp"
 #include "../Bonsai/Backend/FavoriteAppsListModel.hpp"
 
+#include <QtQml/QQmlExtensionPlugin>
+Q_IMPORT_QML_PLUGIN(BonsaiWallpaperPlugin)
 
 int main(int argc, char *argv[])
 {
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
     process.start("kwin");
     process.waitForStarted();
 
-
+    QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
 
     // QStringList paths;
@@ -96,15 +97,15 @@ int main(int argc, char *argv[])
     AudioBackend audioBackend;
     engine.rootContext()->setContextProperty("audioBackend", &audioBackend);
 
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+        []() {
+                         QCoreApplication::exit(-1);
+    },
         Qt::QueuedConnection);
         //engine.loadFromModule("GnomeModule", "Main");
         //engine.load("/home/rafal/Bonsai/themes/gnome/Main.qml");
-        engine.loadFromModule("Bonsai.Wallpaper", "Main");
+        engine.loadFromModule("BonsaiWallpaper", "Main");
+        //engine.loadFromModule("KikoWallpaper", "Main");
 
 
     // Upewnij się, że główny obiekt QML jest załadowany
