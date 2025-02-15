@@ -5,10 +5,11 @@
 
 #include <KX11Extras>
 
-Backend::Backend(QObject *parent)
+Backend::Backend(QString homeEnv, QObject *parent)
     : QObject(parent),
     m_cpuFile("/proc/stat"),  // Inicjalizacja pliku
-    m_measureCpuLoad(false)   // Domyślnie pomiar jest wyłączony
+    m_measureCpuLoad(false),
+    HOME_ENV(homeEnv)// Domyślnie pomiar jest wyłączony
 {
     m_platformName = QGuiApplication::platformName();
     if (m_platformName == "xcb") {
@@ -51,7 +52,7 @@ void Backend::setActiveFrontend(const QString &themeId)
 
         qmlEngine->clearComponentCache();
         if(themeId == "Gnome"){
-            qmlEngine->load("/home/rafal/Bonsai/themes/gnome/Main.qml");
+            qmlEngine->load(HOME_ENV + "/Bonsai/themes/gnome/Main.qml");
         }else if(themeId == "Windows XP"){
             qmlEngine->loadFromModule("XPFrontend", "Main");
         }

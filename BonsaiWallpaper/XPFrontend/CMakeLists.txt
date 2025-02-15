@@ -1,4 +1,4 @@
-qt_standard_project_setup(REQUIRES 6.8)
+qt_standard_project_setup(REQUIRES ${REQUIRED_QT_VERSION})
 
 qt_add_library(XPFrontend STATIC)
 

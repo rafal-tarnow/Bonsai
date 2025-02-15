@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 {
 
     QString homePath = qgetenv("HOME");
+    homePath = homePath + "/mmm";
     QString modulePath = homePath + "/Bonsai/themes/gnome";
 
     QGuiApplication::setApplicationName("bonsai");
@@ -80,7 +81,7 @@ int main(int argc, char *argv[])
     favoriteAppsModel.setSourceModel(&appsListModel);
 
 
-    Backend backend;
+    Backend backend(homePath);
     backend.setQmlEngine(&engine);
 
     engine.addImageProvider(QLatin1String("backend_app_icon"), new BackendAppsIconsProvider);

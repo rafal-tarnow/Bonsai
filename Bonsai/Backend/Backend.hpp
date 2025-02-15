@@ -19,7 +19,7 @@ class Backend : public QObject {
     Q_OBJECT
     QML_ELEMENT
 public:
-    explicit Backend(QObject *parent = nullptr);
+    explicit Backend(QString homeEnv, QObject *parent = nullptr);
     ~Backend();
 
     void setQmlEngine(QQmlApplicationEngine * engine);
@@ -92,6 +92,7 @@ signals:
     void measureCpuLoadChanged();
 
 private:
+    QString HOME_ENV;
     QQmlApplicationEngine *qmlEngine = nullptr;
     QString m_platformName;
     ThemesModel themesModel;
