@@ -32,8 +32,8 @@ qt_add_qml_module(${PROJECT_NAME}
     Backend.cpp
     AppsListModel.hpp
     AppsListModel.cpp
-    WMBackend.hpp
-    WMBackend.cpp
+
+
     SOURCES BackendAppsIconsProvider.hpp
     SOURCES Model.hpp
     SOURCES Model.cpp
@@ -45,6 +45,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES FavoriteAppsListModel.cpp
     SOURCES ThemesModel.hpp
     SOURCES ThemesModel.cpp
+    SOURCES WindowManagerDBus.hpp
+    SOURCES WindowManagerDBus.cpp
 )
 
 add_library(BonsaiBackendLib STATIC "")

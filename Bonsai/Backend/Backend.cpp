@@ -37,8 +37,14 @@ ThemesModel *Backend::getThemesModel()
     return &themesModel;
 }
 
+WindowManagerDBus *Backend::getWindowManager()
+{
+    return &windowManagerDBus;
+}
+
 void Backend::setActiveFrontend(const QString &themeId)
 {
+
     themesModel.setActiveFrontend(themeId);
     if(qmlEngine){
 
@@ -51,6 +57,12 @@ void Backend::setActiveFrontend(const QString &themeId)
         }
 
         qmlEngine->clearComponentCache();
+
+
+        //reset kwin state
+        //windowManagerDBus.reconfigure();
+
+
         if(themeId == "Gnome"){
             qmlEngine->load(HOME_ENV + "/Bonsai/themes/gnome/Main.qml");
         }else if(themeId == "Windows XP"){

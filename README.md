@@ -127,6 +127,13 @@ sudo apt install libxapian-dev (Fix Error: kde-builder akonadi-search: Unable to
 
 KWIN dbus commands
 
+
+//reconfigure - reload theme after change window decoration
+qdbus org.kde.KWin /KWin org.kde.KWin.reconfigure
+
+//showDesktop(true) - show desktop method
+qdbus org.kde.KWin /KWin org.kde.KWin.showDesktop true
+
 //turn off composition
 qdbus org.kde.KWin /Compositor suspend
 //turn on composition

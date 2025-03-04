@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
     QProcess process;
     process.start("kwin");
-    process.waitForStarted();
+    process.waitForStarted(5000);
 
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);

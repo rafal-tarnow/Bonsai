@@ -14,6 +14,7 @@
 #include <QQuickWindow>
 
 #include "ThemesModel.hpp"
+#include "WindowManagerDBus.hpp"
 
 class Backend : public QObject {
     Q_OBJECT
@@ -24,8 +25,10 @@ public:
 
     void setQmlEngine(QQmlApplicationEngine * engine);
 
+    Q_PROPERTY(WindowManagerDBus* windowManager READ getWindowManager CONSTANT)
     Q_PROPERTY(ThemesModel* themesModel READ getThemesModel CONSTANT)
     ThemesModel* getThemesModel();
+    WindowManagerDBus * getWindowManager();
     Q_INVOKABLE  void setActiveFrontend(const QString& frontendId);
 
     //cpu load
@@ -96,6 +99,7 @@ private:
     QQmlApplicationEngine *qmlEngine = nullptr;
     QString m_platformName;
     ThemesModel themesModel;
+    WindowManagerDBus windowManagerDBus;
 
     //cpu load variables
     float m_cpuLoad = 0.0f;

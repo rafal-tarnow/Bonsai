@@ -32,7 +32,9 @@ Window {
     title: qsTr("Bonsai 1")
 
     Component.onCompleted: {
-
+        //backend.windowManager.installAuroraeTheme("qrc:/XBoomer")
+        backend.windowManager.setAuroraeTheme("XBoomer")
+        backend.windowManager.reconfigure()
     }
 
     //----------------------------------------
@@ -56,57 +58,30 @@ Window {
 
     Timer {
         id: initTimer
-        interval: 1 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        interval: 3000 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
         running: true
         repeat: false
         onTriggered: {
 
+        }
+    }
+
+    Timer {
+        interval: 5000 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        running: true
+        repeat: false
+        onTriggered: {
             backend.setX11WindowTypeAsDesktop(root)
-            backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadingpopups")
-            backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_scale")
+            backend.windowManager.unloadEffect("kwin4_effect_fadingpopups")
+            backend.windowManager.unloadEffect("kwin4_effect_scale")
 
-            // turn off kwin panel effects
-            // backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadingpopups")
-            // backend.runCommand("qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_scale")
-
-            //console.log("QML : backend.setX11Wi   ndowTypeAsDesktop(root)")
-            //backend.setX11WindowTypeAsDesktop(root)
         }
     }
 
     Image {
         id: wallpaper
         anchors.fill: parent
-        //source: "file:/" + HOME + "/Obrazy/bonsai.png"
         source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
-        //! [offscreenSurface]
-        //layer.enabled: true
-
-        // Rectangle {
-        //     anchors.fill: parent
-        //     color: "yellow"  // Ustawienie koloru tła na czerwony
-
-        // Rectangle {
-        //         id: rect
-        //         width: 100; height: 100
-        //         color: "red"
-
-        //         // ParallelAnimation {
-        //         //     running: true
-        //         //     NumberAnimation { target: rect; property: "x"; to: 500; duration: 60000 }
-        //         //     NumberAnimation { target: rect; property: "y"; to: 500; duration: 60000 }
-        //         //     RotationAnimation { target: rect; from: 0; to: 360; duration: 60000 }
-
-        //         // }
-
-        //         ParallelAnimation {
-        //             running: true
-        //             loops: Animation.Infinite
-        //         ScaleAnimator { target: rect; from: 0; to: 10; duration: 10000 }
-        // }
-
-        //     }
-
 
         MouseArea {
             anchors.fill: parent
