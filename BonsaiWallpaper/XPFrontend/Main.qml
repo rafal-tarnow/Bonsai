@@ -75,6 +75,8 @@ Window {
             backend.windowManager.unloadEffect("kwin4_effect_fadingpopups")
             backend.windowManager.unloadEffect("kwin4_effect_scale")
 
+            backend.windowManager.unloadEffect("fadingpopups")
+            backend.windowManager.unloadEffect("scale")
         }
     }
 
