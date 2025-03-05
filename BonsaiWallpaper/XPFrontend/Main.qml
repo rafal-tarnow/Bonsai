@@ -81,6 +81,10 @@ Window {
     Image {
         id: wallpaper
         anchors.fill: parent
+        //x:0
+        //y:0
+        //width: parent.width
+        //height: parent.height*0.75
         source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
 
         MouseArea {
