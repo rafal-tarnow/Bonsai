@@ -18,7 +18,7 @@ void filterProcessEnvironment(QProcessEnvironment &env, const QString &pathToRem
     for (const QString &var : env.keys()) {
         QString value = env.value(var);
 
-        if (value.contains(separator)) {
+        if (value.contains(pathToRemove) && value.contains(separator)) {
             QStringList paths = value.split(separator, Qt::SkipEmptyParts);
             QStringList filteredPaths = filterPaths(paths, pathToRemove);
             env.insert(var, filteredPaths.join(separator));
