@@ -1,9 +1,11 @@
 #include "Backend.hpp"
-#include <QProcess>
+
 #include <QGuiApplication>
 #include <QRegularExpression>
 
 #include <KX11Extras>
+
+#include "./helper/Process.hpp"
 
 Backend::Backend(QString homeEnv, QObject *parent)
     : QObject(parent),
@@ -134,7 +136,6 @@ void Backend::startProcess(const QString &proc) {
 }
 
 void Backend::runCommand(const QString &cmd) {
-    QProcess process;
     QStringList parts = cmd.split(' ', Qt::SkipEmptyParts);
     QString program = parts.takeFirst();
     QStringList filteredArgs;
@@ -144,30 +145,18 @@ void Backend::runCommand(const QString &cmd) {
         }
     }
 
-
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.remove("LD_LIBRARY_PATH");
-    env.remove("QML_IMPORT_PATH");
-    env.remove("QML2_IMPORT_PATH");
-    env.remove("QT_PLUGIN_PATH");
-    env.remove("QTWEBENGINEPROCESS_PATH");
-    env.remove("QTDIR");
-    env.remove("CQT_PKG_ROOT");
-    env.remove("CQT_RUN_FILE");
-    env.remove("QT_QPA_PLATFORM_PLUGIN_PATH");
 
-    env.insert("XDG_CURRENT_DESKTOP","ubuntu:GNOME");
-    env.insert("TERM","xterm-256color");
-    env.insert("XDG_SESSION_CLASS","user");
-    env.insert("LESSCLOSE","/usr/bin/lesspipe %s %s");
-    env.insert("PATH","/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin");
+    qDebug() << "ENV BEFORE Backend::runCommand() ============" << env.toStringList();
+    filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
+    qDebug() << "ENV AFTER Backend::runCommand() ======== " << env.toStringList();
 
 
-    qDebug() << __PRETTY_FUNCTION__ << " remove system enviroment variables";
-    qDebug() << __PRETTY_FUNCTION__ << " ProcessEnviroment = " << env.toStringList();
-
+    QProcess process;
+    process.setProgram(program);
+    process.setArguments(filteredArgs);
     process.setProcessEnvironment(env);
-    process.startDetached(program, filteredArgs);
+    process.startDetached();
 }
 
 void Backend::reservePanelLeftArea(QQuickWindow * window, int x, int y, int width, int height)

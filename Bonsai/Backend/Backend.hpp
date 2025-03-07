@@ -12,6 +12,7 @@
 #include <QtGui/qwindowdefs.h>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
+#include <QProcess>
 
 #include "ThemesModel.hpp"
 #include "WindowManagerDBus.hpp"

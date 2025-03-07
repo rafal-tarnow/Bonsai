@@ -12,14 +12,8 @@ include(FindPkgConfig)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 
-
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Gui Quick DBus Concurrent)
-
-
-find_package(KF6 ${REQUIRED_KF_VERSION} REQUIRED COMPONENTS
-    Config
-    WindowSystem)
-
+find_package(KF6 ${REQUIRED_KF_VERSION} REQUIRED COMPONENTS Config WindowSystem)
 find_package(KF6PulseAudioQt ${REQUIRED_PULSEAUDIOQT_VERSION} REQUIRED)
 
 
@@ -32,7 +26,6 @@ qt_add_qml_module(${PROJECT_NAME}
     Backend.cpp
     AppsListModel.hpp
     AppsListModel.cpp
-
 
     SOURCES BackendAppsIconsProvider.hpp
     SOURCES Model.hpp
@@ -47,10 +40,14 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES ThemesModel.cpp
     SOURCES WindowManagerDBus.hpp
     SOURCES WindowManagerDBus.cpp
+    SOURCES helper/Process.hpp
+    SOURCES helper/Process.cpp
 )
 
 add_library(BonsaiBackendLib STATIC "")
 
+#so that in the main application it would be possible to use headers, e.g., #include <Backend.hpp>
+target_include_directories(BonsaiBackendLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE Qt6::DBus

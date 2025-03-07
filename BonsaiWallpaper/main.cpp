@@ -11,15 +11,17 @@
 #include <QWindow>
 #include <QtWebEngineQuick>
 
-#include "../Bonsai/Backend/Backend.hpp"
-#include "../Bonsai/Backend/AppsListModel.hpp"
-#include "../Bonsai/Backend/BackendAppsIconsProvider.hpp"
-#include "../Bonsai/Backend/Model.hpp"
-#include "../Bonsai/Backend/AudioBackend.hpp"
-#include "../Bonsai/Backend/FavoriteAppsListModel.hpp"
+#include <Backend.hpp>
+#include <AppsListModel.hpp>
+#include <BackendAppsIconsProvider.hpp>
+#include <Model.hpp>
+#include <AudioBackend.hpp>
+#include <FavoriteAppsListModel.hpp>
+#include <helper/Process.hpp>
 
 #include <QtQml/QQmlExtensionPlugin>
 Q_IMPORT_QML_PLUGIN(XPFrontendPlugin)
+
 
 int main(int argc, char *argv[])
 {
@@ -33,24 +35,10 @@ int main(int argc, char *argv[])
 
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.remove("LD_LIBRARY_PATH");
-    env.remove("QML_IMPORT_PATH");
-    env.remove("QML2_IMPORT_PATH");
-    env.remove("QT_PLUGIN_PATH");
-    env.remove("QTWEBENGINEPROCESS_PATH");
-    env.remove("QTDIR");
-    env.remove("CQT_PKG_ROOT");
-    env.remove("CQT_RUN_FILE");
-    env.remove("QT_QPA_PLATFORM_PLUGIN_PATH");
 
-    env.insert("XDG_CURRENT_DESKTOP","ubuntu:GNOME");
-    env.insert("TERM","xterm-256color");
-    env.insert("XDG_SESSION_CLASS","user");
-    env.insert("LESSCLOSE","/usr/bin/lesspipe %s %s");
-    env.insert("PATH","/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin");
-
-
-
+    qDebug() << "ENV BEFORE ============" << env.toStringList();
+    filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
+    qDebug() << "ENV AFTER ======== " << env.toStringList();
 
     QProcess process;
     process.setProcessEnvironment(env);
