@@ -203,5 +203,10 @@ export PATH=/home/rafal/Qt/Qt_6_8_2/6.8.2/gcc_64/bin:$PATH
 
 
 
+To change icon theme on GTK applications edit file:
+~/.config/gtk-3.0/settings.ini
+~/.config/gtk-4.0/settings.ini
+
+To change qt app apperance use qt5ct app
 
 
