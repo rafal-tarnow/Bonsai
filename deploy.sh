@@ -3,12 +3,19 @@
 # Script usage: ./deploy.sh [/path/to/qt/qmake] [/path/to/project/qml/dir]
 # Example: ./deploy.sh ~/Qt/Qt_6_8_2/6.8.2/gcc_64/bin/qmake ~/Pobrane/Bonsai/BonsaiWallpaper/XPFrontend
 
-#### STEP 1 - Set up the Qt qmake path and QML directory
-# Use the provided qmake path as the first argument, or default to a specific Qt installation
-QMAKE_PATH=${1:-~/Qt/Qt_6_8_2/6.8.2/gcc_64/bin/qmake}
+#### STEP 1 - Check and set up the Qt qmake path and QML directory
+# Assign the provided qmake path as the first argument
+QMAKE_PATH="$1"
+# Assign the provided QML directory as the second argument
+PROJECT_QML_DIR="$2"
 
-# Use the provided QML directory as the second argument, or default to ~/Pobrane/Bonsai/BonsaiWallpaper/XPFrontend
-PROJECT_QML_DIR=${2:-~/Pobrane/Bonsai/BonsaiWallpaper/XPFrontend}
+# Check if both variables are provided; if not, print usage and exit
+if [ -z "$QMAKE_PATH" ] || [ -z "$PROJECT_QML_DIR" ]; then
+    echo "Error: Both QMAKE_PATH and PROJECT_QML_DIR are required."
+    echo "Usage: ./deploy.sh [/path/to/qt/qmake] [/path/to/project/qml/dir]"
+    echo "Example: ./deploy.sh ~/Qt/Qt_6_8_2/6.8.2/gcc_64/bin/qmake ~/Download/Bonsai/BonsaiWallpaper/XPFrontend"
+    exit 1
+fi
 
 # Run cqtdeployer to deploy the app with specified binary, QML directory, and qmake path
 cqtdeployer -bin appBonsaiWallpaper -qmlDir "$PROJECT_QML_DIR" -qmake "$QMAKE_PATH" force-clear deploySystem
