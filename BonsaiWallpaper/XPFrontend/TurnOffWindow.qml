@@ -32,7 +32,7 @@ Window {
         anchors.centerIn: parent
         width: 314
         height: 200
-        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/turn_off_dialog.png"
+        source: "qrc:/assets/images/turn_off_dialog.png"
 
         Image{
             id: turnOffButton
@@ -40,19 +40,19 @@ Window {
             y: 81
             width: 33
             height: 33
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_power_button_normal.png"
+            source: "qrc:/assets/images/dialog_turn_off_power_button_normal.png"
 
             MouseArea {
                 anchors.fill: parent
                 onPressed: {
-                    turnOffButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_power_button_pressed.png"
+                    turnOffButton.source = "qrc:/assets/images/dialog_turn_off_power_button_pressed.png"
 
                 }
                 onReleased: {
                     if(containsMouse){
                         backend.poweroff()
                     }
-                    turnOffButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_power_button_normal.png"
+                    turnOffButton.source = "qrc:/assets/images/dialog_turn_off_power_button_normal.png"
                 }
             }
         }
@@ -63,28 +63,28 @@ Window {
             y: 81
             width: 33
             height: 33
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_restart_button_normal.png"
+            source: "qrc:/assets/images/dialog_turn_off_restart_button_normal.png"
 
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled:  true
                 onEntered: {
                     if(!pressed)
-                        restartButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_restart_button_hover.png"
+                        restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_hover.png"
                 }
                 onExited: {
                     if(!pressed)
-                        restartButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_restart_button_normal.png"
+                        restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_normal.png"
                 }
                 onPressed: {
-                    restartButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_restart_button_pressed.png"
+                    restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_pressed.png"
                 }
                 onReleased: {
                     if(containsMouse){
-                        restartButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_restart_button_hover.png"
+                        restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_hover.png"
                         backend.reboot()
                     }else{
-                        restartButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_restart_button_normal.png"
+                        restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_normal.png"
                     }
                 }
             }
@@ -96,28 +96,28 @@ Window {
             y: 168
             width: 61
             height: 21
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_normal.png"
+            source: "qrc:/assets/images/dialog_turn_off_cancel_button_normal.png"
 
             MouseArea{
                 anchors.fill: parent
                 hoverEnabled: true
                 onEntered: {
                     if(!pressed)
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_hover.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_hover.png"
                 }
                 onExited: {
                     if(!pressed)
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_normal.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_normal.png"
                 }
                 onPressed: {
-                    cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_pressed.png"
+                    cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_pressed.png"
                 }
                 onReleased: {
                     if(containsMouse){
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_hover.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_hover.png"
                         root.visibility = Window.Hidden
                     }else{
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_normal.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_normal.png"
                     }
                 }
             }

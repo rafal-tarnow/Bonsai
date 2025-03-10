@@ -48,12 +48,12 @@ Window {
 
     FontLoader {
         id: tahomaRegular
-        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/fonts/tahoma.ttf"
+        source: "qrc:/assets/fonts/tahoma.ttf"
     }
 
     FontLoader {
         id: tahomaBold
-        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/fonts/tahomabd.ttf"
+        source: "qrc:/assets/fonts/tahomabd.ttf"
     }
 
     Timer {
@@ -87,7 +87,7 @@ Window {
         //y:0
         //width: parent.width
         //height: parent.height*0.75
-        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/xp_fhd.jpg"
+        source: "qrc:/assets/images/images/xp_fhd.jpg"
 
         MouseArea {
             anchors.fill: parent
@@ -349,7 +349,7 @@ Window {
         anchors.right: parent.right
         anchors.left: parent.left
         height: 30
-        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/task_bar_background.bmp"
+        source: "qrc:/assets/images/task_bar_background.bmp"
 
         // Component.onCompleted: {
 
@@ -368,7 +368,7 @@ Window {
             anchors.bottom: parent.bottom
             height: parent.height
             width: 101
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp"
+            source: "qrc:/assets/images/images/start_normal.bmp"
             fillMode: Image.TileHorizontally // lub inna opcja w zależności od wymagań
 
             Component.onCompleted: {
@@ -385,7 +385,7 @@ Window {
                     function onVisibleChanged() {
                         if(appMenu.visible === false ){
                             if(!startButtonMouseArea.containsMouse){
-                                startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                                startImage.source = "qrc:/assets/images/images/start_normal.bmp";
                             }
                         }
                     }
@@ -393,16 +393,16 @@ Window {
 
                 onEntered: {
                     if(appMenu.visible){
-                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "qrc:/assets/images/images/start_pressed.bmp";
                     }else{
-                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_hover.bmp";
+                        startImage.source = "qrc:/assets/images/images/start_hover.bmp";
                     }
                 }
                 onExited: {
                     if(appMenu.visible){
-                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "qrc:/assets/images/images/start_pressed.bmp";
                     }else{
-                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                        startImage.source = "qrc:/assets/images/images/start_normal.bmp";
                     }
                 }
                 onPressed: {
@@ -411,23 +411,23 @@ Window {
 
                     if(appMenu.visible){
                         //backend.minimalizeAllWindows()
-                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "qrc:/assets/images/images/start_pressed.bmp";
                     }else{
                         if (containsMouse) {
-                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_hover.bmp";
+                            startImage.source = "qrc:/assets/images/images/start_hover.bmp";
                         } else {
-                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                            startImage.source = "qrc:/assets/images/images/start_normal.bmp";
                         }
                     }
                 }
                 onReleased: {
                     if(appMenu.visible){
-                        startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_pressed.bmp";
+                        startImage.source = "qrc:/assets/images/images/start_pressed.bmp";
                     }else{
                         if (containsMouse) {
-                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_hover.bmp";
+                            startImage.source = "qrc:/assets/images/images/start_hover.bmp";
                         } else {
-                            startImage.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/images/start_normal.bmp";
+                            startImage.source = "qrc:/assets/images/images/start_normal.bmp";
                         }
                     }
                 }
@@ -495,7 +495,7 @@ Window {
             anchors.bottom: notificationAreaBackground.bottom
             height: notificationAreaBackground.height
             width: 10
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskpanel_separator.bmp"
+            source: "qrc:/assets/images/taskpanel_separator.bmp"
             fillMode: Image.TileHorizontally
         }
 
@@ -505,7 +505,7 @@ Window {
             anchors.bottom: parent.bottom
             height: parent.height
             width: 104
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/clock_background.bmp"
+            source: "qrc:/assets/images/clock_background.bmp"
             fillMode: Image.TileHorizontally
 
             Image{
@@ -515,7 +515,7 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
                 width:16
                 height:16
-                source: "file:/" + HOME + "/Bonsai/themes/windows_xp/taskbar/notification_area/speaker.bmp"
+                source: "qrc:/assets/images/taskbar/notification_area/speaker.bmp"
                 fillMode: Image.Stretch
 
                 MouseArea{
@@ -561,14 +561,6 @@ Window {
         }
 
     }
-
-    // ShapeTest{
-    //import "file:/" + HOME + "/Bonsai/themes/windows_xp/"
-    //      test qml component form filesystem
-    //     x:0
-    //  r4e   y:0
-    //     visible: true
-    // }
 
     SystemVolumeSlider{
         id: systemVolumeSlidrer

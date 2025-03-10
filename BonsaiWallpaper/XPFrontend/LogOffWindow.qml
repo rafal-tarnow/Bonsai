@@ -32,7 +32,7 @@ Window {
         anchors.centerIn: parent
         width: 314
         height: 200
-        source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/log_off_dialog.bmp"
+        source: "qrc:/assets/images/images/log_off_dialog.bmp"
 
 
         Item{
@@ -52,21 +52,21 @@ Window {
                     width: 33
                     height: 33
                     visible: !logOffButtonMouseArea.pressed && !logOffButtonMouseArea.containsMouse
-                    source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/dialog_log_off_logoff_button_normal.bmp"
+                    source: "qrc:/assets/images/images/dialog_log_off_logoff_button_normal.bmp"
                 }
                 Image{
                     id: logOffButtonHover
                     width: 33
                     height: 33
                     visible: !logOffButtonMouseArea.pressed && logOffButtonMouseArea.containsMouse
-                    source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/dialog_log_off_logoff_button_hover.bmp"
+                    source: "qrc:/assets/images/images/dialog_log_off_logoff_button_hover.bmp"
                 }
                 Image{
                     id: logOffButtonPressed
                     width: 33
                     height: 33
                     visible: logOffButtonMouseArea.pressed
-                    source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/dialog_log_off_logoff_button_pressed.bmp"
+                    source: "qrc:/assets/images/images/dialog_log_off_logoff_button_pressed.bmp"
                 }
                 MouseArea{
                     id: logOffButtonMouseArea
@@ -113,14 +113,14 @@ Window {
                     width: 33
                     height: 33
                     visible: !switchUserButtonMouseArea.pressed
-                    source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/dialog_log_off_switchuser_button_normal.bmp"
+                    source: "qrc:/assets/images/images/dialog_log_off_switchuser_button_normal.bmp"
                 }
                 Image{
                     id: switchUserButtonPressed
                     width: 33
                     height: 33
                     visible: switchUserButtonMouseArea.pressed
-                    source: "file:/" + HOME + "/Bonsai/themes/windows_xp/images/dialog_log_off_switchuser_button_pressed.bmp"
+                    source: "qrc:/assets/images/images/dialog_log_off_switchuser_button_pressed.bmp"
                 }
                 MouseArea{
                     id: switchUserButtonMouseArea
@@ -157,28 +157,28 @@ Window {
             y: 168
             width: 61
             height: 21
-            source: "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_normal.png"
+            source: "qrc:/assets/images/dialog_turn_off_cancel_button_normal.png"
 
             MouseArea{
                 anchors.fill: parent
                 hoverEnabled: true
                 onEntered: {
                     if(!pressed)
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_hover.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_hover.png"
                 }
                 onExited: {
                     if(!pressed)
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_normal.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_normal.png"
                 }
                 onPressed: {
-                    cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_pressed.png"
+                    cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_pressed.png"
                 }
                 onReleased: {
                     if(containsMouse){
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_hover.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_hover.png"
                         root.visibility = Window.Hidden
                     }else{
-                        cancelButton.source = "file:/" + HOME + "/Bonsai/themes/windows_xp/dialog_turn_off_cancel_button_normal.png"
+                        cancelButton.source = "qrc:/assets/images/dialog_turn_off_cancel_button_normal.png"
                     }
                 }
             }
