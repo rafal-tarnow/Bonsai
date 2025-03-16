@@ -43,6 +43,8 @@ public:
     //qt version
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
 
+    Q_INVOKABLE void installAuroraeTheme(const QUrl & themeUrl, bool forceReinstall = false);
+
     //session
     Q_INVOKABLE void logout();
     Q_INVOKABLE void reboot();
@@ -94,6 +96,10 @@ signals:
     void platformNameChanged();
     void cpuLoadChanged();
     void measureCpuLoadChanged();
+
+private:
+    bool copyLocalDirectory(const QString &sourcePath, const QString &targetPath);
+    bool copyQrcDirectory(const QString &sourcePath, const QString &targetPath);
 
 private:
     QString HOME_ENV;

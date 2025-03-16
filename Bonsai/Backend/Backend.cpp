@@ -2,6 +2,12 @@
 
 #include <QGuiApplication>
 #include <QRegularExpression>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QStandardPaths>
+#include <QUrl>
+#include <QDirIterator>
 
 #include <KX11Extras>
 
@@ -72,6 +78,153 @@ void Backend::setActiveFrontend(const QString &themeId)
         }
     }
 }
+
+
+
+void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall) {
+    qDebug() << __PRETTY_FUNCTION__ << themeUrl;
+
+
+    // // Docelowa lokalizacja: $HOME/.local/share/aurorae/themes
+    QString targetDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/aurorae/themes";
+    QDir targetDir(targetDirPath);
+
+    if (!targetDir.exists()) {
+        if (!targetDir.mkpath(".")) {
+            qWarning() << "Failed to create target directory:" << targetDirPath;
+            return;
+        }
+    }
+
+    if (!themeUrl.isValid()) {
+        qWarning() << "Invalid theme URL:" << themeUrl;
+        return;
+    }
+
+    QString sourcePath;
+    QDir sourceDir;
+    if (themeUrl.scheme() == "qrc") {
+        sourcePath = themeUrl.path();
+        if (sourcePath.startsWith('/')) {
+            sourcePath = sourcePath.mid(1); // Usuń początkowy "/"
+        }
+        sourceDir.setPath(":/" + sourcePath);
+    } else if (themeUrl.scheme() == "file" || themeUrl.isLocalFile()) {
+        sourcePath = themeUrl.toLocalFile();
+        sourceDir.setPath(sourcePath);
+    } else {
+        qWarning() << "Unsupported scheme in theme URL:" << themeUrl.scheme();
+        return;
+    }
+
+    if (!sourceDir.exists()) {
+        qWarning() << "Source directory does not exist:" << sourcePath;
+        return;
+    }
+
+    QString themeName = sourceDir.dirName();
+    QString targetThemePath = targetDirPath + "/" + themeName;
+    QDir targetThemeDir(targetThemePath);
+
+    // Sprawdź, czy motyw już istnieje i zdecyduj, co robić
+    if (targetThemeDir.exists()) {
+        if (forceReinstall) {
+            qDebug() << "Theme already exists at:" << targetThemePath << ". Forcing reinstallation.";
+            targetThemeDir.removeRecursively(); // Usuń istniejący katalog, aby nadpisać
+        } else {
+            qDebug() << "Theme already exists at:" << targetThemePath << ". Skipping installation.";
+            return; // Pomiń instalację, jeśli forceReinstall jest false
+        }
+    }
+
+    bool success;
+    if (themeUrl.scheme() == "qrc") {
+        success = copyQrcDirectory(sourcePath, targetThemePath);
+    } else {
+        success = copyLocalDirectory(sourcePath, targetThemePath);
+    }
+
+    if (success) {
+        qDebug() << "Theme installed successfully to:" << targetThemePath;
+    } else {
+        qWarning() << "Failed to install theme from:" << sourcePath;
+    }
+}
+
+bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targetPath) {
+    QDir targetDir(targetPath);
+
+    if (!targetDir.exists() && !targetDir.mkpath(".")) {
+        qWarning() << "Failed to create target directory:" << targetPath;
+        return false;
+    }
+
+    // Copy files
+    QDirIterator fileIt(sourcePath, QDir::Files | QDir::NoDotAndDotDot);
+    while (fileIt.hasNext()) {
+        fileIt.next();
+        QString srcFilePath = fileIt.filePath();
+        QString dstFilePath = targetDir.absoluteFilePath(fileIt.fileName());
+        if (!QFile::copy(srcFilePath, dstFilePath)) {
+            qWarning() << "Failed to copy file:" << srcFilePath << "to" << dstFilePath;
+            return false;
+        }
+    }
+
+    // Copy dirs
+    QDirIterator dirIt(sourcePath, QDir::Dirs | QDir::NoDotAndDotDot);
+    while (dirIt.hasNext()) {
+        dirIt.next();
+        QString srcSubDir = dirIt.filePath();
+        QString dstSubDir = targetDir.absoluteFilePath(dirIt.fileName());
+        if (!copyLocalDirectory(srcSubDir, dstSubDir)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetPath) {
+    QDir targetDir(targetPath);
+    if (!targetDir.exists() && !targetDir.mkpath(".")) {
+        qWarning() << "Failed to create target directory:" << targetPath;
+        return false;
+    }
+
+    QDir qrcDir(":/" + sourcePath);
+    if (!qrcDir.exists()) {
+        qWarning() << "QRC directory not found:" << sourcePath;
+        return false;
+    }
+
+    // Kopiowanie plików
+    QDirIterator fileIt(":/" + sourcePath, QDir::Files | QDir::NoDotAndDotDot);
+    while (fileIt.hasNext()) {
+        fileIt.next();
+        QString srcFilePath = fileIt.filePath();
+        QString dstFilePath = targetDir.absoluteFilePath(fileIt.fileName());
+        if (!QFile::copy(srcFilePath, dstFilePath)) {
+            qWarning() << "Failed to copy qrc file:" << srcFilePath << "to" << dstFilePath;
+            return false;
+        }
+    }
+
+    // Kopiowanie podkatalogów
+    QDirIterator dirIt(":/" + sourcePath, QDir::Dirs | QDir::NoDotAndDotDot);
+    while (dirIt.hasNext()) {
+        dirIt.next();
+        QString srcSubDir = sourcePath + "/" + dirIt.fileName();
+        QString dstSubDir = targetDir.absoluteFilePath(dirIt.fileName());
+        if (!copyQrcDirectory(srcSubDir, dstSubDir)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 
 void Backend::logout() {
     QCoreApplication::exit(0);
@@ -147,10 +300,7 @@ void Backend::runCommand(const QString &cmd) {
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
-    qDebug() << "ENV BEFORE Backend::runCommand() ============" << env.toStringList();
     filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
-    qDebug() << "ENV AFTER Backend::runCommand() ======== " << env.toStringList();
-
 
     QProcess process;
     process.setProgram(program);

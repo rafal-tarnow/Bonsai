@@ -339,6 +339,7 @@ Image{
                 anchors.right: parent.right
                 model: appsListModel
                 clip: true
+                cacheBuffer: 2147483647 //maximu qml int value
 
                 delegate: Item {
                     id: appsListDelegate

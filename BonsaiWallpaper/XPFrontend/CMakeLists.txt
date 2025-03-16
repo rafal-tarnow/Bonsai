@@ -99,6 +99,17 @@ qt_add_resources(XPFrontend "XPFrontendAssets"
 
     assets/fonts/tahoma.ttf
     assets/fonts/tahomabd.ttf
+
+    assets/kwin_themes/XBoomer/alldesktops.svg
+    assets/kwin_themes/XBoomer/close.svg
+    assets/kwin_themes/XBoomer/decoration.svg
+    assets/kwin_themes/XBoomer/LICENSE
+    assets/kwin_themes/XBoomer/maximize.svg
+    assets/kwin_themes/XBoomer/metadata.desktop
+    assets/kwin_themes/XBoomer/minimize.svg
+    assets/kwin_themes/XBoomer/restore.svg
+    assets/kwin_themes/XBoomer/shade.svg
+    assets/kwin_themes/XBoomer/XBoomerrc
 )
 
 qt_add_qml_module(XPFrontend
@@ -119,17 +130,6 @@ qt_add_qml_module(XPFrontend
     common_components/XPMenuItem.qml
     common_components/XPMenuSeparator.qml
 
-    RESOURCES
-    XBoomer/alldesktops.svg
-    XBoomer/close.svg
-    XBoomer/decoration.svg
-    XBoomer/LICENSE
-    XBoomer/maximize.svg
-    XBoomer/metadata.desktop
-    XBoomer/minimize.svg
-    XBoomer/restore.svg
-    XBoomer/shade.svg
-    XBoomer/XBoomerrc
 )
 
 

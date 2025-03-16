@@ -25,20 +25,14 @@ Q_IMPORT_QML_PLUGIN(XPFrontendPlugin)
 
 int main(int argc, char *argv[])
 {
-
     QString homePath = qgetenv("HOME");
     QString modulePath = homePath + "/Bonsai/themes/gnome";
 
     QGuiApplication::setApplicationName("bonsai");
     QGuiApplication::setOrganizationName("Bonsai");
 
-
-
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-
-    qDebug() << "ENV BEFORE ============" << env.toStringList();
     filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
-    qDebug() << "ENV AFTER ======== " << env.toStringList();
 
     QProcess process;
     process.setProcessEnvironment(env);
@@ -48,10 +42,11 @@ int main(int argc, char *argv[])
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
 
-    // QStringList paths;
-    // paths << "/home/rafal/Bonsai/themes/windows_xp/icons";
-    // QIcon::setThemeSearchPaths(paths);
-
+    //QSurfaceFormat surfaceFormat = QQuick3D::idealSurfaceFormat();
+    QSurfaceFormat surfaceFormat_2 = QSurfaceFormat::defaultFormat();
+    surfaceFormat_2.setSwapBehavior(QSurfaceFormat::TripleBuffer);
+    surfaceFormat_2.setSwapInterval(1);
+    QSurfaceFormat::setDefaultFormat(surfaceFormat_2);
 
     // Odczyt zmiennej środowiskowej DISPLAY
     QByteArray displayEnv = qgetenv("DISPLAY");
@@ -60,8 +55,6 @@ int main(int argc, char *argv[])
     } else {
         qDebug() << "Zmienna DISPLAY ma wartość:" << displayEnv;
     }
-
-    QSurfaceFormat::setDefaultFormat(QQuick3D::idealSurfaceFormat());
 
     QQmlApplicationEngine engine;
     engine.addImportPath(modulePath);
@@ -112,17 +105,14 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("audioBackend", &audioBackend);
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &app,
-        []() {
+                     []() {
                          QCoreApplication::exit(-1);
-    },
-        Qt::QueuedConnection);
-        //engine.loadFromModule("GnomeModule", "Main");
-        //engine.load("/home/rafal/Bonsai/themes/gnome/Main.qml");
-        engine.loadFromModule("XPFrontend", "Main");
-        //engine.loadFromModule("KikoWallpaper", "Main");
+                     },
+                     Qt::QueuedConnection);
+    //engine.load("/home/rafal/Bonsai/themes/gnome/Main.qml");
+    engine.loadFromModule("XPFrontend", "Main");
 
-
-    // Upewnij się, że główny obiekt QML jest załadowany
+    //Make sure the main QML object is loaded.
     if (engine.rootObjects().isEmpty())
         return -1;
 

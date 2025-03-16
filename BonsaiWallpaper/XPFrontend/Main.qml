@@ -32,7 +32,7 @@ Window {
     title: qsTr("Bonsai 1")
 
     Component.onCompleted: {
-        //backend.windowManager.installAuroraeTheme("qrc:/XBoomer")
+        backend.installAuroraeTheme("qrc:/assets/kwin_themes/XBoomer")
         backend.windowManager.setAuroraeTheme("XBoomer")
         backend.windowManager.reconfigure()
     }
@@ -103,19 +103,7 @@ Window {
                 }
             }
         }
-
     }
-
-
-
-
-
-
-
-
-
-
-
 
     // WebEngineView {
     //     id: youtubeView
