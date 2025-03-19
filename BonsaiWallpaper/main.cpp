@@ -79,15 +79,14 @@ int main(int argc, char *argv[])
     FilterProxyModel filterProxyModel;
     filterProxyModel.setSourceModel(&appsListModel);
 
-
     FavoriteAppsProxyModel favoriteAppsModel;
     favoriteAppsModel.setSourceModel(&appsListModel);
-
 
     Backend backend(homePath);
     backend.setQmlEngine(&engine);
 
-    engine.addImageProvider(QLatin1String("backend_app_icon"), new BackendAppsIconsProvider);
+    BackendAppsIconsProvider appsIconProvider;
+    engine.addImageProvider(QLatin1String("backend_app_icon"), &appsIconProvider);
 
     engine.rootContext()->setContextProperty("HOME", homePath);
     //Apps List models

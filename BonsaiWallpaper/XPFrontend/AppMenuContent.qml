@@ -395,7 +395,7 @@ Image{
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                         onClicked: (mouse)=> {
-                                       if (mouse.button == Qt.RightButton) {
+                                       if (mouse.button === Qt.RightButton) {
                                            contextMenu.focus = true
                                            contextMenu.popup(mouse.x + 1, mouse.y)
                                            //contextMenu.open()

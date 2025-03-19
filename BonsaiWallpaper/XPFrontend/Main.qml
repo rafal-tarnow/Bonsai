@@ -22,6 +22,7 @@ import QtWebEngine
 
 Window {
     id: root
+    objectName: "wind1"  //allow to find window on C++ side: QQuickWindow *window = engine.rootObjects().first()->findChild<QQuickWindow*>("wind1");
 
     visible: true
 
@@ -83,26 +84,43 @@ Window {
     Image {
         id: wallpaper
         anchors.fill: parent
-        //x:0
-        //y:0
-        //width: parent.width
-        //height: parent.height*0.75
         source: "qrc:/assets/images/images/xp_fhd.jpg"
 
         MouseArea {
             anchors.fill: parent
-            // onClicked: {
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-            // }
-            onPressed: {
-                if(appMenu.visible){
-                    appMenu.visible = false
-                }
-                if(systemVolumeSlidrer.visible){
-                    systemVolumeSlidrer.visible = false
-                }
-            }
+            onClicked: (mouse) => {
+                           if (mouse.button === Qt.LeftButton) {
+                               if (appMenu.visible) {
+                                   appMenu.visible = false;
+                               }
+                               if (systemVolumeSlidrer.visible) {
+                                   systemVolumeSlidrer.visible = false;
+                               }
+                           }
+                           if (mouse.button === Qt.RightButton) {
+                               wallpaperContextMenu.popup(mouse.x, mouse.y)
+                           }
+                       }
         }
+    }
+
+    Menu {
+        id: wallpaperContextMenu
+        implicitWidth: 127
+        implicitHeight: 229
+        popupType: Popup.Native
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+        background: Rectangle{
+            color: "#aaffffff"
+            border.width: 1
+            border.color: "#aca899"
+        }
+        MenuItem { text: "Cut" }
+        MenuItem { text: "Copy" }
+        MenuItem { text: "Paste" }
     }
 
     // WebEngineView {
