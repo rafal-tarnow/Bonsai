@@ -19,6 +19,8 @@ import QtQuick3D
 import QtWebEngine
 //import BonsaiBackend
 
+import "./common_components"
+
 
 Window {
     id: root
@@ -106,21 +108,14 @@ Window {
         }
     }
 
-    Menu {
+    XPMenu {
         id: wallpaperContextMenu
-        implicitWidth: 127
-        implicitHeight: 229
+        implicitHeight: 129
         popupType: Popup.Native
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
-        background: Rectangle{
-            color: "#aaffffff"
-            border.width: 1
-            border.color: "#aca899"
-        }
-        MenuItem { text: "Cut" }
-        MenuItem { text: "Copy" }
-        MenuItem { text: "Paste" }
+        XPMenuItem { text: "Cut" }
+        XPMenuItem { text: "Copy" }
+        XPMenuItem { text: "Paste" }
     }
 
     // WebEngineView {
