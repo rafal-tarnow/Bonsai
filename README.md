@@ -142,6 +142,8 @@ qdbus org.kde.KWin /Compositor resume
 qdbus org.kde.KWin /KWin org.kde.KWin.queryWindowInfo
 qdbus org.kde.KWin /KWin org.kde.KWin.cascadeDesktop
 
+//get support information
+qdbus org.kde.KWin /KWin org.kde.KWin.supportInformation
 
 qdbus org.kde.KWin /KWin org.kde.KWin.queryWindowInfo
 qdbus org.kde.KWin /Effects org.kde.kwin.Effects.isEffectLoaded blur
