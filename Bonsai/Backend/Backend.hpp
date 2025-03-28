@@ -16,6 +16,7 @@
 
 #include "ThemesModel.hpp"
 #include "WindowManagerDBus.hpp"
+#include "./private/Mask.hpp"
 
 class Backend : public QObject {
     Q_OBJECT
@@ -44,6 +45,10 @@ public:
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
 
     Q_INVOKABLE void installAuroraeTheme(const QUrl & themeUrl, bool forceReinstall = false);
+
+    //mask
+    Q_INVOKABLE void addMaskedItem(QQuickItem * item);
+    Q_INVOKABLE void removeMaskedItem(QQuickItem * item);
 
     //session
     Q_INVOKABLE void logout();
@@ -75,6 +80,9 @@ public:
 
     Q_INVOKABLE void setX11WindowTypeAsDesktop(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsDock(QQuickWindow *window);
+    Q_INVOKABLE void setX11WindowTypeAsOverride(QQuickWindow *window);
+    Q_INVOKABLE void setX11WindowTypeAsTopMenu(QQuickWindow *window);
+    Q_INVOKABLE void setX11WindowTypeAsNotification(QQuickWindow *window);
 
     //platform info
     QString platformName() const;
@@ -107,6 +115,7 @@ private:
     QString m_platformName;
     ThemesModel themesModel;
     WindowManagerDBus windowManagerDBus;
+    Mask mask;
 
     //cpu load variables
     float m_cpuLoad = 0.0f;
