@@ -15,9 +15,10 @@
 
 Backend::Backend(QString homeEnv, QObject *parent)
     : QObject(parent),
-    m_cpuFile("/proc/stat"),  // Inicjalizacja pliku
+    m_cpuFile("/proc/stat"),
     m_measureCpuLoad(false),
-    HOME_ENV(homeEnv)// Domyślnie pomiar jest wyłączony
+    HOME_ENV(homeEnv),
+    mask(this)
 {
     m_platformName = QGuiApplication::platformName();
     if (m_platformName == "xcb") {
@@ -224,8 +225,6 @@ bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetP
     return true;
 }
 
-
-
 void Backend::logout() {
     QCoreApplication::exit(0);
 }
@@ -391,6 +390,8 @@ void Backend::reservePanelTopArea(WId windowId, int start_x, int stop_x, int hei
         );
 }
 
+
+#warning "add 'later' to method name"
 void Backend::reservePanelBottomArea(QQuickWindow *window, int x, int y, int width, int height)
 {
     //We call this method in the next iteration of the event loop because, if we run it directly from
@@ -445,6 +446,30 @@ void Backend::setX11WindowTypeAsDock(QQuickWindow *window)
     qDebug() << __PRETTY_FUNCTION__;
     if(window){
         KX11Extras::setType(window->winId(), NET::WindowType::Dock);
+    }
+}
+
+void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    if(window){
+        KX11Extras::setType(window->winId(), NET::WindowType::Override);
+    }
+}
+
+void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    if(window){
+        KX11Extras::setType(window->winId(), NET::WindowType::TopMenu);
+    }
+}
+
+void Backend::setX11WindowTypeAsNotification(QQuickWindow *window)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    if(window){
+        KX11Extras::setType(window->winId(), NET::WindowType::Notification);
     }
 }
 
@@ -524,3 +549,14 @@ void Backend::updateCpuLoad() {
     prevTotal = total;
     prevIdle = totalIdle;
 }
+
+void Backend::addMaskedItem(QQuickItem *item)
+{
+    mask.addMaskedItem(item);
+}
+
+void Backend::removeMaskedItem(QQuickItem *item)
+{
+    mask.removeMaskedItem(item);
+}
+
