@@ -42,6 +42,14 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES WindowManagerDBus.cpp
     SOURCES helper/Process.hpp
     SOURCES helper/Process.cpp
+    SOURCES private/Mask.hpp
+    SOURCES private/Mask.cpp
+    SOURCES MaskedItem.hpp
+    SOURCES MaskedItem.cpp
+    SOURCES private/MaskAlgorithm.hpp
+    SOURCES private/MaskAlgorithm.cpp
+    SOURCES private/MaskTracker.hpp
+    SOURCES private/MaskTracker.cpp
 )
 
 add_library(BonsaiBackendLib STATIC "")
