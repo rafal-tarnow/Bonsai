@@ -42,11 +42,11 @@ int main(int argc, char *argv[])
     QtWebEngineQuick::initialize();
     QGuiApplication app(argc, argv);
 
-    //QSurfaceFormat surfaceFormat = QQuick3D::idealSurfaceFormat();
-    QSurfaceFormat surfaceFormat_2 = QSurfaceFormat::defaultFormat();
-    surfaceFormat_2.setSwapBehavior(QSurfaceFormat::TripleBuffer);
-    surfaceFormat_2.setSwapInterval(1);
-    QSurfaceFormat::setDefaultFormat(surfaceFormat_2);
+    QSurfaceFormat surfaceFormat = QQuick3D::idealSurfaceFormat();
+    //QSurfaceFormat surfaceFormat = QSurfaceFormat::defaultFormat();
+    surfaceFormat.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+    surfaceFormat.setSwapInterval(0);
+    QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
     // Odczyt zmiennej środowiskowej DISPLAY
     QByteArray displayEnv = qgetenv("DISPLAY");
