@@ -2,16 +2,16 @@ import QtQuick
 import QtQuick.Effects
 import QtQuick.Controls
 
-
 Window {
     id: root
     flags:  Qt.Popup //Qt.WindowStaysOnTopHint | Qt.WA_TranslucentBackground | Qt.FramelessWindowHint
-    //flags: Qt.Tool | Qt.WindowStaysOnTopHint
-    //flags: Qt.WindowStaysOnTopHint
 
     width: 380
     height: 478
     color: "#00000000"
+
+    signal logoutClicked()
+    signal turnoffClicked()
 
     onVisibleChanged:{
         if(root.visible === false){
@@ -25,6 +25,11 @@ Window {
             root.visible = false
             appMenuContent.resetState()
         }
+        onLogoutClicked: {
+            root.logoutClicked()
+        }
+        onTurnoffClicked: {
+            root.turnoffClicked()
+        }
     }
 }
-
