@@ -124,12 +124,17 @@ qt_add_qml_module(XPFrontend
     AppMenuContent.qml
     SystemVolumeSlider.qml
     TiledImageVertical.qml
-    TurnOffWindow.qml
-    LogOffWindow.qml
+    TurnOffContent.qml
+    LogoutContent.qml
+    MainWindows.qml
+    WallpaperContent.qml
+    TaskbarContent.qml
+    Clock3D.qml
     common_components/XPMenu.qml
     common_components/XPMenuItem.qml
     common_components/XPMenuSeparator.qml
-
+    mask/MainMask.qml
+    mask/WindowOverlay.qml
 )
 
 
