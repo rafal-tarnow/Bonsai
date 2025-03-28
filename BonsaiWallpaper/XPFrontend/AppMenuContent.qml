@@ -11,6 +11,8 @@ Image{
     source: "qrc:/assets/images/start_menu/start_menu.png"
 
     signal hideRequest()
+    signal logoutClicked()
+    signal turnoffClicked()
 
     function requestHide(){
         hideRequest()
@@ -20,13 +22,6 @@ Image{
         appsListMenu.hide()
     }
 
-    // onVisibleChanged: {
-    //     if(root.visible === false){
-    //         appsListMenu.hide()
-    //     }
-    // }
-
-
     Rectangle{
         id: lastUsedSection
         anchors.left: parent.left
@@ -35,7 +30,6 @@ Image{
         anchors.bottomMargin: 81
         width: 176
         height: 236
-        //color: "#33FF00FF"
         color: "#FFFFFF"
         clip: true
 
@@ -68,7 +62,7 @@ Image{
                         height: 32
                         fillMode: Image.PreserveAspectFit
                         Component.onCompleted: {
-                            console.log("WARING TODO: fix model and icon source, icon should return full path to icon in icon provider")
+                            //console.log("WARING TODO: fix model and icon source, icon should return full path to icon in icon provider")
                         }
                     }
 
@@ -122,11 +116,9 @@ Image{
                             text: "Open"
                             fontStyleName: "Bold"
                             onTriggered: {
-                                console.log("Open clicked")
                                 recentAppsContextMenu.close()
                                 root.requestHide()
                                 backend.runCommand(exec)
-                                //
                             }
                         }
                         XPMenuItem {
@@ -207,7 +199,6 @@ Image{
             interval: 500
             repeat: false
             onTriggered: {
-                console.log("Hover timer")
                 if(!appsListMenu.visible){
                     appsListMenu.showWithAnimation()
                 }
@@ -233,17 +224,6 @@ Image{
                 hoverTimer.stop()
             }
         }
-
-
-        // MultiEffect{
-        //     id: appsListEffect
-        //     //source: appsListMenu
-        //     //anchors.fill: appsListMenu
-        //     autoPaddingEnabled: true
-        //     shadowEnabled: true
-        //     visible: true
-        //     opacity: 1.0
-        // }
 
         Rectangle{
             id: appsListMenu
@@ -276,15 +256,9 @@ Image{
 
 
             function showWithAnimation(){
-                console.log("show()")
-                console.log("opacity = " + opacity)
-                console.log("visible = " + visible)
                 appsListOpacityAnimation.show()
             }
             function hideWithAnimation(){
-                console.log("hide()")
-                console.log("opacity = " + opacity)
-                console.log("visible = " + visible)
                 appsListOpacityAnimation.hide()
             }
             function hide(){
@@ -401,7 +375,6 @@ Image{
                                            //contextMenu.open()
                                        } else {
                                            root.requestHide()
-                                           console.log("qml: try run app: id = " + id + " exec = " + exec);
                                            backend.runCommand(exec)
                                            searchField.text = ""
                                        }
@@ -417,10 +390,10 @@ Image{
                         height: 229
 
                         Component.onCompleted: {
-                            console.log("WARNING: TODO: change first item font to windows xp font");
-                            console.log("WARNING: TODO: add shadow");
-                            console.log("WARNING: TODO: add opacity animation");
-                            console.log("WARNING: TODO: add arrot to 'Send to' menu item");
+                            //console.log("WARNING: TODO: change first item font to windows xp font");
+                            //console.log("WARNING: TODO: add shadow");
+                            //console.log("WARNING: TODO: add opacity animation");
+                            //console.log("WARNING: TODO: add arrot to 'Send to' menu item");
                         }
 
                         XPMenuItem {
@@ -614,7 +587,7 @@ Image{
                 turnOffButtonContent.x = 0;
                 turnOffButtonContent.y = 0;
                 if (containsMouse) {
-                    turnOffDialog.visibility = Window.FullScreen
+                    root.turnoffClicked()
                     root.requestHide()
                 }
             }
@@ -680,7 +653,7 @@ Image{
                 logoutButtonContent.x = 0;
                 logoutButtonContent.y = 0;
                 if (containsMouse) {
-                    logOffDialog.visibility = Window.FullScreen
+                    root.logoutClicked();
                     root.requestHide();
                 }
             }
