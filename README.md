@@ -133,7 +133,6 @@ dbus-send --system --print-reply --dest=org.freedesktop.UPower.PowerProfiles /or
 - show current power profile (powerprofilesctl get): 
 ```bash
 dbus-send --system --print-reply --dest=org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.DBus.Properties.Get string:org.freedesktop.UPower.PowerProfiles string:ActiveProfile
-method return time=1750584645.085031 sender=:1.10 -> destination=:1.184 serial=48 reply_serial=2
 ```
 ### KWIN dbus commands
 
