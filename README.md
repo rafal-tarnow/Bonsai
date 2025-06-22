@@ -125,7 +125,7 @@ sudo apt install libxapian-dev (Fix Error: kde-builder akonadi-search: Unable to
 
 
 
-KWIN dbus commands
+## KWIN dbus commands
 
 //turn off composition
 qdbus org.kde.KWin /Compositor suspend
@@ -159,7 +159,7 @@ qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadin
 //load popups fading effect
 qdbus org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect kwin4_effect_fadingpopups
 
-
+## Kmix
 
 //build kmix
 kde-builder kmix
