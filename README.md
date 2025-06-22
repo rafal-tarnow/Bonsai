@@ -126,7 +126,7 @@ sudo apt install libxapian-dev (Fix Error: kde-builder akonadi-search: Unable to
 ## D-bus commands
 
 - get power profiles:
-```bash
+```console
 dbus-send --system --print-reply --dest=org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.DBus.Properties.Get string:org.freedesktop.UPower.PowerProfiles string:Profiles
 ```
 
