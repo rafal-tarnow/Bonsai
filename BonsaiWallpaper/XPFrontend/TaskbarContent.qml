@@ -1,4 +1,5 @@
 import QtQuick
+import Bonsai.Backend
 
 Image {
     id: panel
@@ -95,9 +96,14 @@ Image {
         spacing: 0
         visible: true
 
+        BTaskbarModel{
+            id: taskbarModel
+        }
+
         Repeater {
             id: taskbarRepeater
-            model: backend_taskbarModel
+            //model: backend_taskbarModel
+            model: taskbarModel
 
             TaskbarButton{
                 id: taskButtonNormal

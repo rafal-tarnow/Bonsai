@@ -8,7 +8,10 @@ Window {
 
     width: 380
     height: 478
+
     color: "#00000000"
+
+    visible: true
 
     signal logoutClicked()
     signal turnoffClicked()
@@ -33,3 +36,5 @@ Window {
         }
     }
 }
+
+

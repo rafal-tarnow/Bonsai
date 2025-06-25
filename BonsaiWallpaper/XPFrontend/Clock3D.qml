@@ -41,7 +41,7 @@ View3D {
         source: "#Cube"
 
         materials: DefaultMaterial {
-            diffuseColor: Qt.rgb(1, 1, 1)
+            diffuseColor: Qt.rgba(1, 1, 1, 1)
             diffuseMap: Texture {
                 sourceItem: timeDisplay3D
                 //source: "qt_logo.png"

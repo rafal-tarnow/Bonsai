@@ -2,6 +2,27 @@ qt_standard_project_setup(REQUIRES ${REQUIRED_QT_VERSION})
 
 qt_add_library(XPFrontend STATIC)
 
+set(XPFRONTEND_QML_FILES
+    Main.qml
+    TaskbarButton.qml
+    TiledImage.qml
+    AppMenuWindow.qml
+    AppMenuContent.qml
+    SystemVolumeSlider.qml
+    TiledImageVertical.qml
+    TurnOffContent.qml
+    LogoutContent.qml
+    MainWindows.qml
+    WallpaperContent.qml
+    TaskbarContent.qml
+    Clock3D.qml
+    common_components/XPMenu.qml
+    common_components/XPMenuItem.qml
+    common_components/XPMenuSeparator.qml
+    mask/MainMask.qml
+    mask/WindowOverlay.qml
+
+)
 
 qt_add_resources(XPFrontend "XPFrontendAssets"
     PREFIX "/"
@@ -96,6 +117,9 @@ qt_add_resources(XPFrontend "XPFrontendAssets"
     assets/images/task_bar_background.bmp
     assets/images/taskpanel_separator.bmp
     assets/images/turn_off_dialog.png
+    #assets/images/arrow.svg
+    #assets/images/arrow_pixel_art.svg
+    assets/images/arrow_pixel_art.png
 
     assets/fonts/tahoma.ttf
     assets/fonts/tahomabd.ttf
@@ -110,6 +134,8 @@ qt_add_resources(XPFrontend "XPFrontendAssets"
     assets/kwin_themes/XBoomer/restore.svg
     assets/kwin_themes/XBoomer/shade.svg
     assets/kwin_themes/XBoomer/XBoomerrc
+
+    ${XPFRONTEND_QML_FILES}
 )
 
 qt_add_qml_module(XPFrontend
@@ -117,24 +143,7 @@ qt_add_qml_module(XPFrontend
     VERSION 1.0
 
     QML_FILES
-    Main.qml
-    TaskbarButton.qml
-    TiledImage.qml
-    AppMenuWindow.qml
-    AppMenuContent.qml
-    SystemVolumeSlider.qml
-    TiledImageVertical.qml
-    TurnOffContent.qml
-    LogoutContent.qml
-    MainWindows.qml
-    WallpaperContent.qml
-    TaskbarContent.qml
-    Clock3D.qml
-    common_components/XPMenu.qml
-    common_components/XPMenuItem.qml
-    common_components/XPMenuSeparator.qml
-    mask/MainMask.qml
-    mask/WindowOverlay.qml
+    ${XPFRONTEND_QML_FILES}
 )
 
 

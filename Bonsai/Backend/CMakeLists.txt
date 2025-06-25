@@ -50,6 +50,25 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES private/MaskAlgorithm.cpp
     SOURCES private/MaskTracker.hpp
     SOURCES private/MaskTracker.cpp
+    SOURCES RemoteWindow.hpp
+    SOURCES RemoteWindow.cpp
+    SOURCES strut/Strut.hpp
+    SOURCES strut/StrutManager.hpp
+    SOURCES strut/StrutManager.cpp
+    SOURCES BSessionManager.hpp
+    SOURCES BSessionManager.cpp
+    SOURCES server/SessionService.hpp
+    SOURCES server/SessionService.cpp
+    SOURCES server/Server.hpp
+    SOURCES server/Server.cpp
+    SOURCES BTaskbarModel.hpp
+    SOURCES BTaskbarModel.cpp
+    SOURCES BTaskbarBaseModel.hpp
+    SOURCES BTaskbarBaseModel.cpp
+    SOURCES BFrontendManager.hpp
+    SOURCES BFrontendManager.cpp
+    SOURCES server/FrontendManagerService.hpp
+    SOURCES server/FrontendManagerService.cpp
 )
 
 add_library(BonsaiBackendLib STATIC "")

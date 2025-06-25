@@ -14,9 +14,9 @@
 #include <QQuickWindow>
 #include <QProcess>
 
-#include "ThemesModel.hpp"
 #include "WindowManagerDBus.hpp"
 #include "./private/Mask.hpp"
+#include "./strut/StrutManager.hpp"
 
 class Backend : public QObject {
     Q_OBJECT
@@ -27,10 +27,6 @@ public:
 
     void setQmlEngine(QQmlApplicationEngine * engine);
 
-    Q_PROPERTY(WindowManagerDBus* windowManager READ getWindowManager CONSTANT)
-    Q_PROPERTY(ThemesModel* themesModel READ getThemesModel CONSTANT)
-    ThemesModel* getThemesModel();
-    WindowManagerDBus * getWindowManager();
     Q_INVOKABLE  void setActiveFrontend(const QString& frontendId);
 
     //cpu load
@@ -50,11 +46,6 @@ public:
     Q_INVOKABLE void addMaskedItem(QQuickItem * item);
     Q_INVOKABLE void removeMaskedItem(QQuickItem * item);
 
-    //session
-    Q_INVOKABLE void logout();
-    Q_INVOKABLE void reboot();
-    Q_INVOKABLE void poweroff();
-
     //
     Q_INVOKABLE void activateWindow (WId win);
     Q_INVOKABLE void minimalizeAllWindows();
@@ -67,16 +58,10 @@ public:
     //panelLocation
     // Panel location
     Q_INVOKABLE void reservePanelLeftArea(QQuickWindow * window, int x, int y, int width, int height);
-    void reservePanelLeftArea(WId windowId, int x, int y, int width, int height);
-    void reservePanelLeftArea(WId windowId, int start_y, int stop_y, int width);
-
+    Q_INVOKABLE void reservePanelRightArea(QQuickWindow * window, int x, int y, int width, int height);
     Q_INVOKABLE void reservePanelTopArea(QQuickWindow * window, int x, int y, int width, int height);
-    void reservePanelTopArea(WId windowId, int x, int y, int width, int height);
-    void reservePanelTopArea(WId windowId, int start_x, int stop_x, int height);
-
     Q_INVOKABLE void reservePanelBottomArea(QQuickWindow * window, int x, int y, int width, int height);
-    void reservePanelBottomArea(WId windowId, int x, int y, int width, int height);
-    void reservePanelBottomArea(WId windowId, int start_x, int stop_x, int height);
+
 
     Q_INVOKABLE void setX11WindowTypeAsDesktop(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsDock(QQuickWindow *window);
@@ -113,9 +98,8 @@ private:
     QString HOME_ENV;
     QQmlApplicationEngine *qmlEngine = nullptr;
     QString m_platformName;
-    ThemesModel themesModel;
-    WindowManagerDBus windowManagerDBus;
     Mask mask;
+    StrutManager strutManager;
 
     //cpu load variables
     float m_cpuLoad = 0.0f;

@@ -8,7 +8,8 @@ Window {
     id: root
     objectName: "wind1"
 
-    title: qsTr("Hello World")
+    title: qsTr("Overlay window")
+    //flags: Qt.WindowStaysOnTopHint
     visibility: Window.FullScreen
     width: Screen.width
     height: Screen.height
@@ -17,13 +18,25 @@ Window {
     //color: "red"
     //color: "#88FFFFFF"
     color: "transparent"
-    flags: Qt.WindowStaysOnTopHint
+
     //color: "#88ffffff"
 
     // onActiveChanged: {
     //      if(root.active === false)
     //          appMenuContent.visible = false
     // }
+
+
+
+    FontLoader {
+        id: tahomaBold
+        source: "qrc:/assets/fonts/tahomabd.ttf"
+    }
+
+    FontLoader {
+       id: tahomaRegular
+        source: "qrc:/assets/fonts/tahoma.ttf"
+    }
 
     onActiveFocusItemChanged: {
         if(root.activeFocusItem === null)
@@ -62,6 +75,8 @@ Window {
         MenuItem { text: "Copy" }
         MenuItem { text: "Paste" }
     }
+
+
 
 
     // Rectangle {
@@ -123,7 +138,7 @@ Window {
             Button{
                 text: "Logout"
                 onPressed: {
-                    backend.logout()
+                    BSessionManager.logout()
                 }
             }
 
@@ -139,6 +154,7 @@ Window {
 
 
             MenuSeparator{
+
             }
 
             CheckBox{
@@ -261,6 +277,25 @@ Window {
         }
     }
 
+
+    // RemoteWindow{
+    //     //source: "qrc:///AppMenuContent.qml"
+    //     source: "qrc:///AppMenuWindow.qml"
+    //     //source: "qrc:///Clock3D.qml"
+    //     //source: "qrc:///MainTest.qml"
+    //     visible: true
+    //     anchors.bottom: appMenuContent.top
+    //     anchors.left: appMenuContent.left
+    //     anchors.leftMargin: 0
+    //     //x: 0
+    //     //y: 0
+    //     width: 380
+    //     height: 478
+    // }
+
+
+
+
     AppMenuContent{
         id: appMenuContent
         visible: false
@@ -282,10 +317,27 @@ Window {
 
         onHideRequest:{
             appMenuContent.visible = false
-            appMenuContent.resetState()
         }
 
 
+    }
+
+
+    // RemoteWindow{
+    //    source:  "qrc:///AppMenuWindow.qml"
+    //    width: 380
+    //    height: 478
+    //    swapInterval: 0
+    //    anchors.bottom: panelMask.top
+    //    anchors.left: panelMask.left
+    // }
+
+    SystemVolumeSlider{
+        id: systemVolumeSlidrer
+        x: panelMask.x + panelMask.width - width - 20
+        y: panelMask.y-height
+
+        visible: false
     }
 
 
@@ -295,6 +347,11 @@ Window {
         anchors.left: parent.left
         anchors.right: parent.right
         height: panel.height
+
+        property size dimensions: Qt.size(width, height)
+        onDimensionsChanged: {
+            backend.reservePanelBottomArea(root, panelMask.x, panelMask.y, panelMask.width, panelMask.height)
+        }
 
         TaskbarContent{
             id: panel
@@ -309,10 +366,7 @@ Window {
             }
 
 
-            property size dimensions: Qt.size(width, height)
-            onDimensionsChanged: {
-                backend.reservePanelBottomArea(root, panel.x, panel.y, panel.width, panel.height)
-            }
+
 
         }
 
@@ -409,6 +463,5 @@ Window {
             }
         }
     }
-
 
 }

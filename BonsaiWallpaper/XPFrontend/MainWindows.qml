@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick3D
 import QtWebEngine
-//import BonsaiBackend
+import Bonsai.Backend
 
 import "./common_components"
 
@@ -26,6 +26,17 @@ Window {
         backend.windowManager.reconfigure()
     }
 
+    RemoteWindow{
+        source: "qrc:///AppMenuWindow.qml"
+        //source: "qrc:///Clock3D.qml"
+        //source: "qrc:///MainTest.qml"
+        visible: true
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        width: 380
+        height: 478
+    }
 
     //----------------------------------------
 

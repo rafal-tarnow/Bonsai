@@ -11,7 +11,7 @@ SimpleMaskAlgorithm MaskTracker::maskAlgorithm;
 MaskTracker::MaskTracker(QQuickItem *parent, bool useSignals):
     QObject(parent),
     m_useSignals(useSignals){
-
+    //qDebug() << __PRETTY_FUNCTION__;
     trackedItem = parent;
 
     if (!trackedItem) return;
@@ -43,16 +43,20 @@ MaskTracker::MaskTracker(QQuickItem *parent, bool useSignals):
     }
 
     connect(trackedItem, &QQuickItem::windowChanged, this, &MaskTracker::onWindowChanged);
+
+    scheduleMaskUpdateForWindow(trackedItem->window());
 }
 
 MaskTracker::~MaskTracker()
 {
+    //qDebug() << __PRETTY_FUNCTION__;
     instances[trackedItem->window()].remove(trackedItem);
     scheduleMaskUpdateForWindow(trackedItem->window()); // Zgłoś aktualizację dla okna przy usuwaniu
 }
 
 void MaskTracker::onWindowChanged(QQuickWindow *newWindow)
 {
+    //qDebug() << __PRETTY_FUNCTION__;
     if (m_previousWindow) {
         instances[m_previousWindow].remove(trackedItem);
         scheduleMaskUpdateForWindow(m_previousWindow); // Report an update for the old window
@@ -67,7 +71,7 @@ void MaskTracker::onWindowChanged(QQuickWindow *newWindow)
 
 void MaskTracker::scheduleMaskUpdateForWindow(QQuickWindow *win)
 {
-    printTime(__PRETTY_FUNCTION__);
+    //qDebug() << __PRETTY_FUNCTION__;
     if (!win || pendingUpdates.contains(win)) return;
 
     pendingUpdates.insert(win);
@@ -82,6 +86,7 @@ void MaskTracker::scheduleMaskUpdateForWindow(QQuickWindow *win)
 
 void MaskTracker::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value)
 {
+    //qDebug() << __PRETTY_FUNCTION__;
     if(m_useSignals)
         return;
 
@@ -98,6 +103,7 @@ void MaskTracker::itemChange(QQuickItem::ItemChange change, const QQuickItem::It
 
 void MaskTracker::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
+    //qDebug() << __PRETTY_FUNCTION__;
     if(m_useSignals)
         return;
 
@@ -106,6 +112,7 @@ void MaskTracker::geometryChange(const QRectF &newGeometry, const QRectF &oldGeo
 
 void MaskTracker::printTime(QString funcName)
 {
+    //qDebug() << __PRETTY_FUNCTION__;
     static QMap<QString, qint64> prevTimes;
     static qint64 prevTime;
     qint64 currTime = QDateTime::currentMSecsSinceEpoch();
@@ -116,7 +123,7 @@ void MaskTracker::printTime(QString funcName)
 
 void MaskTracker::processScheduledMaskUpdates(QQuickWindow * win)
 {
-    printTime("---> " + QString(__PRETTY_FUNCTION__));
+    //qDebug() << __PRETTY_FUNCTION__;
     if (!win || !pendingUpdates.contains(win)) return;
 
     updateMaskForWindow(win);
@@ -126,6 +133,7 @@ void MaskTracker::processScheduledMaskUpdates(QQuickWindow * win)
 
 void MaskTracker::updateMaskForWindow(QQuickWindow *win)
 {
+    //qDebug() << __PRETTY_FUNCTION__;
     if (!win) return;
     maskAlgorithm.updateMask(win, &instances);
 }

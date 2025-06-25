@@ -14,7 +14,7 @@ WindowManagerDBus::WindowManagerDBus(QObject *parent)
 
 void WindowManagerDBus::unloadEffect(const QString &effectName)
 {
-    qDebug() << __PRETTY_FUNCTION__ << effectName;
+    //qDebug() << __PRETTY_FUNCTION__ << effectName;
     QDBusMessage message = QDBusMessage::createMethodCall(
         "org.kde.KWin",                // Serwis
         "/Effects",                    // Ścieżka
@@ -33,10 +33,10 @@ void WindowManagerDBus::unloadEffect(const QString &effectName)
                 QDBusPendingReply<> reply = *watcher;
                 if (reply.isError()) {
                     emit errorOccurred(effectName, reply.error().message());
-                    qDebug() << "Błąd D-Bus dla efektu" << effectName << ":" << reply.error().message();
+                    //qDebug() << "Błąd D-Bus dla efektu" << effectName << ":" << reply.error().message();
                 } else {
                     emit effectUnloaded(effectName);
-                    qDebug() << "Efekt" << effectName << "został pomyślnie rozładowany";
+                    //qDebug() << "Efekt" << effectName << "został pomyślnie rozładowany";
                 }
                 watcher->deleteLater();
             });

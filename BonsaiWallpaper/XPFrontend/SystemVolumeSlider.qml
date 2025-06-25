@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Controls
-import bonsai.org.kde.plasma.private.volume
 
 Window {
     flags:  Qt.Popup //Qt.WindowStaysOnTopHint | Qt.WA_TranslucentBackground | Qt.FramelessWindowHint

@@ -18,7 +18,8 @@ Backend::Backend(QString homeEnv, QObject *parent)
     m_cpuFile("/proc/stat"),
     m_measureCpuLoad(false),
     HOME_ENV(homeEnv),
-    mask(this)
+    mask(this),
+    strutManager(this)
 {
     m_platformName = QGuiApplication::platformName();
     if (m_platformName == "xcb") {
@@ -34,6 +35,9 @@ Backend::~Backend() {
     if (m_cpuFile.isOpen()) {
         m_cpuFile.close();  // Zamknięcie pliku w destruktorze
     }
+
+
+    qDebug() << "DDDDDDDDDDDDDDDDDDDDDESTRUCTOR";
 }
 
 void Backend::setQmlEngine(QQmlApplicationEngine *engine)
@@ -41,43 +45,9 @@ void Backend::setQmlEngine(QQmlApplicationEngine *engine)
     qmlEngine = engine;
 }
 
-ThemesModel *Backend::getThemesModel()
-{
-    return &themesModel;
-}
-
-WindowManagerDBus *Backend::getWindowManager()
-{
-    return &windowManagerDBus;
-}
-
 void Backend::setActiveFrontend(const QString &themeId)
 {
-
-    themesModel.setActiveFrontend(themeId);
-    if(qmlEngine){
-
-        //close all root QQuickWindows, if we dont close all windows, when we switch frontend, thhey sometimes stay some windows, for example some side panel windows
-        for (QObject* rootObject : qmlEngine->rootObjects()) {
-            if (QQuickWindow* window = qobject_cast<QQuickWindow*>(rootObject)) {
-                window->close();
-                window->deleteLater();
-            }
-        }
-
-        qmlEngine->clearComponentCache();
-
-
-        //reset kwin state
-        //windowManagerDBus.reconfigure();
-
-
-        if(themeId == "Gnome"){
-            qmlEngine->load(HOME_ENV + "/Bonsai/themes/gnome/Main.qml");
-        }else if(themeId == "Windows XP"){
-            qmlEngine->loadFromModule("XPFrontend", "Main");
-        }
-    }
+    qDebug() << __PRETTY_FUNCTION__ << " ==================================== ";
 }
 
 
@@ -225,42 +195,6 @@ bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetP
     return true;
 }
 
-void Backend::logout() {
-    QCoreApplication::exit(0);
-}
-
-void Backend::reboot() {
-    QDBusMessage message = QDBusMessage::createMethodCall(
-        "org.freedesktop.login1",
-        "/org/freedesktop/login1",
-        "org.freedesktop.login1.Manager",
-        "Reboot"
-        );
-    message << true;
-    QDBusMessage reply = QDBusConnection::systemBus().call(message);
-    if (reply.type() == QDBusMessage::ErrorMessage) {
-        qWarning() << "Failed to reboot:" << reply.errorMessage();
-    } else {
-        qDebug() << "Reboot command sent successfully.";
-    }
-}
-
-void Backend::poweroff() {
-    QDBusMessage message = QDBusMessage::createMethodCall(
-        "org.freedesktop.login1",
-        "/org/freedesktop/login1",
-        "org.freedesktop.login1.Manager",
-        "PowerOff"
-        );
-    message << true;
-    QDBusMessage reply = QDBusConnection::systemBus().call(message);
-    if (reply.type() == QDBusMessage::ErrorMessage) {
-        qWarning() << "Failed to power off:" << reply.errorMessage();
-    } else {
-        qDebug() << "Power off command sent successfully.";
-    }
-}
-
 void Backend::activateWindow(WId win)
 {
     KX11Extras::activateWindow(win);
@@ -310,127 +244,25 @@ void Backend::runCommand(const QString &cmd) {
 
 void Backend::reservePanelLeftArea(QQuickWindow * window, int x, int y, int width, int height)
 {
-    //We call this method in the next iteration of the event loop because, if we run it directly from
-    //QML while the QML file is still loading, the window ID has not yet been initialized. We need to
-    //wait until the window is created before we can set the area occupied by the panel.
-    QMetaObject::invokeMethod(this, [=]() {
-        if (window) {
-            reservePanelLeftArea(window->winId(), y, y + height, width);
-        } else {
-            qDebug() << "window id is empty";
-        }
-    }, Qt::QueuedConnection);
+    strutManager.reservePanelLeftArea(window, x, y, width, height);
 
 }
 
-void Backend::reservePanelLeftArea(WId windowId, int x, int y, int width, int height)
+void Backend::reservePanelRightArea(QQuickWindow *window, int x, int y, int width, int height)
 {
-    KX11Extras::setExtendedStrut(
-        windowId,
-        width,  // Left width
-        y,      // Left start
-        y + height,  // Left end
-        0, 0, 0,     // Right strut (unused)
-        0, 0, 0,     // Top strut (unused)
-        0, 0, 0      // Bottom strut (unused)
-        );
-}
-
-void Backend::reservePanelLeftArea(WId windowId, int start_y, int stop_y, int width)
-{
-    KX11Extras::setExtendedStrut(
-        windowId,
-        width,       // Left width
-        start_y,     // Left start
-        stop_y,      // Left end
-        0, 0, 0,     // Right strut (unused)
-        0, 0, 0,     // Top strut (unused)
-        0, 0, 0      // Bottom strut (unused)
-        );
+    strutManager.reservePanelRightArea(window, x, y, width, height);
 }
 
 void Backend::reservePanelTopArea(QQuickWindow *window, int x, int y, int width, int height)
 {
-    //We call this method in the next iteration of the event loop because, if we run it directly from
-    //QML while the QML file is still loading, the window ID has not yet been initialized. We need to
-    //wait until the window is created before we can set the area occupied by the panel.
-
-    QMetaObject::invokeMethod(this, [=]() {
-        if (window) {
-            reservePanelTopArea(window->winId(), x, x + width, height);
-        } else {
-            qDebug() << "window id is empty";
-        }
-    }, Qt::QueuedConnection);
+    strutManager.reservePanelTopArea(window, x, y, width, height);
 }
-
-void Backend::reservePanelTopArea(WId windowId, int x, int y, int width, int height)
-{
-    KX11Extras::setExtendedStrut(
-        windowId,
-        0, 0, 0,            // Left strut (unused)
-        0, 0, 0,            // Right strut (unused)
-        height,             // Top width
-        x,                  // Top start
-        x + width,          // Top end
-        0, 0, 0             // Bottom strut (unused)
-        );
-}
-
-void Backend::reservePanelTopArea(WId windowId, int start_x, int stop_x, int height)
-{
-    KX11Extras::setExtendedStrut(
-        windowId,
-        0, 0, 0,            // Left strut (unused)
-        0, 0, 0,            // Right strut (unused)
-        height,             // Top width
-        start_x,            // Top start
-        stop_x,             // Top end
-        0, 0, 0             // Bottom strut (unused)
-        );
-}
-
 
 #warning "add 'later' to method name"
 void Backend::reservePanelBottomArea(QQuickWindow *window, int x, int y, int width, int height)
 {
-    //We call this method in the next iteration of the event loop because, if we run it directly from
-    //QML while the QML file is still loading, the window ID has not yet been initialized. We need to
-    //wait until the window is created before we can set the area occupied by the panel.
-
-    QMetaObject::invokeMethod(this, [=]() {
-        if (window) {
-            reservePanelBottomArea(window->winId(), x, width, height);
-        } else {
-            qDebug() << "window id is empty";
-        }
-    }, Qt::QueuedConnection);
-}
-
-void Backend::reservePanelBottomArea(WId windowId, int x, int y, int width, int height)
-{
-    KX11Extras::setExtendedStrut(
-        windowId,
-        0, 0, 0,            // lewy strut (nieużywany)
-        0, 0, 0,            // prawy strut (nieużywany)
-        0, 0, 0,            // górny strut (nieużywany)
-        height,         // bottom width
-        x,              //bottom start
-        x + width       // bottom end
-        );
-}
-
-void Backend::reservePanelBottomArea(WId windowId, int start_x, int stop_x, int height)
-{
-    KX11Extras::setExtendedStrut(
-        windowId,
-        0, 0, 0,            // lewy strut (nieużywany)
-        0, 0, 0,            // prawy strut (nieużywany)
-        0, 0, 0,            // górny strut (nieużywany)
-        height,             // bottom width
-        start_x,            //bottom start
-        stop_x              // bottom end
-        );
+    qDebug() << __PRETTY_FUNCTION__;
+    strutManager.reservePanelBottomArea(window, x, y, width, height);
 }
 
 void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)

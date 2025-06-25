@@ -16,10 +16,17 @@ Image{
 
     function requestHide(){
         hideRequest()
+        resetState()
     }
 
     function resetState(){
         appsListMenu.hide()
+    }
+
+    onVisibleChanged: {
+        if(!visible){
+            resetState()
+        }
     }
 
     Rectangle{
@@ -114,7 +121,7 @@ Image{
 
                         XPMenuItem {
                             text: "Open"
-                            fontStyleName: "Bold"
+                            fontWeight: Font.Bold
                             onTriggered: {
                                 recentAppsContextMenu.close()
                                 root.requestHide()
@@ -399,7 +406,7 @@ Image{
                         XPMenuItem {
                             id: openMenuItem
                             text: "Open"
-                            fontStyleName: "Bold"
+                            fontWeight: Font.Bold
                             onTriggered: {
                                 contextMenu.close()
                                 root.requestHide()

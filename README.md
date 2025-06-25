@@ -22,6 +22,12 @@ or
 ```-plugin libinput```)
 
 
+How to run qt wayland fancy-compositor example:
+1. configure project
+2. in project run configuration set enviroment variable: WAYLAND_DISPLAY=wayland-1 and start example
+3. open terminal , in new tab set enviroment varialbe WAYLAND_DISPLAY=wayland-1
+4. run test application: eg gnome-calculator 
+
 
 
 
@@ -210,5 +216,91 @@ To change icon theme on GTK applications edit file:
 ~/.config/gtk-4.0/settings.ini
 
 To change qt app apperance use qt5ct app
+
+# Run Bonsai in Xephyr
+
+```console
+DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/bonsai-dev-dbus.sock dbus-run-session Xephyr :1 -screen 1280x720 -ac &
+```
+
+Run -> Add.. -> Custom Executable
+
+Executable: dbus-run-session
+Command Line Arguments: /home/tom/Bonsai/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper/appBonsaiWallpaper
+Working Directory: /home/tom/Bonsai/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper
+
+Set in QtCreator Run Enviroment Variables:
+DISPLAY=:1
+DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/bonsai-dev-dbus.sock
+
+
+# Add Bonsai to Display Manager
+
+```console
+sudo nano /usr/share/xsessions/bonsai-desktop.desktop
+```
+
+# Build Qt6 from sources
+
+## Build Qt6
+
+```console
+apt install \
+    libfontconfig1-dev \
+    libfreetype-dev \
+    libgtk-3-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev
+cd ~
+mkdir ~/Qt/qt_git_sources/
+cd ~/Qt/qt_git_cources/
+git clone --recurse-submodules  --branch v6.9.1 https://code.qt.io/qt/qt5.git .
+./configure -init-submodules
+
+git clean -d -f -x && git reset --hard HEAD //clean all untracket files and directories
+
+mkdir qt-build/
+cd qt-build/
+
+../configure -help
+../configure -list-features
+../configure -no-feature-accessibility
+../configure -release -opensource -confirm-license -prefix /home/rafal/Qt/Qt_6_9_1_custom_build/
+
+cmake --build . --parallel
+cmake --install .
+```
+
+## Prepare QtCreator to use custom Qt
+
+![Configure Qt Versions](doc/qt_custom_build_qt_versions.png)
+
+![Configure Qt Kit](doc/qt_custom_build_kits.png)
+
+
+
+
+
+
 
 

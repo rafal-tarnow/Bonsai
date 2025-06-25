@@ -14,6 +14,7 @@ import "."
 //     }
 // }
 
+
 MainMask{
     FontLoader {
         id: tahomaRegular
@@ -25,3 +26,4 @@ MainMask{
         source: "qrc:/assets/fonts/tahomabd.ttf"
     }
 }
+

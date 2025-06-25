@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import Bonsai.Backend
 
 Rectangle {
     id: root
@@ -71,7 +72,7 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled : true
                     onClicked: {
-                        backend.logout()
+                        BSessionManager.logout()
                     }
                 }
             }
@@ -85,7 +86,7 @@ Rectangle {
                 color: "#FFFFFF"
 
                 font.family: "Tahoma"
-                font.styleName: "Bold"
+                font.weight: Font.Bold
                 font.pointSize: 8.0
                 font.kerning: true
                 font.hintingPreference: Font.PreferFullHinting
@@ -125,7 +126,7 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled : true
                     onClicked: {
-                        backend.logout()
+                        BSessionManager.logout()
                     }
                 }
             }
@@ -139,7 +140,7 @@ Rectangle {
                 color: "#FFFFFF"
 
                 font.family: "Tahoma"
-                font.styleName: "Bold"
+                font.weight: Font.Bold
                 font.pointSize: 8.0
                 font.kerning: true
                 font.hintingPreference: Font.PreferFullHinting
