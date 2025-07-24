@@ -5,23 +5,26 @@ qt_add_library(XPFrontend STATIC)
 set(XPFRONTEND_QML_FILES
     Main.qml
     TaskbarButton.qml
-    TiledImage.qml
-    AppMenuWindow.qml
-    AppMenuContent.qml
-    SystemVolumeSlider.qml
-    TiledImageVertical.qml
+    common_components/TiledImage.qml
+    common_components/XPMenu.qml
+    common_components/XPMenuItem.qml
+    common_components/XPMenuSeparator.qml
+    common_components/TiledImageVertical.qml
+    windows/AppMenuWindow.qml
+    windows/SystemVolumeWindow.qml
+    contents/AppMenuContent.qml
+    contents/Clock3DContent.qml
     TurnOffContent.qml
     LogoutContent.qml
     MainWindows.qml
     WallpaperContent.qml
     TaskbarContent.qml
-    Clock3D.qml
-    common_components/XPMenu.qml
-    common_components/XPMenuItem.qml
-    common_components/XPMenuSeparator.qml
     mask/MainMask.qml
     mask/WindowOverlay.qml
-
+    windows/Clock3DWindow.qml
+    popups/AppMenuPopup.qml
+    contents/SystemVolumeContent.qml
+    popups/SystemVolumePopup.qml
 )
 
 qt_add_resources(XPFrontend "XPFrontendAssets"
@@ -144,6 +147,7 @@ qt_add_qml_module(XPFrontend
 
     QML_FILES
     ${XPFRONTEND_QML_FILES}
+
 )
 
 

@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
-import "./common_components"
+import "../common_components"
 
 Image{
     id: root
@@ -27,6 +27,16 @@ Image{
         if(!visible){
             resetState()
         }
+    }
+
+    FontLoader {
+        id: tahomaRegular
+        source: "qrc:/assets/fonts/tahoma.ttf"
+    }
+
+    FontLoader {
+        id: tahomaBold
+        source: "qrc:/assets/fonts/tahomabd.ttf"
     }
 
     Rectangle{

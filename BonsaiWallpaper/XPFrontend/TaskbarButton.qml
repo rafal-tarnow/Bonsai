@@ -1,5 +1,7 @@
 import QtQuick
 
+import "./common_components"
+
 Item{
 
     property alias text: buttonText.text

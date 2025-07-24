@@ -1,10 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <QObject>
-#include <PulseAudioQt/Sink>
 #include "../../third_party/plasma-pa/src/preferreddevice.h"
-
+#include <PulseAudioQt/Sink>
+#include <memory>
 
 class AudioBackend : public QObject{
     Q_OBJECT

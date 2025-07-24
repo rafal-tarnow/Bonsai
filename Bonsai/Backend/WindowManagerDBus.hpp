@@ -12,8 +12,6 @@ public:
     explicit WindowManagerDBus(QObject *parent = nullptr);
     ~WindowManagerDBus() override = default;
 
-    Q_INVOKABLE void unloadEffect(const QString &effectName);
-    Q_INVOKABLE void reconfigure();
     Q_INVOKABLE void setAuroraeTheme(const QString &themeName);
 
 signals:

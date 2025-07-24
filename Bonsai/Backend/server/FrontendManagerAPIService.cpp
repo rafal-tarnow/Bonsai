@@ -1,4 +1,4 @@
-#include "FrontendManagerService.hpp"
+#include "FrontendManagerAPIService.hpp"
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDir>
@@ -69,7 +69,7 @@ QString FrontendManagerService::activeFrontend() const
 //d-bus interface
 void FrontendManagerService::setActiveFrontend(const QString &frontendId)
 {
-    qDebug() << "3-- " << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << "Server side, dbus received , frontendId=" << frontendId;
     if (frontendId.isEmpty()) {
         qDebug() << "3.1-- " << __PRETTY_FUNCTION__;
         qDebug() << "Invalid frontend ID: empty";
@@ -82,7 +82,7 @@ void FrontendManagerService::setActiveFrontend(const QString &frontendId)
         return;
     }
 
-    qDebug() << "4-- " << "emit activeFrontendChangeRequest";
+    qDebug() << __PRETTY_FUNCTION__ << " emit activeFrontendChangeRequest";
     emit activeFrontendChangeRequest(frontendId);
 }
 

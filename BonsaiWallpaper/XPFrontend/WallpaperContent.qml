@@ -2,21 +2,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "./common_components"
+import "./contents"
 import Bonsai.Backend
 
 Image {
     id: wallpaper
     anchors.fill: parent
     source: "qrc:/assets/images/images/xp_fhd.jpg"
-
-    // Clock3D{
-    //     id: clock3D
-
-    //     anchors.bottom: parent.bottom
-    //     anchors.bottomMargin: 30
-    //     anchors.right: parent.right
-    // }
-
 
 
     // Button{
@@ -56,7 +48,7 @@ Image {
 
             Rectangle {
                 anchors.fill: parent
-                color: frontendActive ? "#e0f0ff" : "white"
+                color: frontendActive ? "lightgreen" : "white"
                 border.color: "#ddd"
                 radius: 5
 
@@ -191,13 +183,13 @@ Image {
 
     Rectangle{
         id: cpuLoadBackground
-        anchors.left: parent.left
-        anchors.leftMargin: 15
+        anchors.right: parent.right
+        anchors.rightMargin: 15
         anchors.top: parent.top
         anchors.topMargin: 15
         width: 150
         height: 37
-        color: "#aa000000"
+        color: "#dd000000"
         Text{
             id: cpuLoad
             anchors.centerIn: parent
@@ -213,13 +205,13 @@ Image {
 
     Rectangle{
         id: qtVersionBackground
-        anchors.left: parent.left
-        anchors.leftMargin: 15
+        anchors.right: parent.right
+        anchors.rightMargin: 15
         anchors.top: cpuLoadBackground.bottom
         anchors.topMargin: 5
         width: 150
         height: 37
-        color: "#aa000000"
+        color: "#dd000000"
         Text{
             anchors.centerIn: parent
             text: "Qt: " + backend.qtVersion
@@ -231,13 +223,13 @@ Image {
 
     Rectangle{
         id: dpiBackground
-        anchors.left: parent.left
-        anchors.leftMargin: 15
+        anchors.right: parent.right
+        anchors.rightMargin: 15
         anchors.top: qtVersionBackground.bottom
         anchors.topMargin: 5
         width: 150
         height: 37
-        color: "#aa000000"
+        color: "#dd000000"
         Text{
             anchors.centerIn: parent
             text: "DPI: " + (Screen.pixelDensity * 25.4).toFixed(2)

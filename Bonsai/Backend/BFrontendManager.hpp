@@ -28,16 +28,16 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     QString activeFrontend() const;
-    bool setActiveFrontend(const QString &frontendId);
-
-public slots:
-    Q_INVOKABLE void switchFrontend(const QString &frontendId);
+    Q_INVOKABLE void setActiveFrontend(const QString &frontendId);
 
 private slots:
-    void onFrontendListReply(QDBusPendingCallWatcher *watcher);
-    void onFrontendAdded(const QString &id, const QString &name, const QString &description, const QString &path);
-    void onFrontendRemoved(const QString &id);
-    void onActiveFrontendChanged(const QString &frontendId);
+    void handleFrontendListReply(QDBusPendingCallWatcher *watcher);
+    void handleFrontendAdded(const QString &id,
+                             const QString &name,
+                             const QString &description,
+                             const QString &path);
+    void handleFrontendRemoved(const QString &id);
+    void handleFrontendChanged(const QString &frontendId);
 
 signals:
     void activeFrontendChanged();

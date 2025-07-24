@@ -62,9 +62,11 @@ public:
     Q_INVOKABLE void reservePanelTopArea(QQuickWindow * window, int x, int y, int width, int height);
     Q_INVOKABLE void reservePanelBottomArea(QQuickWindow * window, int x, int y, int width, int height);
 
-
+    Q_INVOKABLE void setX11WindowTypeAsNormal(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsDesktop(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsDock(QQuickWindow *window);
+    Q_INVOKABLE void setX11WindowTypeAsToolbar(QQuickWindow *window);
+    Q_INVOKABLE void setX11WindowTypeAsMenu(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsOverride(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsTopMenu(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsNotification(QQuickWindow *window);

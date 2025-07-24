@@ -117,7 +117,7 @@ void StrutManager::updateStructForWindow(QQuickWindow *window) {
     int bottomX = strut.bottomStrut.isEmpty() ? 0 : strut.bottomStrut.boundingRect().x();
     int bottomEndX = strut.bottomStrut.isEmpty() ? 0 : (bottomX + strut.bottomStrut.boundingRect().width());
 
-    qDebug() << "bottomHeight = " << bottomHeight << "bottomX = " << bottomX << "bottomEndX = " << bottomEndX;
+    //qDebug() << "bottomHeight = " << bottomHeight << "bottomX = " << bottomX << "bottomEndX = " << bottomEndX;
 
     KX11Extras::setExtendedStrut(
         windowId,

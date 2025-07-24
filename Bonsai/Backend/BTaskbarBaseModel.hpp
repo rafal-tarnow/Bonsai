@@ -8,7 +8,8 @@
 
 #include <kwindowinfo.h>
 
-class BTaskbarBaseModel : public QAbstractListModel{
+class BTaskbarModel : public QAbstractListModel
+{
     Q_OBJECT
     QML_ELEMENT
 
@@ -29,8 +30,8 @@ public:
         WindowTypeRole
     };
 
-    explicit BTaskbarBaseModel(QObject *parent = nullptr);
-    ~BTaskbarBaseModel();
+    explicit BTaskbarModel(QObject *parent = nullptr);
+    ~BTaskbarModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

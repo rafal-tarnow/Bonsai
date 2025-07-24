@@ -8,14 +8,14 @@
 
 #include "./private/MaskTracker.hpp"
 
-class MaskedItem : public QQuickItem
+class BMaskedItem : public QQuickItem
 {
     Q_OBJECT
     QML_ELEMENT
 
 public:
-    explicit MaskedItem(QQuickItem *parent = nullptr);
-    ~MaskedItem();
+    explicit BMaskedItem(QQuickItem *parent = nullptr);
+    ~BMaskedItem();
 
 protected:
     void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value) override;

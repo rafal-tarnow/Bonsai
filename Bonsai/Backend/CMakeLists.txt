@@ -28,8 +28,8 @@ qt_add_qml_module(${PROJECT_NAME}
     AppsListModel.cpp
 
     SOURCES BackendAppsIconsProvider.hpp
-    SOURCES Model.hpp
-    SOURCES Model.cpp
+    SOURCES TaskbarIconProvider.hpp
+    SOURCES TaskbarIconProvider.cpp
 
     RESOURCES
     SOURCES AudioBackend.hpp
@@ -44,14 +44,14 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES helper/Process.cpp
     SOURCES private/Mask.hpp
     SOURCES private/Mask.cpp
-    SOURCES MaskedItem.hpp
-    SOURCES MaskedItem.cpp
+    SOURCES BMaskedItem.hpp
+    SOURCES BMaskedItem.cpp
     SOURCES private/MaskAlgorithm.hpp
     SOURCES private/MaskAlgorithm.cpp
     SOURCES private/MaskTracker.hpp
     SOURCES private/MaskTracker.cpp
-    SOURCES RemoteWindow.hpp
-    SOURCES RemoteWindow.cpp
+    SOURCES BProxyWindow.hpp
+    SOURCES BProxyWindow.cpp
     SOURCES strut/Strut.hpp
     SOURCES strut/StrutManager.hpp
     SOURCES strut/StrutManager.cpp
@@ -67,8 +67,20 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES BTaskbarBaseModel.cpp
     SOURCES BFrontendManager.hpp
     SOURCES BFrontendManager.cpp
-    SOURCES server/FrontendManagerService.hpp
-    SOURCES server/FrontendManagerService.cpp
+    SOURCES server/FrontendManagerAPIService.hpp
+    SOURCES server/FrontendManagerAPIService.cpp
+    SOURCES private/ProxyWindowController.hpp
+    SOURCES private/ProxyWindowController.cpp
+    SOURCES private/ProxyWindowServer.cpp
+    SOURCES private/ProxyWindowServer.hpp
+    SOURCES server/X11WindowManagerService.hpp
+    SOURCES server/X11WindowManagerService.cpp
+    SOURCES BWindowManagerX11.hpp
+    SOURCES BWindowManagerX11.cpp
+    SOURCES server/QmlGui.hpp
+    SOURCES server/QmlGui.cpp
+    SOURCES server/GuiManager.hpp
+    SOURCES server/GuiManager.cpp
 )
 
 add_library(BonsaiBackendLib STATIC "")
@@ -80,9 +92,9 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE Qt6::DBus
     PRIVATE Qt6::Gui
     PRIVATE Qt6::Quick
-    Qt6::Concurrent
-    KF6::ConfigCore
-    KF6::WindowSystem
+    PRIVATE Qt6::Concurrent
+    PRIVATE KF6::ConfigCore
+    PRIVATE KF6::WindowSystem
     PUBLIC KF6::PulseAudioQt
     # PkgConfig::LIBPULSE
     # PkgConfig::LIBPULSE_MAINLOOP

@@ -14,28 +14,28 @@ SessionService::SessionService(QObject *parent)
     QString dbusAddress = qgetenv("DBUS_SESSION_BUS_ADDRESS");
 
     if (!dbusAddress.isEmpty()) {
-        qDebug() << "DBUS_SESSION_BUS_ADDRESS:" << dbusAddress;
+        //qDebug() << "DBUS_SESSION_BUS_ADDRESS:" << dbusAddress;
     } else {
-        qDebug() << "DBUS_SESSION_BUS_ADDRESS is not set.";
+        qDebug() << "[Warning] DBUS_SESSION_BUS_ADDRESS is not set.";
     }
 
     // Rejestrujemy obiekt i jego metody na D-Busie
     QDBusConnection bus = QDBusConnection::sessionBus();
 
     if (bus.isConnected()) {
-        qDebug() << "Session bus is connected. Name:" << bus.baseService();
-        qDebug() << "Session bus connection name:" << bus.name();
+        //qDebug() << "Session bus is connected. Name:" << bus.baseService();
+        //qDebug() << "Session bus connection name:" << bus.name();
     } else {
-        qDebug() << "Session bus is not connected.";
+        qDebug() << "[Warning] Session bus is not connected.";
     }
 
     if(!bus.registerService("org.bonsai.SessionService")){
-        qWarning() << "ERROR: Failed to register D-Bus service";
+        qWarning() << "[ERROR] Failed to register D-Bus service";
         return;
     }
 
     if(!bus.registerObject("/Session", this, QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals)) {
-        qWarning() << "ERROR: Failed to register D-Bus object.";
+        qWarning() << "[ERROR] Failed to register D-Bus object.";
     }
 }
 
@@ -44,7 +44,6 @@ SessionService::~SessionService() {}
 void SessionService::logout() {
     qDebug() << "[D-Bus] Logout received";
     emit logoutRequest();
-    executeLogout();
 }
 
 void SessionService::reboot() {
@@ -69,12 +68,6 @@ void SessionService::onCallFinished(QDBusPendingCallWatcher *watcher)
         qDebug() << operation << "command sent successfully.";
     }
     watcher->deleteLater();
-}
-
-void SessionService::executeLogout()
-{
-    qDebug() << __PRETTY_FUNCTION__;
-    QCoreApplication::exit(0);
 }
 
 void SessionService::executeReboot()

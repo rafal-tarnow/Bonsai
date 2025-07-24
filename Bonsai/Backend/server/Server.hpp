@@ -1,24 +1,29 @@
 #pragma once
 
+#include <QGuiApplication>
 #include <QObject>
 #include <QQmlApplicationEngine>
 
+#include "FrontendManagerAPIService.hpp"
+#include "GuiManager.hpp"
 #include "SessionService.hpp"
-#include "FrontendManagerService.hpp"
 #include "WindowManagerDBus.hpp"
 
-class Server: public QObject{
+class Server : public QObject
+{
     Q_OBJECT
 public:
-    explicit Server(QQmlApplicationEngine * engine = nullptr);
+    explicit Server(QGuiApplication *app = nullptr, int swapInterval = 0);
     ~Server();
 
     void setActiveFrontend(const QString &themeId);
 
+private slots:
+    void sessionLogout();
+
 private:
-    QString HOME_ENV;
-    QQmlApplicationEngine *m_qmlEngine = nullptr;
     WindowManagerDBus windowManagerDBus;
     SessionService m_sessionService;
     FrontendManagerService m_frontendManagerService;
+    GuiManager m_guiManager;
 };

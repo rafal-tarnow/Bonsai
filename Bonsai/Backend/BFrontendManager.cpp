@@ -18,17 +18,26 @@ BFrontendManager::BFrontendManager(QObject *parent) : QAbstractListModel(parent)
                                          this);
 
     // Połącz sygnały D-Bus z slotami
-    connect(m_dbusInterface, SIGNAL(frontendAdded(QString,QString,QString,QString)),
-            this, SLOT(onFrontendAdded(QString,QString,QString,QString)));
-    connect(m_dbusInterface, SIGNAL(frontendRemoved(QString)),
-            this, SLOT(onFrontendRemoved(QString)));
-    connect(m_dbusInterface, SIGNAL(activeFrontendChanged(QString)),
-            this, SLOT(onActiveFrontendChanged(QString)));
+    connect(m_dbusInterface,
+            SIGNAL(frontendAdded(QString, QString, QString, QString)),
+            this,
+            SLOT(handleFrontendAdded(QString, QString, QString, QString)));
+    connect(m_dbusInterface,
+            SIGNAL(frontendRemoved(QString)),
+            this,
+            SLOT(handleFrontendRemoved(QString)));
+    connect(m_dbusInterface,
+            SIGNAL(activeFrontendChanged(QString)),
+            this,
+            SLOT(handleFrontendChanged(QString)));
 
     // Pobierz początkową listę frontendów
     QDBusPendingCall call = m_dbusInterface->asyncCall("getFrontendList");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &BFrontendManager::onFrontendListReply);
+    connect(watcher,
+            &QDBusPendingCallWatcher::finished,
+            this,
+            &BFrontendManager::handleFrontendListReply);
 
     // Pobierz początkowy activeFrontendId
     loadActiveFrontend();
@@ -83,9 +92,9 @@ QString BFrontendManager::activeFrontend() const
     return m_activeFrontendIdMirror;
 }
 
-bool BFrontendManager::setActiveFrontend(const QString &frontendId)
+void BFrontendManager::setActiveFrontend(const QString &frontendId)
 {
-    qDebug() << "--2 " << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << " Client side, befor send request via d-bus";
     QDBusPendingCall call = m_dbusInterface->asyncCall("setActiveFrontend", frontendId);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher *watcher) {
@@ -94,29 +103,9 @@ bool BFrontendManager::setActiveFrontend(const QString &frontendId)
         }
         watcher->deleteLater();
     });
-    return true;
 }
 
-void BFrontendManager::switchFrontend(const QString &frontendId)
-{
-    qDebug() << "C--- " << __PRETTY_FUNCTION__;
-    qDebug() << "C--- activeFrontend = " << frontendId;
-    if (m_activeFrontendIdMirror != frontendId) {
-        // Update active status for all frontends
-        for (int i = 0; i < m_frontends.size(); ++i) {
-            bool newActive = m_frontends[i].id == frontendId;
-            if (m_frontends[i].active != newActive) {
-                m_frontends[i].active = newActive;
-                qDebug() << "D--- " << "emit dataChanged()";
-                emit dataChanged(index(i), index(i), {ActiveRole});
-            }
-        }
-        m_activeFrontendIdMirror = frontendId;
-        emit activeFrontendChanged();
-    }
-}
-
-void BFrontendManager::onFrontendListReply(QDBusPendingCallWatcher *watcher)
+void BFrontendManager::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
 {
     qDebug() << "A.A--- " << __PRETTY_FUNCTION__;
     QDBusPendingReply<QVariantList> reply = *watcher;
@@ -153,14 +142,14 @@ void BFrontendManager::onFrontendListReply(QDBusPendingCallWatcher *watcher)
             frontend.path = map["path"].toString();
             frontend.active = map["active"].toBool();
 
-            qDebug() << "FRONTEND NAME =" << frontend.name;
-            qDebug() << "FRONTEND ID = " << frontend.id;
-            qDebug() << "FRONTEND DESCRIPTION = " << frontend.description;
-            qDebug() << "FRONTEND PATH = " << frontend.path;
-            qDebug() << "FRONTEND ACTIVE = " << frontend.active;
+            //qDebug() << "FRONTEND NAME =" << frontend.name;
+            //qDebug() << "FRONTEND ID = " << frontend.id;
+            //qDebug() << "FRONTEND DESCRIPTION = " << frontend.description;
+            //qDebug() << "FRONTEND PATH = " << frontend.path;
+            //qDebug() << "FRONTEND ACTIVE = " << frontend.active;
             m_frontends.append(frontend);
         } else {
-            qDebug() << "Unexpected QVariant type:" << frontendVar.typeName();
+            qDebug() << "[ERROR] Unexpected QVariant type:" << frontendVar.typeName();
         }
     }
 
@@ -168,7 +157,10 @@ void BFrontendManager::onFrontendListReply(QDBusPendingCallWatcher *watcher)
     watcher->deleteLater();
 }
 
-void BFrontendManager::onFrontendAdded(const QString &id, const QString &name, const QString &description, const QString &path)
+void BFrontendManager::handleFrontendAdded(const QString &id,
+                                           const QString &name,
+                                           const QString &description,
+                                           const QString &path)
 {
     beginInsertRows(QModelIndex(), m_frontends.size(), m_frontends.size());
     Frontend frontend;
@@ -181,7 +173,7 @@ void BFrontendManager::onFrontendAdded(const QString &id, const QString &name, c
     endInsertRows();
 }
 
-void BFrontendManager::onFrontendRemoved(const QString &id)
+void BFrontendManager::handleFrontendRemoved(const QString &id)
 {
     for (int i = 0; i < m_frontends.size(); ++i) {
         if (m_frontends[i].id == id) {
@@ -193,11 +185,22 @@ void BFrontendManager::onFrontendRemoved(const QString &id)
     }
 }
 
-void BFrontendManager::onActiveFrontendChanged(const QString &frontendId)
+void BFrontendManager::handleFrontendChanged(const QString &frontendId)
 {
-    qDebug() << "WWWWWWWWWWWWWWWWWW";
-    qDebug() << __PRETTY_FUNCTION__;
-    switchFrontend(frontendId);
+    qDebug() << __PRETTY_FUNCTION__ << " frontendId = " << frontendId;
+    if (m_activeFrontendIdMirror != frontendId) {
+        // Update active status for all frontends
+        for (int i = 0; i < m_frontends.size(); ++i) {
+            bool newActive = m_frontends[i].id == frontendId;
+            if (m_frontends[i].active != newActive) {
+                m_frontends[i].active = newActive;
+                qDebug() << "D--- " << "emit dataChanged()";
+                emit dataChanged(index(i), index(i), {ActiveRole});
+            }
+        }
+        m_activeFrontendIdMirror = frontendId;
+        emit activeFrontendChanged();
+    }
 }
 
 void BFrontendManager::loadActiveFrontend()
@@ -209,7 +212,7 @@ void BFrontendManager::loadActiveFrontend()
         qDebug() << "B--- " << "active frontend lambda";
         QDBusPendingReply<QString> reply = *watcher;
         if (!reply.isError()) {
-            switchFrontend(reply.value());
+            handleFrontendChanged(reply.value());
         } else {
             qDebug() << "Failed to get initial activeFrontendId:" << reply.error().message();
         }

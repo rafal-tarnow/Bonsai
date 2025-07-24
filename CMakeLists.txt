@@ -73,8 +73,15 @@ ecm_setup_version(${BONSAI_VERSION}
 
 
 add_subdirectory(Bonsai/Backend/)
+#add_subdirectory(Bonsai/ServerLib/)
 add_subdirectory(third_party/plasma-pa/)
 add_subdirectory(BonsaiWallpaper/)
+
+add_custom_target(Documentation)
+target_sources(Documentation PRIVATE
+    README.md
+    CONTRIBUTING.md
+)
 
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

@@ -1,4 +1,4 @@
-#include "Model.hpp"
+#include "TaskbarIconProvider.hpp"
 
 #include <X11/Xatom.h>
 #include <X11/Xdefs.h>

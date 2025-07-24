@@ -11,7 +11,12 @@ qt_standard_project_setup(REQUIRES ${REQUIRED_QT_VERSION})
 
 qt_add_executable(appBonsaiWallpaper
     main.cpp
-    main_remote_window.cpp
+    main_proxy_window.cpp
+    main_server.cpp
+    main_server.hpp
+    main_proxy_window.hpp
+
+
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

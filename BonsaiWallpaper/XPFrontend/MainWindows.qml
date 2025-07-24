@@ -5,11 +5,15 @@ import QtWebEngine
 import Bonsai.Backend
 
 import "./common_components"
+import "./windows"
+import "./popups"
+import "../"
 
 
 
 Window {
     id: root
+    title: qsTr("Bonsai Wallpaper")
     objectName: "wind1"  //allow to find window on C++ side: QQuickWindow *window = engine.rootObjects().first()->findChild<QQuickWindow*>("wind1");
 
     visible: true
@@ -18,25 +22,12 @@ Window {
     height: Screen.height
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnBottomHint //| Qt.X11BypassWindowManagerHint
     visibility: Window.FullScreen
-    title: qsTr("Bonsai 1")
 
     Component.onCompleted: {
         backend.installAuroraeTheme("qrc:/assets/kwin_themes/XBoomer")
         backend.windowManager.setAuroraeTheme("XBoomer")
-        backend.windowManager.reconfigure()
     }
 
-    RemoteWindow{
-        source: "qrc:///AppMenuWindow.qml"
-        //source: "qrc:///Clock3D.qml"
-        //source: "qrc:///MainTest.qml"
-        visible: true
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        width: 380
-        height: 478
-    }
 
     //----------------------------------------
 
@@ -50,26 +41,31 @@ Window {
 
 
     Timer {
-        id: initTimer
-        interval: 3000 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        interval:  128//128 * 3 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        //8ms - FAIL
+        //16ms - FAIL
+        //32ms - FAIL
+        //64ms - FAIL
+        //128ms - OK
+        //256ms - OK
+        //512ms - OK
         running: true
         repeat: false
         onTriggered: {
+            //BWindowManagerX11.reconfigure()
 
-        }
-    }
+            BWindowManagerX11.unloadEffect("kwin4_effect_fadingpopups")
+            BWindowManagerX11.unloadEffect("kwin4_effect_scale")
 
-    Timer {
-        interval: 5000 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
-        running: true
-        repeat: false
-        onTriggered: {
+            BWindowManagerX11.unloadEffect("fadingpopups")
+            BWindowManagerX11.unloadEffect("scale")
+
+
+            BWindowManagerX11.hideFromTaskbar(root, true);
+            BWindowManagerX11.hideFromSwitcher(root, true);
+            BWindowManagerX11.hideFromPager(root, true);
+
             backend.setX11WindowTypeAsDesktop(root)
-            backend.windowManager.unloadEffect("kwin4_effect_fadingpopups")
-            backend.windowManager.unloadEffect("kwin4_effect_scale")
-
-            backend.windowManager.unloadEffect("fadingpopups")
-            backend.windowManager.unloadEffect("scale")
         }
     }
 
@@ -84,10 +80,10 @@ Window {
             onClicked: (mouse) => {
                            if (mouse.button === Qt.LeftButton) {
                                if (appMenu.visible) {
-                                   appMenu.visible = false;
+                                   appMenu.visible = false
                                }
-                               if (systemVolumeSlidrer.visible) {
-                                   systemVolumeSlidrer.visible = false;
+                               if(systemVolumeSlidrer.visible){
+                                   systemVolumeSlidrer.visible = false
                                }
                            }
                            if (mouse.button === Qt.RightButton) {
@@ -97,15 +93,15 @@ Window {
         }
     }
 
-    XPMenu {
-        id: wallpaperContextMenu
-        implicitHeight: 129
-        popupType: Popup.Native
+    // XPMenu {
+    //     id: wallpaperContextMenu
+    //     implicitHeight: 129
+    //     popupType: Popup.Native
 
-        XPMenuItem { text: "Cut" }
-        XPMenuItem { text: "Copy" }
-        XPMenuItem { text: "Paste" }
-    }
+    //     XPMenuItem { text: "Cut" }
+    //     XPMenuItem { text: "Copy" }
+    //     XPMenuItem { text: "Paste" }
+    // }
 
     // WebEngineView {
     //     id: youtubeView
@@ -201,64 +197,6 @@ Window {
 
 
 
-    Rectangle{
-        id: cpuLoadBackground
-        anchors.left: parent.left
-        anchors.leftMargin: 15
-        anchors.top: parent.top
-        anchors.topMargin: 15
-        width: 150
-        height: 37
-        color: "#aa000000"
-        Text{
-            id: cpuLoad
-            anchors.centerIn: parent
-            text: "CPU: " + backend.cpuLoad.toFixed(1) + "%"
-            font.pixelSize: 24
-            color: "white"
-
-            Component.onCompleted: {
-                backend.measureCpuLoad = true
-            }
-        }
-    }
-
-    Rectangle{
-        id: qtVersionBackground
-        anchors.left: parent.left
-        anchors.leftMargin: 15
-        anchors.top: cpuLoadBackground.bottom
-        anchors.topMargin: 5
-        width: 150
-        height: 37
-        color: "#aa000000"
-        Text{
-            anchors.centerIn: parent
-            text: "Qt: " + backend.qtVersion
-            font.pixelSize: 24
-            color: "white"
-        }
-
-    }
-
-    Rectangle{
-        id: dpiBackground
-        anchors.left: parent.left
-        anchors.leftMargin: 15
-        anchors.top: qtVersionBackground.bottom
-        anchors.topMargin: 5
-        width: 150
-        height: 37
-        color: "#aa000000"
-        Text{
-            anchors.centerIn: parent
-            text: "DPI: " + (Screen.pixelDensity * 25.4).toFixed(2)
-            font.pixelSize: 24
-            color: "white"
-        }
-
-    }
-
 
 
     // Column{
@@ -312,6 +250,8 @@ Window {
 
 
 
+
+    //AppMenuPopup{
     AppMenuWindow{
         id: appMenu
         x: panel.x
@@ -330,6 +270,30 @@ Window {
         }
     }
 
+    Column{
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+
+        Button{
+            text: "clock3d visible"
+            onClicked: {
+                clock3D.proxyVisible = !clock3D.proxyVisible
+            }
+        }
+    }
+
+    BProxyWindow{
+        id: clock3D
+        source: "qrc:///windows/Clock3DWindow.qml"
+        //source: "qrc:///Clock3D.qml"
+        //source: "qrc:///MainTest.qml"
+        proxyVisible: true
+        anchors.bottom: panel.top
+        anchors.right: panel.right
+        width: 200
+        height: 200
+        swapInterval: 1
+    }
 
     TaskbarContent{
         id: panel
@@ -342,13 +306,18 @@ Window {
             appMenu.visible = !appMenu.visible
         }
 
+        onEndPressed: {
+
+        }
+
         property size dimensions: Qt.size(width, height)
         onDimensionsChanged: {
             backend.reservePanelBottomArea(root, panel.x, panel.y, panel.width, panel.height)
         }
     }
 
-    SystemVolumeSlider{
+    //SystemVolumePopup{
+    SystemVolumeWindow{
         id: systemVolumeSlidrer
         x: panel.x + panel.width - width - 20
         y: panel.y-height
@@ -357,38 +326,19 @@ Window {
 
     }
 
+    BFrontendManager{
+        id: frontendManager
+    }
 
-    // ListView {
-    //     id: themesList
-    //     anchors.top: parent.top
-    //     anchors.right: parent.right
-    //     width: 200
-    //     height: 200
-    //     clip: true
-    //     model: backend.themesModel
+    Button{
+        anchors.top: parent.top
+        anchors.left: parent.left
+        text: qsTr("Gnome")
+        onClicked: {
+            console.log("Button Gnome clicked !!")
+            frontendManager.setActiveFrontend("862b771db54b6d6764f8d72ece0e31e994bf0058")
+        }
+    }
 
-    //     delegate: Rectangle {
-    //         required property string themeId
-    //         required property string themeName
-    //         required property bool themeActive
-    //         height: 50
-    //         width: themesList.width
-    //         border.width: 1
-
-    //         Row{
-    //             anchors.fill: parent
-    //             RadioButton{
-    //                 checked: themeActive
-    //                 onClicked: {
-    //                     //backend.themesModel.setActiveTheme(themeId)
-    //                     backend.setActiveTheme(themeId)
-    //                 }
-    //             }
-    //             Text{
-    //                 text: themeName
-    //             }
-    //         }
-    //     }
-    // }
 }
 

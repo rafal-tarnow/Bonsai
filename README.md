@@ -234,6 +234,9 @@ DISPLAY=:1
 DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/bonsai-dev-dbus.sock
 
 
+![Configure Run Bonsai](doc/qtcreator_bonsai_run_xephyr.png)
+
+
 # Add Bonsai to Display Manager
 
 ```console
@@ -297,6 +300,15 @@ cmake --install .
 
 ![Configure Qt Kit](doc/qt_custom_build_kits.png)
 
+## Develop Qt module
+
+To begin, launch Qt Creator and navigate to the project for the Qt module. Open the CMakeLists.txt file corresponding to the module and proceed to configure the project to use your custom-built Qt kit.
+
+Set install dir in Projects->Build & Run -> Build -> Build Settings -> Current Configuration -> CMAKE_INSTALL_PREFIX = /home/rafal/Qt/Qt_6_9_1_custom_build
+
+If you require the library to be installed upon completion of the build process, enable the 'install' target by checking the corresponding box in the build steps. You can find this option under: Projects -> Active Project -> Build -> Build Steps -> Targets -> install.
+
+![Configure QtCreator to install module after build](doc/qtcreator_build_and_install_qt_module.png)
 
 
 

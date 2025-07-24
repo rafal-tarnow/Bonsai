@@ -8,6 +8,7 @@ Image {
     property bool inputMenuVisible: false
 
     signal startPressed()
+    signal endPressed()
 
     onInputMenuVisibleChanged: {
         if(inputMenuVisible === false){
@@ -67,6 +68,8 @@ Image {
                 }
             }
             onReleased: {
+                panel.endPressed()
+
                 if(inputMenuVisible){
                     startImage.source = "qrc:/assets/images/images/start_pressed.bmp";
                 }else{
@@ -99,6 +102,8 @@ Image {
         BTaskbarModel{
             id: taskbarModel
         }
+
+
 
         Repeater {
             id: taskbarRepeater

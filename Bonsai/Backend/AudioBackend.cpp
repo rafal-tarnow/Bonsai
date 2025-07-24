@@ -11,7 +11,6 @@
 #include <PulseAudioQt/Sink>
 #include <PulseAudioQt/Source>
 
-
 #include "../../third_party/plasma-pa/src/volumefeedback.h"
 
 static QJSValue pulseaudio_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)

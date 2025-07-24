@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QQuickImageProvider>
 #include <QIcon>
 #include <QPixmap>

@@ -35,9 +35,6 @@ Backend::~Backend() {
     if (m_cpuFile.isOpen()) {
         m_cpuFile.close();  // Zamknięcie pliku w destruktorze
     }
-
-
-    qDebug() << "DDDDDDDDDDDDDDDDDDDDDESTRUCTOR";
 }
 
 void Backend::setQmlEngine(QQmlApplicationEngine *engine)
@@ -261,13 +258,21 @@ void Backend::reservePanelTopArea(QQuickWindow *window, int x, int y, int width,
 #warning "add 'later' to method name"
 void Backend::reservePanelBottomArea(QQuickWindow *window, int x, int y, int width, int height)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     strutManager.reservePanelBottomArea(window, x, y, width, height);
+}
+
+void Backend::setX11WindowTypeAsNormal(QQuickWindow *window)
+{
+    //qDebug() << __PRETTY_FUNCTION__;
+    if (window) {
+        KX11Extras::setType(window->winId(), NET::WindowType::Normal);
+    }
 }
 
 void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     if(window){
         KX11Extras::setType(window->winId(), NET::WindowType::Desktop);
     }
@@ -275,15 +280,31 @@ void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsDock(QQuickWindow *window)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     if(window){
         KX11Extras::setType(window->winId(), NET::WindowType::Dock);
     }
 }
 
-void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
+void Backend::setX11WindowTypeAsToolbar(QQuickWindow *window)
+{
+    //qDebug() << __PRETTY_FUNCTION__;
+    if (window) {
+        KX11Extras::setType(window->winId(), NET::WindowType::Toolbar);
+    }
+}
+
+void Backend::setX11WindowTypeAsMenu(QQuickWindow *window)
 {
     qDebug() << __PRETTY_FUNCTION__;
+    if (window) {
+        KX11Extras::setType(window->winId(), NET::WindowType::Menu);
+    }
+}
+
+void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
+{
+    //qDebug() << __PRETTY_FUNCTION__;
     if(window){
         KX11Extras::setType(window->winId(), NET::WindowType::Override);
     }
@@ -291,7 +312,7 @@ void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     if(window){
         KX11Extras::setType(window->winId(), NET::WindowType::TopMenu);
     }
@@ -299,7 +320,7 @@ void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsNotification(QQuickWindow *window)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     if(window){
         KX11Extras::setType(window->winId(), NET::WindowType::Notification);
     }

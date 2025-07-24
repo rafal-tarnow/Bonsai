@@ -1,15 +1,22 @@
 import QtQuick
 import QtQuick.Effects
 import QtQuick.Controls
+import "../contents"
 
-Window {
+Popup{
     id: root
-    flags:  Qt.Popup //Qt.WindowStaysOnTopHint | Qt.WA_TranslucentBackground | Qt.FramelessWindowHint
+
+    popupType: Popup.Window
 
     width: 380
     height: 478
 
-    color: "#00000000"
+    topPadding: 0
+    rightPadding: 0
+    bottomPadding: 0
+    leftPadding: 0
+
+    closePolicy: Popup.CloseOnPressOutside
 
     visible: true
 
@@ -22,7 +29,11 @@ Window {
         }
     }
 
-    AppMenuContent{
+    background: Rectangle {
+            color: "transparent"
+    }
+
+    contentItem: AppMenuContent{
         id: appMenuContent
         onHideRequest:{
             root.visible = false

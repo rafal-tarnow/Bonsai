@@ -10,6 +10,7 @@ public:
     explicit SessionService(QObject *parent = nullptr);
     ~SessionService();
 
+    //these slots are automaticly exposed by Qt mechanics as d-bus slots
 public slots:
     void logout();
     void reboot();
@@ -19,7 +20,6 @@ private slots:
     void onCallFinished(QDBusPendingCallWatcher *watcher);
 
 private:
-    void executeLogout();
     void executeReboot();
     void executePoweroff();
 
