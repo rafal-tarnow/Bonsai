@@ -26,6 +26,8 @@
 #include <private/ProxyWindowServer.hpp>
 #include <server/Server.hpp>
 
+#include "logger.hpp"
+
 #include <QtQml/QQmlExtensionPlugin>
 Q_IMPORT_QML_PLUGIN(XPFrontendPlugin)
 
@@ -47,85 +49,11 @@ static void signalHandler(int signal)
 
 void setWindowGeometry(QQmlApplicationEngine &engine, int x, int y, int width, int height);
 
-namespace LogHandler {
-static QTextStream serverTs; // Strumień dla serwera
-static QTextStream clientTs; // Strumień dla klienta
-static QFile serverLogFile(qgetenv("HOME") + "/appBonsaiWallpaper_server.log");
-static QFile clientLogFile(qgetenv("HOME") + "/appBonsaiWallpaper_client.log");
-static QString currentMode; // Przechowuje aktualny tryb aplikacji (server/client)
-} // namespace LogHandler
-
-static QtMessageHandler originalHandler = nullptr;
-
-void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    static QMutex logMutex;
-    QMutexLocker locker(&logMutex);
-
-    static QElapsedTimer timer;
-    static qint64 lastLogTime = 0;
-    if (!timer.isValid()) {
-        timer.start();
-    }
-
-    // Wybierz odpowiedni strumień w zależności od trybu
-    QTextStream *ts = (LogHandler::currentMode == "server") ? &LogHandler::serverTs
-                                                            : &LogHandler::clientTs;
-    QFile *logFile = (LogHandler::currentMode == "server") ? &LogHandler::serverLogFile
-                                                           : &LogHandler::clientLogFile;
-
-    // Otwórz plik, jeśli nie jest jeszcze otwarty
-    if (!logFile->isOpen()) {
-        logFile->open(QIODevice::WriteOnly | QIODevice::Append); // Append zamiast Truncate
-        if (logFile->isOpen()) {
-            ts->setDevice(logFile);
-        }
-    }
-
-    if (ts->device()) {
-        qint64 currentTimeNs = timer.nsecsElapsed();
-        qint64 totalElapsedMs = currentTimeNs / 1000000;
-        qint64 deltaTimeNs = currentTimeNs - lastLogTime;
-        double deltaTimeMs = deltaTimeNs / 1000000.0;
-        lastLogTime = currentTimeNs;
-
-        *ts << qSetFieldWidth(8) << qSetPadChar(' ') << totalElapsedMs << "ms "
-            << "(+" << qSetFieldWidth(7) << qSetPadChar(' ')
-            << QString::asprintf("%.3f", deltaTimeMs) << "ms) ";
-        *ts << qSetFieldWidth(0);
-
-        switch (type) {
-        case QtDebugMsg:
-            *ts << "Debug: ";
-            break;
-        case QtInfoMsg:
-            *ts << "Info: ";
-            break;
-        case QtWarningMsg:
-            *ts << "Warning: ";
-            break;
-        case QtCriticalMsg:
-            *ts << "Critical: ";
-            break;
-        case QtFatalMsg:
-            *ts << "Fatal: ";
-            break;
-        }
-        *ts << msg << "\n";
-    }
-
-    if (originalHandler) {
-        originalHandler(type, context, msg);
-    }
-}
-
 int main(int argc, char *argv[])
 {
     // Rejestracja obsługi sygnałów systemowych
     std::signal(SIGTERM, signalHandler); // Sygnał zakończenia (np. z Qt Creatora lub kill)
     std::signal(SIGINT, signalHandler);  // Ctrl+C w terminalu
-
-    auto originalHandler = qInstallMessageHandler(customMessageHandler);
 
     //READ ENVIROMENT VARIABLES
     QString homePath = qgetenv("HOME");
@@ -138,19 +66,10 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    // --- NOWY TIMER DO FLUSHOWANIA ---
-    QTimer *logFlushTimer = new QTimer(&app);
-    QObject::connect(logFlushTimer, &QTimer::timeout, []() {
-        static QMutex flushMutex;
-        QMutexLocker locker(&flushMutex);
-
-        if (LogHandler::currentMode == "server" && LogHandler::serverTs.device()) {
-            LogHandler::serverTs.flush();
-        } else if (LogHandler::currentMode == "client" && LogHandler::clientTs.device()) {
-            LogHandler::clientTs.flush();
-        }
-    });
-    logFlushTimer->start(2000); // Flushuj co 2 sekundy
+    Logger logger;
+    logger.init();
+    auto originalHandler = qInstallMessageHandler(Logger::messageHandler);
+    logger.setOriginalHandler(originalHandler);
 
     //INIT APPLICATION OPTIONS
     QString modeOption, sourceOption, proxyWinAddress;
@@ -166,7 +85,6 @@ int main(int argc, char *argv[])
                       proxyWinAddress);
 
     qDebug() << "[INFO] " << "Proxy Window Address: " << proxyWinAddress;
-    LogHandler::currentMode = modeOption;
 
     if (modeOption == "server") {
         //SERVER
@@ -237,6 +155,7 @@ int main(int argc, char *argv[])
 
         auto retVal = app.exec();
         qDebug() << "ĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘ CLIENT extit with retVal = " << retVal;
+        logger.uninit();
         return retVal;
     }
 }

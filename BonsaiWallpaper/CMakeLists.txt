@@ -15,6 +15,8 @@ qt_add_executable(appBonsaiWallpaper
     main_server.cpp
     main_server.hpp
     main_proxy_window.hpp
+    logger.hpp
+    logger.cpp
 
 
 )

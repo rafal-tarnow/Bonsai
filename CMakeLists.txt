@@ -74,6 +74,7 @@ ecm_setup_version(${BONSAI_VERSION}
 
 add_subdirectory(Bonsai/Backend/)
 #add_subdirectory(Bonsai/ServerLib/)
+add_subdirectory(Bonsai/Logger/)
 add_subdirectory(third_party/plasma-pa/)
 add_subdirectory(BonsaiWallpaper/)
 
