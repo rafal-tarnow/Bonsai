@@ -5,6 +5,7 @@
 #include <QMutexLocker>
 #include <QTextStream>
 #include <QTimer>
+#include <QtMessageHandler>
 
 Logger *Logger::m_logger = nullptr;
 
@@ -17,6 +18,13 @@ Logger::Logger(QObject *parent)
     : QObject(parent)
 {
     m_logger = this;
+
+    init();
+}
+
+Logger::~Logger()
+{
+    uninit();
 }
 
 void Logger::init()
@@ -25,8 +33,55 @@ void Logger::init()
     connect(&m_socket, &QLocalSocket::disconnected, this, &Logger::onSocketDisconnected);
     connect(&m_socket, &QLocalSocket::readyRead, this, &Logger::onSocketReadyRead);
     connect(&m_socket, &QLocalSocket::errorOccurred, this, &Logger::onSocketError);
+}
 
-    connectToServer("/tmp/BonsaiLoggerAddressGvajfghnevklbgrlger");
+void Logger::run()
+{
+    //GET LOG CHANNEL FROM ENVIROMENT VARIABLE
+    int logChannel = 0;
+    if (!qEnvironmentVariableIsEmpty("BONSAI_LOG_CHANNEL")) {
+        bool ok;
+        logChannel = qEnvironmentVariable("BONSAI_LOG_CHANNEL").toInt(&ok);
+        if (!ok) {
+            qWarning() << "Nie udało się skonwertować BONSAI_LOG_CHANNEL na liczbę, używam "
+                          "domyślnej wartości 0";
+            logChannel = 0; // Powrót do domyślnej wartości, jeśli konwersja się nie powiodła
+        }
+    }
+
+    connectToServer(QString("/tmp/BonsaiLogger_channel_%1").arg(logChannel));
+
+    auto originalHandler = qInstallMessageHandler(Logger::messageHandler);
+    setOriginalHandler(originalHandler);
+}
+
+void Logger::stop()
+{
+    //qDebug() << __PRETTY_FUNCTION__ << "Stopping logger";
+    QMutexLocker locker(&logMutex); // Ensure thread safety
+
+    // Restore the original message handler to prevent further logging through this instance
+    if (originalHandler) {
+        qInstallMessageHandler(originalHandler);
+        originalHandler = nullptr;
+    }
+
+    // Disconnect and close the socket
+    if (m_socket.isOpen()) {
+        m_socket.flush();                // Ensure any pending data is sent
+        m_socket.disconnectFromServer(); // Gracefully disconnect
+        m_socket.close();                // Close the socket
+    }
+
+    // Reset internal state
+    reconnect_time = 0;
+    m_nextBlockSize = 0;
+    m_serverName.clear();
+    m_logger = nullptr;
+
+    // Reset timer for consistency
+    // timer.invalidate();
+    // lastLogTime = 0;
 }
 
 void Logger::onSocketConnected()
@@ -73,12 +128,14 @@ void Logger::onSocketError(QLocalSocket::LocalSocketError socketError)
     m_socket.close();
     m_socket.abort();
 
+    reconnect_time = qMin(reconnect_time + 1, 5000);
     qDebug() << "[ERROR] Logger reconnect time = " << reconnect_time << "ms";
-    QTimer::singleShot(reconnect_time++, this, [this]() { connectToServer(m_serverName); });
+    QTimer::singleShot(reconnect_time, this, [this]() { connectToServer(m_serverName); });
 }
 
 void Logger::connectToServer(const QString &serverName)
 {
+    qDebug() << __PRETTY_FUNCTION__;
     if (m_socket.state() == QLocalSocket::ConnectedState) {
         qWarning() << "[ERROR] " << __PRETTY_FUNCTION__ << " QLocalSocket::ConnectedState";
         return;
@@ -169,9 +226,11 @@ void Logger::messageHandler(QtMsgType type, const QMessageLogContext &context, c
 
 void Logger::uninit()
 {
-    if (m_socket.isOpen()) {
-        m_socket.flush();
-        m_socket.close();
-        m_socket.disconnect();
-    }
+    qDebug() << __PRETTY_FUNCTION__ << "Uninitializing logger";
+
+    stop();
+
+    // Reset timer
+    // timer.invalidate();
+    // lastLogTime = 0;
 }

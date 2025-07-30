@@ -73,35 +73,17 @@ Window {
         id: wallpaper
         anchors.fill: parent
 
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-            onClicked: (mouse) => {
-                           if (mouse.button === Qt.LeftButton) {
-                               if (appMenu.visible) {
-                                   appMenu.visible = false
-                               }
-                               if(systemVolumeSlidrer.visible){
-                                   systemVolumeSlidrer.visible = false
-                               }
-                           }
-                           if (mouse.button === Qt.RightButton) {
-                               wallpaperContextMenu.popup(mouse.x, mouse.y)
-                           }
-                       }
+        onLeftMouseButtonClicked:{
+            if(systemVolumeSlider.visible)
+                systemVolumeSlider.visible = false
+            if(appMenu.visible)
+                appMenu.visible = false
+            console.log("Wallpapre Left clicked 2")
         }
+
     }
 
-    // XPMenu {
-    //     id: wallpaperContextMenu
-    //     implicitHeight: 129
-    //     popupType: Popup.Native
 
-    //     XPMenuItem { text: "Cut" }
-    //     XPMenuItem { text: "Copy" }
-    //     XPMenuItem { text: "Paste" }
-    // }
 
     // WebEngineView {
     //     id: youtubeView
@@ -270,30 +252,30 @@ Window {
         }
     }
 
-    Column{
-        anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
+    // Column{
+    //     anchors.right: parent.right
+    //     anchors.verticalCenter: parent.verticalCenter
 
-        Button{
-            text: "clock3d visible"
-            onClicked: {
-                clock3D.proxyVisible = !clock3D.proxyVisible
-            }
-        }
-    }
+    //     Button{
+    //         text: "clock3d visible"
+    //         onClicked: {
+    //             clock3D.proxyVisible = !clock3D.proxyVisible
+    //         }
+    //     }
+    // }
 
-    BProxyWindow{
-        id: clock3D
-        source: "qrc:///windows/Clock3DWindow.qml"
-        //source: "qrc:///Clock3D.qml"
-        //source: "qrc:///MainTest.qml"
-        proxyVisible: true
-        anchors.bottom: panel.top
-        anchors.right: panel.right
-        width: 200
-        height: 200
-        swapInterval: 1
-    }
+    // BProxyWindow{
+    //     id: clock3D
+    //     source: "qrc:///windows/Clock3DWindow.qml"
+    //     //source: "qrc:///Clock3D.qml"
+    //     //source: "qrc:///MainTest.qml"
+    //     proxyVisible: true
+    //     anchors.bottom: panel.top
+    //     anchors.right: panel.right
+    //     width: 200
+    //     height: 200
+    //     swapInterval: 1
+    // }
 
     TaskbarContent{
         id: panel
@@ -318,7 +300,7 @@ Window {
 
     //SystemVolumePopup{
     SystemVolumeWindow{
-        id: systemVolumeSlidrer
+        id: systemVolumeSlider
         x: panel.x + panel.width - width - 20
         y: panel.y-height
 
@@ -326,19 +308,6 @@ Window {
 
     }
 
-    BFrontendManager{
-        id: frontendManager
-    }
-
-    Button{
-        anchors.top: parent.top
-        anchors.left: parent.left
-        text: qsTr("Gnome")
-        onClicked: {
-            console.log("Button Gnome clicked !!")
-            frontendManager.setActiveFrontend("862b771db54b6d6764f8d72ece0e31e994bf0058")
-        }
-    }
 
 }
 

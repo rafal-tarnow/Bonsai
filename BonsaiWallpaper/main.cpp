@@ -11,7 +11,6 @@
 #include <QQmlContext>
 #include <QStandardPaths>
 #include <QWindow>
-#include <QtMessageHandler>
 #include <QtQuick3D/qquick3d.h>
 #include <QtWebEngineQuick>
 
@@ -43,8 +42,11 @@ void getCmdLineOptions(const QCoreApplication &app,
 
 static void signalHandler(int signal)
 {
-    qDebug() << "Otrzymano sygnał:" << signal << ". Zamykam aplikację...";
-    QCoreApplication::quit();
+    qDebug() << "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ:" << signal << ". Zamykam aplikację...";
+    //use exit instead quit, exit always work ok, quit not always
+    //QCoreApplication::quit();
+    QCoreApplication::exit();
+    qDebug() << "After QCoreApplication::exit()";
 }
 
 void setWindowGeometry(QQmlApplicationEngine &engine, int x, int y, int width, int height);
@@ -67,9 +69,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     Logger logger;
-    logger.init();
-    auto originalHandler = qInstallMessageHandler(Logger::messageHandler);
-    logger.setOriginalHandler(originalHandler);
+    //logger.run();
 
     //INIT APPLICATION OPTIONS
     QString modeOption, sourceOption, proxyWinAddress;
@@ -141,7 +141,10 @@ int main(int argc, char *argv[])
             &engine,
             &QQmlApplicationEngine::objectCreationFailed,
             &app,
-            []() { QCoreApplication::exit(-1); },
+            []() {
+                qDebug() << "QCoreApplication::exit(-1); 3";
+                QCoreApplication::exit(-1);
+            },
             Qt::QueuedConnection);
 
         engine.load(sourceOption);

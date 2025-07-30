@@ -16,13 +16,10 @@ class Logger : public QObject
 
 public:
     explicit Logger(QObject *parent = nullptr);
+    ~Logger();
 
-    void init();
-    static void messageHandler(QtMsgType type,
-                               const QMessageLogContext &context,
-                               const QString &msg);
-
-    void setOriginalHandler(QtMessageHandler handler);
+    void run();
+    void stop();
 
     void uninit();
 
@@ -33,6 +30,11 @@ private slots:
     void onSocketError(QLocalSocket::LocalSocketError socketError);
 
 private:
+    static void messageHandler(QtMsgType type,
+                               const QMessageLogContext &context,
+                               const QString &msg);
+    void init();
+    void setOriginalHandler(QtMessageHandler handler);
     void connectToServer(const QString &serverName);
     void sendLog(const QString message);
 

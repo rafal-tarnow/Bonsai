@@ -25,12 +25,9 @@ Window {
         backend.setX11WindowTypeAsDesktop(root)
     }
 
-
-
-
     WindowOverlay{
-    }
 
+    }
 }
 
 

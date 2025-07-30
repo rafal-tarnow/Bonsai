@@ -177,7 +177,7 @@ Image {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    systemVolumeSlidrer.visible = true
+                    systemVolumeSlider.visible = true
                 }
             }
 

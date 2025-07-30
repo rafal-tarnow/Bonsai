@@ -72,9 +72,9 @@ ecm_setup_version(${BONSAI_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR})
 
 
-add_subdirectory(Bonsai/Backend/)
+add_subdirectory(Bonsai/BackendLib/)
 #add_subdirectory(Bonsai/ServerLib/)
-add_subdirectory(Bonsai/Logger/)
+add_subdirectory(Bonsai/LoggerApp/)
 add_subdirectory(third_party/plasma-pa/)
 add_subdirectory(BonsaiWallpaper/)
 

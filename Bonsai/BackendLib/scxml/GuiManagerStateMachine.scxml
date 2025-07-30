@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" binding="early" xmlns:qt="http://www.qt.io/2015/02/scxml-ext" name="GuiManagerStateMachine" qt:editorversion="16.0.2">
+    <state id="Idle">
+        <qt:editorinfo scenegeometry="325.58;46.98;265.58;-3.02;120;100" geometry="325.58;46.98;-60;-50;120;100"/>
+        <transition type="internal" event="startFrontendChange" target="DeletingQmlObjects"/>
+    </state>
+    <state id="DeletingQmlObjects">
+        <qt:editorinfo scenegeometry="284.12;213.05;224.12;163.05;202.91;102" geometry="284.12;213.05;-60;-50;202.91;102"/>
+        <onentry>
+            <raise event="deleteQmlObjects"/>
+        </onentry>
+        <transition type="internal" event="qmlObjectsDeleted" target="ReconfiguringWindowManager"/>
+    </state>
+    <state id="ReconfiguringWindowManager">
+        <qt:editorinfo scenegeometry="255.11;351.80;195.11;301.80;260.94;102" geometry="255.11;351.80;-60;-50;260.94;102"/>
+        <onentry>
+            <raise event="reconfigureWindowManager"/>
+        </onentry>
+        <transition type="internal" event="windowManagerReconfigured" target="EmittingFrontendChanged"/>
+    </state>
+    <state id="LoadingFrontend">
+        <qt:editorinfo scenegeometry="694.47;529.81;634.47;479.81;178.42;102" geometry="694.47;529.81;-60;-50;178.42;102"/>
+        <onentry>
+            <raise event="loadFrontend"/>
+        </onentry>
+        <transition type="internal" event="frontendLoaded" target="Idle">
+            <qt:editorinfo endTargetFactors="79.27;55.35"/>
+        </transition>
+    </state>
+    <state id="EmittingFrontendChanged">
+        <qt:editorinfo scenegeometry="272.92;529.81;212.92;479.81;225.33;102" geometry="272.92;529.81;-60;-50;225.33;102"/>
+        <onentry>
+            <raise event="emitFrontendChanged"/>
+        </onentry>
+        <transition type="internal" event="frontendChangedEmitted" target="LoadingFrontend"/>
+    </state>
+</scxml>
