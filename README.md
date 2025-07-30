@@ -129,9 +129,18 @@ sudo apt install libxapian-dev (Fix Error: kde-builder akonadi-search: Unable to
 
 
 
+## D-bus commands
 
+- get power profiles:
+```console
+dbus-send --system --print-reply --dest=org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.DBus.Properties.Get string:org.freedesktop.UPower.PowerProfiles string:Profiles
+```
 
-KWIN dbus commands
+- show current power profile (powerprofilesctl get): 
+```bash
+dbus-send --system --print-reply --dest=org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.DBus.Properties.Get string:org.freedesktop.UPower.PowerProfiles string:ActiveProfile
+```
+### KWIN dbus commands
 
 
 //reconfigure - reload theme after change window decoration
@@ -174,7 +183,7 @@ qdbus org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect kwin4_effect_fadin
 //load popups fading effect
 qdbus org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect kwin4_effect_fadingpopups
 
-
+## Kmix
 
 //build kmix
 kde-builder kmix
