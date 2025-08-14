@@ -13,19 +13,18 @@ class ProxyWindowController : public QObject
 
     enum class CommandSend : uint8_t { SET_VISIBLE = 0x01, QUIT_PROCESS = 0x02 };
 
-    Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged FINAL)
 public:
     explicit ProxyWindowController(QObject *parent = nullptr);
     ~ProxyWindowController();
 
-    bool visible();
     void setVisible(bool visible);
     void quitRemoteProcess();
 
     void connectToServer(const QString &serverName);
 
 signals:
-    void visibleChanged();
+    void visibleReceived(bool visible);
+    void proxyWindowConnected();
 
 private slots:
     void onSocketConnected();
@@ -34,7 +33,6 @@ private slots:
     void onSocketError(QLocalSocket::LocalSocketError socketError);
 
 private:
-    bool m_proxyWindowVisible = false;
     QLocalSocket m_socket;
     QString m_serverName;
     int reconnect_time = 0;

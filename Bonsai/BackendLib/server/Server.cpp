@@ -7,6 +7,7 @@ Server::Server(QGuiApplication *app, int swapIntervalOption)
     : QObject(app)
     , m_sessionService(this)
     , m_frontendManagerService(this)
+    , m_favoriteAppsService(this)
     , m_guiManager(this, app, swapIntervalOption)
 
 {

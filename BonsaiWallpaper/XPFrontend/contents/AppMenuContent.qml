@@ -330,7 +330,7 @@ Image{
                 anchors.right: parent.right
                 model: appsListModel
                 clip: true
-                cacheBuffer: 2147483647 //maximu qml int value
+                //cacheBuffer: 2147483647 - The cache with a high value has been disabled, performance issues arise with using the proxy model and application search, and there was an issue with displaying delegates in the grid view layout.
 
                 delegate: Item {
                     id: appsListDelegate

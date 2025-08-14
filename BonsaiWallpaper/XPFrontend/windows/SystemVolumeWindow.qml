@@ -1,7 +1,4 @@
 import QtQuick
-import QtQuick.Controls
-import "../"
-import "../common_components"
 import "../contents"
 
 Window {

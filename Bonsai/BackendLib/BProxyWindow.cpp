@@ -2,8 +2,11 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
+#include <QQmlContext>
+#include <QQmlEngine>
 #include <QTimer>
 #include <QUuid>
+#include <QVariant>
 
 BProxyWindow::BProxyWindow(QQuickItem *parent)
     : QQuickItem(parent)
@@ -11,7 +14,7 @@ BProxyWindow::BProxyWindow(QQuickItem *parent)
     , m_serverName(QString("/tmp/BProxyWindowServer%1")
                        .arg(QUuid::createUuid().toString(QUuid::WithoutBraces).remove('-')))
 {
-    qDebug() << "[INFO]" << " Proxy server name: " << m_serverName;
+    //qDebug() << "111111111111111111 ---- " << __PRETTY_FUNCTION__;
     setFlag(ItemHasContents, false);
     setVisible(false);
 
@@ -32,9 +35,15 @@ BProxyWindow::BProxyWindow(QQuickItem *parent)
             &BProxyWindow::onProcessReadyReadStandardError);
 
     connect(m_winController,
-            &ProxyWindowController::visibleChanged,
+            &ProxyWindowController::visibleReceived,
             this,
-            &BProxyWindow::proxyVisibleChanged);
+            &BProxyWindow::handleVisibleReceived);
+
+    connect(m_winController,
+            &ProxyWindowController::proxyWindowConnected,
+            this,
+            &BProxyWindow::handleProxyWindowConnected);
+
     connect(this, &QQuickItem::windowChanged, this, &BProxyWindow::onWindowChanged);
 }
 
@@ -49,7 +58,7 @@ BProxyWindow::~BProxyWindow()
     m_winController = nullptr;
 
     m_process->setParent(nullptr);
-#warning "What if the process doesen't close?"
+#warning "//TODO What if the process doesen't close?"
     connect(m_process, &QProcess::finished, m_process, &QObject::deleteLater);
     stopProcess();
 
@@ -58,10 +67,33 @@ BProxyWindow::~BProxyWindow()
     QFile::remove(m_serverName);
 }
 
-void BProxyWindow::setSource(const QString &source)
+void BProxyWindow::setSource(const QUrl &source)
 {
-    if (m_source != source) {
-        m_source = source;
+    qDebug() << "4444444444444444444" << source;
+
+    QUrl finalSource = source;
+
+    if (finalSource.isRelative() && !finalSource.isEmpty()) {
+        // Poprawne użycie metody statycznej. Nie potrzebujemy wskaźnika na silnik.
+        QQmlContext *context = QQmlEngine::contextForObject(this);
+
+        if (context) {
+            // Używamy kontekstu do rozwiązania względnego URL.
+            finalSource = context->resolvedUrl(source);
+        } else {
+            // Ten błąd może się pojawić, jeśli obiekt nie został utworzony przez silnik QML
+            // (np. został stworzony ręcznie w C++ i nie jest powiązany z kontekstem).
+            qWarning() << "BProxyWindow: Could not get QML context for object. Cannot resolve "
+                          "relative URL:"
+                       << source;
+        }
+    }
+
+    qDebug() << "BProxyWindow received source:" << source;
+    qDebug() << "BProxyWindow resolved source to:" << finalSource;
+
+    if (m_source != finalSource) {
+        m_source = finalSource;
         emit sourceChanged();
     }
 }
@@ -69,13 +101,17 @@ void BProxyWindow::setSource(const QString &source)
 bool BProxyWindow::proxyVisible() const
 {
     qDebug() << "[INFO] " << __PRETTY_FUNCTION__;
-    return m_winController->visible();
+    return m_proxyWindowVisible;
 }
 
 void BProxyWindow::setProxyVisible(bool visible)
 {
-    qDebug() << "[INFO] " << __PRETTY_FUNCTION__;
-    m_winController->setVisible(visible);
+    //qDebug() << "66666666666666666 " << __PRETTY_FUNCTION__ << " visible=" << visible;
+    if (m_proxyWindowVisible != visible) {
+        m_proxyWindowVisible = visible;
+        m_winController->setVisible(m_proxyWindowVisible);
+        emit proxyVisibleChanged();
+    }
 }
 
 int BProxyWindow::swapInterval() const
@@ -85,7 +121,7 @@ int BProxyWindow::swapInterval() const
 
 void BProxyWindow::setSwapInterval(const int swapInterval)
 {
-    if(m_swapInterval != swapInterval){
+    if (m_swapInterval != swapInterval) {
         m_swapInterval = swapInterval;
         emit swapIntervalChanged();
     }
@@ -104,6 +140,7 @@ void BProxyWindow::onWindowChanged(QQuickWindow *window)
 
 void BProxyWindow::onAfterSynchronizing()
 {
+    //qDebug() << "222222222222222" << __PRETTY_FUNCTION__;
     startProcess(); //we start windows after synchornization becaouse after synchronization window geomerty is calculated
     disconnect(window(),
                &QQuickWindow::afterSynchronizing,
@@ -113,6 +150,7 @@ void BProxyWindow::onAfterSynchronizing()
 
 void BProxyWindow::startProcess()
 {
+    //qDebug() << "3333333333333333" << __PRETTY_FUNCTION__;
     if (m_process->state() == QProcess::Running) {
         return;
     }
@@ -126,7 +164,7 @@ void BProxyWindow::startProcess()
     QStringList args = {"--mode",
                         "client",
                         "--source",
-                        m_source,
+                        m_source.path(),
                         "--proxy-window-addr",
                         m_serverName,
                         "--x",
@@ -138,7 +176,12 @@ void BProxyWindow::startProcess()
                         "--height",
                         QString::number(height()),
                         "--swap-interval",
-                        QString::number(swapInterval())};
+                        QString::number(swapInterval()),
+                        "--proxy-visible",
+                        QVariant(m_proxyWindowVisible).toString()};
+
+    //qDebug() << "444444444444444 " << QVariant(m_proxyWindowVisible).toString();
+    //qDebug() << "555555555555555 m_proxyWindowVisible = " << m_proxyWindowVisible;
 
     m_process->start(program, args);
 }
@@ -164,6 +207,20 @@ void BProxyWindow::onProcessReadyReadStandardError()
     const QByteArray data = m_process->readAllStandardError();
     // Wypisz to jako ostrzeżenie w konsoli głównego procesu z odpowiednim prefiksem
     //qWarning().noquote() << "[REMOTE STDERR]" << QString::fromLocal8Bit(data).trimmed();
+}
+
+void BProxyWindow::handleVisibleReceived(bool visible)
+{
+    qDebug() << "7777777777777" << __PRETTY_FUNCTION__ << "visible=" << visible;
+    if (m_proxyWindowVisible != visible) {
+        m_proxyWindowVisible = visible;
+        emit proxyVisibleChanged();
+    }
+}
+
+void BProxyWindow::handleProxyWindowConnected()
+{
+    m_winController->setVisible(m_proxyWindowVisible);
 }
 
 void BProxyWindow::stopProcess()

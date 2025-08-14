@@ -128,9 +128,9 @@ void ProxyWindowLocalServer::parseCommand(QLocalSocket *clientSocket)
                 // które roześle stan do wszystkich klientów.
             }
         } else if (command == CommandReceived::QUIT_PROCESS) {
-            qDebug() << __PRETTY_FUNCTION__
-                     << " 222222222222222222222222 Proxy Window received command: "
-                        "CommandReceived::QUIT_PROCESS";
+            //qDebug() << __PRETTY_FUNCTION__
+            //         << " 222222222222222222222222 Proxy Window received command: "
+            //            "CommandReceived::QUIT_PROCESS";
         } else {
             qWarning() << "Server: Received unknown command type:" << commandRaw;
         }

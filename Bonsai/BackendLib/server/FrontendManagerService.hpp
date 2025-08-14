@@ -22,9 +22,12 @@ public slots:
 
 signals:
     //D-Bus API
-    void frontendAdded(const QString &id, const QString &name, const QString &description, const QString &path);
-    void frontendRemoved(const QString &id);
-    void activeFrontendChanged(const QString &frontendId);
+    Q_SCRIPTABLE void frontendAdded(const QString &id,
+                                    const QString &name,
+                                    const QString &description,
+                                    const QString &path);
+    Q_SCRIPTABLE void frontendRemoved(const QString &id);
+    Q_SCRIPTABLE void activeFrontendChanged(const QString &frontendId);
 
     //internal Server api
     void activeFrontendChangeRequest(const QString & forntendId);

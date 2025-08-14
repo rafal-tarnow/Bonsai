@@ -57,8 +57,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES private/MaskAlgorithm.cpp
     SOURCES private/MaskTracker.hpp
     SOURCES private/MaskTracker.cpp
-    SOURCES BProxyWindow.hpp
-    SOURCES BProxyWindow.cpp
+    SOURCES
+    SOURCES
     SOURCES strut/Strut.hpp
     SOURCES strut/StrutManager.hpp
     SOURCES strut/StrutManager.cpp
@@ -74,10 +74,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES BTaskbarBaseModel.cpp
     SOURCES BFrontendManager.hpp
     SOURCES BFrontendManager.cpp
-    SOURCES server/FrontendManagerAPIService.hpp
-    SOURCES server/FrontendManagerAPIService.cpp
-    SOURCES private/ProxyWindowController.hpp
-    SOURCES private/ProxyWindowController.cpp
+    SOURCES server/FrontendManagerService.hpp
+    SOURCES server/FrontendManagerService.cpp
     SOURCES private/ProxyWindowServer.cpp
     SOURCES private/ProxyWindowServer.hpp
     SOURCES server/X11WindowManagerService.hpp
@@ -88,12 +86,18 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES server/QmlGui.cpp
     SOURCES server/GuiManager.hpp
     SOURCES server/GuiManager.cpp
+    SOURCES client/private/ProxyWindowController.hpp
+    SOURCES client/private/ProxyWindowController.cpp
+    SOURCES BProxyWindow.hpp
+    SOURCES BProxyWindow.cpp
+    SOURCES server/FavoriteAppsService.hpp
+    SOURCES server/FavoriteAppsService.cpp
+    SOURCES server/Application.hpp
+    SOURCES server/Application.cpp
 )
 
 qt6_add_statecharts(${PROJECT_NAME}
-    scxml/server_state_machine.scxml
     scxml/GuiManagerStateMachine.scxml
-    #OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/scxml
 )
 
 add_library(BonsaiBackendLib STATIC "")

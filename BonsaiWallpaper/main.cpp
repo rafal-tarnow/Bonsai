@@ -38,7 +38,8 @@ void getCmdLineOptions(const QCoreApplication &app,
                        int &width,
                        int &height,
                        int &swapInterval,
-                       QString &proxyWindowAddress);
+                       QString &proxyWindowAddress,
+                       bool &proxyVisibleOption);
 
 static void signalHandler(int signal)
 {
@@ -49,7 +50,8 @@ static void signalHandler(int signal)
     qDebug() << "After QCoreApplication::exit()";
 }
 
-void setWindowGeometry(QQmlApplicationEngine &engine, int x, int y, int width, int height);
+void setWindowGeometry(
+    QQmlApplicationEngine &engine, int x, int y, int width, int height, bool visible);
 
 int main(int argc, char *argv[])
 {
@@ -69,11 +71,12 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     Logger logger;
-    //logger.run();
+    logger.run();
 
     //INIT APPLICATION OPTIONS
     QString modeOption, sourceOption, proxyWinAddress;
     int xOption, yOption, widthOption, heightOption, swapInterwalOption;
+    bool proxyVisibleOption;
     getCmdLineOptions(app,
                       modeOption,
                       sourceOption,
@@ -82,9 +85,12 @@ int main(int argc, char *argv[])
                       widthOption,
                       heightOption,
                       swapInterwalOption,
-                      proxyWinAddress);
+                      proxyWinAddress,
+                      proxyVisibleOption);
 
     qDebug() << "[INFO] " << "Proxy Window Address: " << proxyWinAddress;
+
+    qDebug() << "ŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻZZ proxyVisibleOption = " << proxyVisibleOption;
 
     if (modeOption == "server") {
         //SERVER
@@ -153,7 +159,7 @@ int main(int argc, char *argv[])
         if (engine.rootObjects().isEmpty())
             return -1;
 
-        setWindowGeometry(engine, xOption, yOption, widthOption, heightOption);
+        setWindowGeometry(engine, xOption, yOption, widthOption, heightOption, proxyVisibleOption);
         server.installWindow(engine);
 
         auto retVal = app.exec();
@@ -171,7 +177,8 @@ void getCmdLineOptions(const QCoreApplication &app,
                        int &width,
                        int &height,
                        int &swapInterval,
-                       QString &proxyWindowAddress)
+                       QString &proxyWindowAddress,
+                       bool &proxyVisible)
 {
     QCommandLineParser parser;
     parser.setApplicationDescription("Command-line options parser for the application");
@@ -190,10 +197,21 @@ void getCmdLineOptions(const QCoreApplication &app,
                                           "Set proxy window local socket address",
                                           "value",
                                           "/tmp/bonsai-XYZ");
+    QCommandLineOption proxyVisibleOpt("proxy-visible",
+                                       "Set proxy window visibility (true/false)",
+                                       "value",
+                                       "false");
 
     // Add options to parser
-    parser.addOptions(
-        {modeOpt, sourceOpt, xOpt, yOpt, widthOpt, heightOpt, swapIntervalOpt, proxyWinAddressOpt});
+    parser.addOptions({modeOpt,
+                       sourceOpt,
+                       xOpt,
+                       yOpt,
+                       widthOpt,
+                       heightOpt,
+                       swapIntervalOpt,
+                       proxyWinAddressOpt,
+                       proxyVisibleOpt}); // Dodaj proxyVisibleOpt
 
     // Process arguments
     parser.process(app);
@@ -207,6 +225,7 @@ void getCmdLineOptions(const QCoreApplication &app,
     width = 800;
     height = 600;
     swapInterval = 0;
+    proxyVisible = false;
 
     // Parse mode option
     if (parser.isSet(modeOpt)) {
@@ -221,6 +240,18 @@ void getCmdLineOptions(const QCoreApplication &app,
     // Parse source option
     if (parser.isSet(sourceOpt)) {
         qDebug() << "Source set to:" << sourceOption;
+    }
+
+    // Parse proxy-visible option
+    if (parser.isSet(proxyVisibleOpt)) {
+        QString value = parser.value(proxyVisibleOpt).toLower();
+        if (value == "true") {
+            proxyVisible = true;
+        } else if (value == "false") {
+            proxyVisible = false;
+        } else {
+            qWarning() << "Invalid --proxy-visible value:" << value << "(expected: true or false)";
+        }
     }
 
     // Parse geometry options with validation
@@ -241,20 +272,11 @@ void getCmdLineOptions(const QCoreApplication &app,
     parseIntOption(yOpt, y, "--y");
     parseIntOption(widthOpt, width, "--width");
     parseIntOption(heightOpt, height, "--height");
-    parseIntOption(swapIntervalOpt, swapInterval, "--swap-interval"); // Parsowanie swap-interval
+    parseIntOption(swapIntervalOpt, swapInterval, "--swap-interval");
 }
 
-// void startKwinAndWaitForReady(QProcess &process, int timeoutMs)
-// {
-//     //START KWIN
-//     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-//     filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
-//     process.setProcessEnvironment(env);
-//     process.start("kwin");
-//     process.waitForStarted(5000);
-// }
-
-void setWindowGeometry(QQmlApplicationEngine &engine, int x, int y, int width, int height)
+void setWindowGeometry(
+    QQmlApplicationEngine &engine, int x, int y, int width, int height, bool visible)
 {
     if (engine.rootObjects().isEmpty()) {
         qWarning() << "No root objects available to set geometry.";
@@ -268,7 +290,13 @@ void setWindowGeometry(QQmlApplicationEngine &engine, int x, int y, int width, i
     }
 
     window->setGeometry(x, y, width, height);
-    //window->show(); // Upewnij się, że okno jest widoczne
+
+    if (visible) {
+        window->show();
+    } else {
+        window->hide();
+    }
+
     qDebug() << "Ustawiono geometrię okna: x=" << x << ", y=" << y << ", width=" << width
              << ", height=" << height;
 }

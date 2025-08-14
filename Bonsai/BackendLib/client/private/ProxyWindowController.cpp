@@ -25,24 +25,14 @@ ProxyWindowController::~ProxyWindowController()
     }
 }
 
-bool ProxyWindowController::visible()
-{
-    return m_proxyWindowVisible;
-}
-
 void ProxyWindowController::setVisible(bool visible)
 {
     qDebug() << __PRETTY_FUNCTION__;
-    if (m_proxyWindowVisible == visible) {
-        return;
-    }
-
     sendSetVisible(visible);
 }
 
 void ProxyWindowController::quitRemoteProcess()
 {
-    qDebug() << __PRETTY_FUNCTION__ << "1111111111111111111111111111111";
     if (m_socket.state() != QLocalSocket::ConnectedState) {
         qWarning() << "[ERROR] " << __PRETTY_FUNCTION__
                    << " Controller: Socket not connected. Cannot send command.";
@@ -100,6 +90,9 @@ void ProxyWindowController::onSocketConnected()
 {
     qDebug("[OK] Connected to Proxy Window Server");
     reconnect_time = 0;
+    //qDebug() << "ŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚ on Socket Connected set visible = "
+    //         << m_proxyWindowVisible;
+    emit proxyWindowConnected();
 }
 
 void ProxyWindowController::onSocketDisconnected() {}
@@ -141,11 +134,7 @@ void ProxyWindowController::handleStateUpdate(QDataStream &stream)
         bool serverVisible;
         stream >> serverVisible;
         //qDebug() << "Controller: Received VisibleChanged, visible:" << serverVisible;
-
-        if (m_proxyWindowVisible != serverVisible) {
-            m_proxyWindowVisible = serverVisible;
-            emit visibleChanged();
-        }
+        emit visibleReceived(serverVisible);
     } else {
         //qWarning() << "Controller: Received unknown state update type:" << updateTypeRaw;
     }
@@ -156,8 +145,8 @@ void ProxyWindowController::onSocketError(QLocalSocket::LocalSocketError socketE
     // static int errorsCount;
     // errorsCount++;
 
-    qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << "Local socket error: " << int(socketError)
-             << " " << m_socket.errorString() << " socketState: " << int(m_socket.state());
+    //qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << "Local socket error: " << int(socketError)
+    //         << " " << m_socket.errorString() << " socketState: " << int(m_socket.state());
 
 #warning "So, what do we do if the window gets closed?"
 

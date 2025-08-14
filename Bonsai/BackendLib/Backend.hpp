@@ -69,6 +69,7 @@ public:
     Q_INVOKABLE void setX11WindowTypeAsMenu(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsOverride(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsTopMenu(QQuickWindow *window);
+    Q_INVOKABLE void setX11WindowTypeAsPopupMenu(QQuickWindow *window);
     Q_INVOKABLE void setX11WindowTypeAsNotification(QQuickWindow *window);
 
     //platform info

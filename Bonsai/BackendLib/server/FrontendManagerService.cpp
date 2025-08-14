@@ -1,9 +1,9 @@
-#include "FrontendManagerAPIService.hpp"
+#include "FrontendManagerService.hpp"
+#include <QCryptographicHash>
 #include <QDBusConnection>
 #include <QDBusError>
 #include <QDir>
 #include <QUuid>
-#include <QCryptographicHash>
 #include <qdbusmetatype.h>
 
 FrontendManagerService::FrontendManagerService(QObject *parent) :
@@ -13,13 +13,16 @@ FrontendManagerService::FrontendManagerService(QObject *parent) :
 
     QDBusConnection bus = QDBusConnection::sessionBus();
 
-    //register FrontendManager service
     if(!bus.registerService("org.bonsai.FrontendManager")){
         qFatal("Failed to register D-Bus service: %s", qPrintable(bus.lastError().message()));
     }
 
     //register FronendManager object
-    if(!bus.registerObject("/FrontendManager", this, QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals | QDBusConnection::ExportAllProperties)){
+    if (!bus.registerObject("/FrontendManager",
+                            this,
+                            QDBusConnection::ExportAllSlots
+                                | QDBusConnection::ExportScriptableSignals
+                                | QDBusConnection::ExportAllProperties)) {
         qFatal("Failed to register D-Bus object: %s", qPrintable(bus.lastError().message()));
     }
 
@@ -33,7 +36,7 @@ FrontendManagerService::~FrontendManagerService()
 
 void FrontendManagerService::activeFrontendChangeConfirmation(const QString &frontendId)
 {
-    qDebug() << "Server 11 " << __PRETTY_FUNCTION__;
+    //qDebug() << "Server 11 " << __PRETTY_FUNCTION__;
     if (m_activeFrontendId == frontendId)
         return;
 
@@ -42,15 +45,15 @@ void FrontendManagerService::activeFrontendChangeConfirmation(const QString &fro
     for (Frontend &frontend : m_frontends) { // Note: Removed const to allow modification
         frontend.active = (frontend.id == m_activeFrontendId);
     }
-    qDebug()
-        << "Server 12 "
-        << " ******************************  D-Bus signal: emit activeFrontendChanged(frontendId);";
+    //qDebug()
+    //    << "Server 12 "
+    //    << " ******************************  D-Bus signal: emit activeFrontendChanged(frontendId);";
     emit activeFrontendChanged(frontendId);
 }
 
 QVariantList FrontendManagerService::getFrontendList()
 {
-    qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
+    //qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
     QVariantList frontends;
     for(const Frontend &frontend : m_frontends) {
         QVariantMap map;
@@ -66,27 +69,27 @@ QVariantList FrontendManagerService::getFrontendList()
 
 QString FrontendManagerService::activeFrontend() const
 {
-    qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
+    //qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
     return m_activeFrontendId;
 }
 
 //d-bus interface
 void FrontendManagerService::setActiveFrontend(const QString &frontendId)
 {
-    qDebug() << "Server 2 " << __PRETTY_FUNCTION__
-             << "Server side, dbus received , frontendId=" << frontendId;
+    // qDebug() << "Server 2 " << __PRETTY_FUNCTION__
+    //          << "Server side, dbus received , frontendId=" << frontendId;
     if (frontendId.isEmpty()) {
-        qDebug() << "3.1-- " << __PRETTY_FUNCTION__;
-        qDebug() << "Invalid frontend ID: empty";
+        // qDebug() << "3.1-- " << __PRETTY_FUNCTION__;
+        // qDebug() << "Invalid frontend ID: empty";
         return;
     }
 
     if (m_activeFrontendId == frontendId) {
-        qDebug() << "3.3-- " << __PRETTY_FUNCTION__;
+        //qDebug() << "3.3-- " << __PRETTY_FUNCTION__;
         return;
     }
 
-    qDebug() << "Server 3 " << __PRETTY_FUNCTION__ << " emit activeFrontendChangeRequest";
+    //qDebug() << "Server 3 " << __PRETTY_FUNCTION__ << " emit activeFrontendChangeRequest";
     emit activeFrontendChangeRequest(frontendId);
 }
 
@@ -110,6 +113,7 @@ void FrontendManagerService::loadFrontends()
     frontend.description = "Ubuntu Gnome like frontend";
     frontend.path = "/home/rafal/Bonsai/thmes/gnome/";
     frontend.id = QString(QCryptographicHash::hash(frontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
+    qDebug() << "Gnome Frontend id = " << frontend.id;
     frontend.active = false;
 
     m_frontends.append(frontend);
@@ -118,6 +122,7 @@ void FrontendManagerService::loadFrontends()
     frontend.description = "XP Luna like frontend";
     frontend.path = "/home/rafal/Bonsai/thmes/xp_luna/";
     frontend.id = QString(QCryptographicHash::hash(frontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
+    qDebug() << "Luna XP id = " << frontend.id;
     frontend.active = true;
 
     m_frontends.append(frontend);

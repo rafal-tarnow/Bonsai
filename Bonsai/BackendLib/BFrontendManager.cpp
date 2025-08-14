@@ -8,7 +8,7 @@
 
 BFrontendManager::BFrontendManager(QObject *parent) : QAbstractListModel(parent)
 {
-    qDebug() << ">>>>>>>>>>>>>>>> new >>>>>>>>>>>>>>>>>>>>" << __PRETTY_FUNCTION__;
+    //qDebug() << ">>>>>>>>>>>>>>>> new >>>>>>>>>>>>>>>>>>>>" << __PRETTY_FUNCTION__;
     qDBusRegisterMetaType<QVariantMap>();
     qDBusRegisterMetaType<QVariantList>();
 
@@ -33,7 +33,7 @@ BFrontendManager::BFrontendManager(QObject *parent) : QAbstractListModel(parent)
             SLOT(handleActiveFrontendChanged(QString)));
 
     // Pobierz początkową listę frontendów
-    qDebug() << "RRRRRRRRRRRRRRRRRRRR getFrontendList()";
+    //qDebug() << "RRRRRRRRRRRRRRRRRRRR getFrontendList()";
     QDBusPendingCall call = m_dbusInterface->asyncCall("getFrontendList");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher,
@@ -47,7 +47,7 @@ BFrontendManager::BFrontendManager(QObject *parent) : QAbstractListModel(parent)
 
 void BFrontendManager::loadActiveFrontend()
 {
-    qDebug() << "RRRRRRRRRRRRRRRRRRRR activeFrontend()";
+    //qDebug() << "RRRRRRRRRRRRRRRRRRRR activeFrontend()";
     QDBusPendingCall call = m_dbusInterface->asyncCall("activeFrontend");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher,
@@ -68,7 +68,7 @@ void BFrontendManager::loadActiveFrontend()
 
 BFrontendManager::~BFrontendManager()
 {
-    qDebug() << "<<<<<<<<<<<<<<<<<< delete <<<<<<<<<<<<<<<<<<" << __PRETTY_FUNCTION__;
+    //qDebug() << "<<<<<<<<<<<<<<<<<< delete <<<<<<<<<<<<<<<<<<" << __PRETTY_FUNCTION__;
     delete m_dbusInterface;
 }
 
@@ -118,7 +118,7 @@ QString BFrontendManager::activeFrontend() const
 
 void BFrontendManager::setActiveFrontend(const QString &frontendId)
 {
-    qDebug() << "Client 1 " << __PRETTY_FUNCTION__ << " Client side, befor send request via d-bus";
+    //qDebug() << "Client 1 " << __PRETTY_FUNCTION__ << " Client side, befor send request via d-bus";
     QDBusPendingCall call = m_dbusInterface->asyncCall("setActiveFrontend", frontendId);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher *watcher) {
@@ -131,7 +131,7 @@ void BFrontendManager::setActiveFrontend(const QString &frontendId)
 
 void BFrontendManager::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
 {
-    qDebug() << "##################### " << __PRETTY_FUNCTION__;
+    //qDebug() << "##################### " << __PRETTY_FUNCTION__;
     QDBusPendingReply<QVariantList> reply = *watcher;
     if (reply.isError()) {
         qDebug() << "D-Bus error:" << reply.error().message();
@@ -143,7 +143,7 @@ void BFrontendManager::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
     m_frontends.clear();
 
     QVariantList frontends = reply.value();
-    qDebug() << "REPLY = " << frontends;
+    //qDebug() << "REPLY = " << frontends;
 
     for (const QVariant &frontendVar : frontends) {
         // Sprawdź, czy QVariant zawiera QDBusArgument
@@ -166,12 +166,12 @@ void BFrontendManager::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
             frontend.path = map["path"].toString();
             frontend.active = map["active"].toBool();
 
-            qDebug() << "FRONTEND NAME =" << frontend.name;
-            qDebug() << "FRONTEND ID = " << frontend.id;
-            qDebug() << "FRONTEND DESCRIPTION = " << frontend.description;
-            qDebug() << "FRONTEND PATH = " << frontend.path;
-            qDebug() << "FRONTEND ACTIVE = " << frontend.active;
-            qDebug() << "------------------";
+            //qDebug() << "FRONTEND NAME =" << frontend.name;
+            //qDebug() << "FRONTEND ID = " << frontend.id;
+            //qDebug() << "FRONTEND DESCRIPTION = " << frontend.description;
+            //qDebug() << "FRONTEND PATH = " << frontend.path;
+            //qDebug() << "FRONTEND ACTIVE = " << frontend.active;
+            //qDebug() << "------------------";
             m_frontends.append(frontend);
         } else {
             qDebug() << "[ERROR] Unexpected QVariant type:" << frontendVar.typeName();
@@ -187,7 +187,7 @@ void BFrontendManager::handleFrontendAdded(const QString &id,
                                            const QString &description,
                                            const QString &path)
 {
-    qDebug() << "############## " << __PRETTY_FUNCTION__;
+    //qDebug() << "############## " << __PRETTY_FUNCTION__;
     beginInsertRows(QModelIndex(), m_frontends.size(), m_frontends.size());
     Frontend frontend;
     frontend.id = id;
@@ -201,7 +201,7 @@ void BFrontendManager::handleFrontendAdded(const QString &id,
 
 void BFrontendManager::handleFrontendRemoved(const QString &id)
 {
-    qDebug() << "############## " << __PRETTY_FUNCTION__;
+    //qDebug() << "############## " << __PRETTY_FUNCTION__;
     for (int i = 0; i < m_frontends.size(); ++i) {
         if (m_frontends[i].id == id) {
             beginRemoveRows(QModelIndex(), i, i);
@@ -214,20 +214,19 @@ void BFrontendManager::handleFrontendRemoved(const QString &id)
 
 void BFrontendManager::handleActiveFrontendChanged(const QString &frontendId)
 {
-    qDebug() << "##################### " << __PRETTY_FUNCTION__;
-    qDebug() << "Frontend id = " << frontendId;
-    if (frontendId.startsWith("862")) {
-        qDebug() << "Gnome";
-    } else if (frontendId.startsWith("351")) {
-        qDebug() << "LunaXP";
-    }
+    //qDebug() << "##################### " << __PRETTY_FUNCTION__;
+    //qDebug() << "Frontend id = " << frontendId;
+    // if (frontendId.startsWith("862")) {
+    //     qDebug() << "Gnome";
+    // } else if (frontendId.startsWith("351")) {
+    //     qDebug() << "LunaXP";
+    // }
     if (m_activeFrontendIdMirror != frontendId) {
         // Update active status for all frontends
         for (int i = 0; i < m_frontends.size(); ++i) {
             bool newActive = m_frontends[i].id == frontendId;
             if (m_frontends[i].active != newActive) {
                 m_frontends[i].active = newActive;
-                qDebug() << "D--- " << "emit dataChanged()";
                 emit dataChanged(index(i), index(i), {ActiveRole});
             }
         }
@@ -238,6 +237,6 @@ void BFrontendManager::handleActiveFrontendChanged(const QString &frontendId)
 
 void BFrontendManager::handleGetActiveFrontend(const QString &frontendId)
 {
-    qDebug() << "##################### " << __PRETTY_FUNCTION__;
-    qDebug() << "Frontend id = " << frontendId;
+    //qDebug() << "##################### " << __PRETTY_FUNCTION__;
+    //qDebug() << "Frontend id = " << frontendId;
 }

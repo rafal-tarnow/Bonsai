@@ -309,5 +309,122 @@ Window {
     }
 
 
+    Rectangle{
+        id: baseNote
+        height: 260
+        width: 260
+        anchors.topMargin: 80
+        anchors.rightMargin: 80
+        anchors.top: parent.top
+        anchors.right: parent.right
+
+                color: "#66cded"
+
+        transformOrigin: Item.BottomRight
+        rotation: 6*diff
+
+        property int diff: 3
+
+        Rectangle{
+            height: 260
+            width: 260
+
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+
+                    color: "#daf2f4"
+
+            transformOrigin: Item.BottomRight
+            rotation: -baseNote.diff
+
+            Rectangle{
+                height: 260
+                width: 260
+
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+
+                        color: "#ffafea"
+
+                transformOrigin: Item.BottomRight
+                rotation: -baseNote.diff
+
+                Rectangle{
+                    height: 260
+                    width: 260
+
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+
+                            color: "#fff890"
+
+                    transformOrigin: Item.BottomRight
+                    rotation: -baseNote.diff
+
+                }
+
+                Rectangle{
+                    height: 260
+                    width: 260
+
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+
+                            color: "#fff890"
+
+                    transformOrigin: Item.BottomRight
+                    rotation: -baseNote.diff
+
+                    Rectangle{
+                        height: 260
+                        width: 260
+
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+
+                                color: "#d8b8ff"
+
+                        transformOrigin: Item.BottomRight
+                        rotation: -baseNote.diff
+
+
+                        Rectangle{
+                            height: 260
+                            width: 260
+
+                            anchors.bottom: parent.bottom
+                            anchors.right: parent.right
+
+                                    color: "#f6f0e2"
+
+                            transformOrigin: Item.BottomRight
+                            rotation: -baseNote.diff
+
+                            Rectangle{
+                                height: 260
+                                width: 260
+
+                                anchors.bottom: parent.bottom
+                                anchors.right: parent.right
+
+                                        color: "#96ebd6"
+
+                                transformOrigin: Item.BottomRight
+                                rotation: -baseNote.diff
+
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+
 }
 

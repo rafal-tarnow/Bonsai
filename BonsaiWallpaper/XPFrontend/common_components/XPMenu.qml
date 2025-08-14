@@ -8,6 +8,7 @@ Menu {
     topPadding: 3
     leftPadding: 3
     rightPadding: 3
+
     popupType: Popup.Window
     //popupType: Popup.Native
     //popupType: Popup.Item

@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 
-#include "FrontendManagerAPIService.hpp"
+#include "FavoriteAppsService.hpp"
+#include "FrontendManagerService.hpp"
 #include "GuiManager.hpp"
 #include "SessionService.hpp"
 #include "WindowManagerDBus.hpp"
@@ -27,5 +28,6 @@ private:
     WindowManagerDBus windowManagerDBus;
     SessionService m_sessionService;
     FrontendManagerService m_frontendManagerService;
+    FavoriteAppsService m_favoriteAppsService;
     GuiManager m_guiManager;
 };

@@ -1,16 +1,17 @@
 #pragma once
 
-#include <QQuickItem>
 #include <QProcess>
+#include <QQuickItem>
 #include <QQuickWindow>
+#include <QUrl>
 
-#include "./private/ProxyWindowController.hpp"
+#include "./client/private/ProxyWindowController.hpp"
 
 class BProxyWindow : public QQuickItem
 {
     Q_OBJECT
     QML_ELEMENT
-    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(int swapInterval READ swapInterval WRITE setSwapInterval NOTIFY swapIntervalChanged)
     Q_PROPERTY(bool proxyVisible READ proxyVisible WRITE setProxyVisible NOTIFY proxyVisibleChanged)
 
@@ -19,8 +20,8 @@ public:
     ~BProxyWindow();
 
     //source
-    QString source() const { return m_source; }
-    void setSource(const QString &source);
+    QUrl source() const { return m_source; }
+    void setSource(const QUrl &source);
 
     //proxyVisible
     bool proxyVisible() const;
@@ -41,15 +42,18 @@ private slots:
     void onProcessStarted();
     void onProcessReadyReadStandardOutput();
     void onProcessReadyReadStandardError();
+    void handleVisibleReceived(bool visible);
+    void handleProxyWindowConnected();
 
 private:
     void startProcess();
     void stopProcess();
 
     QProcess *m_process;
-    QString m_source;
+    QUrl m_source;
     ProxyWindowController *m_winController;
     QString m_serverName;
 
     int m_swapInterval;
+    bool m_proxyWindowVisible = false;
 };

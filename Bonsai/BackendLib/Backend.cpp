@@ -318,6 +318,14 @@ void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
     }
 }
 
+void Backend::setX11WindowTypeAsPopupMenu(QQuickWindow *window)
+{
+    //qDebug() << __PRETTY_FUNCTION__;
+    if (window) {
+        KX11Extras::setType(window->winId(), NET::WindowType::PopupMenu);
+    }
+}
+
 void Backend::setX11WindowTypeAsNotification(QQuickWindow *window)
 {
     //qDebug() << __PRETTY_FUNCTION__;
