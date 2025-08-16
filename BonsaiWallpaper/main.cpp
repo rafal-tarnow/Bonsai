@@ -19,7 +19,6 @@
 #include <BSessionManager.hpp>
 #include <Backend.hpp>
 #include <BackendAppsIconsProvider.hpp>
-#include <FavoriteAppsListModel.hpp>
 #include <TaskbarIconProvider.hpp>
 #include <helper/Process.hpp>
 #include <private/ProxyWindowServer.hpp>
@@ -96,7 +95,10 @@ int main(int argc, char *argv[])
         //SERVER
 
         Server server(&app, swapInterwalOption);
-        return app.exec();
+        int retValue = app.exec();
+
+        qDebug() << "SERVER EXIT SUCESSFULL with retValue=" << retValue;
+        return retValue;
 
     } else {
         //CLIENT
@@ -124,9 +126,6 @@ int main(int argc, char *argv[])
         FilterProxyModel filterProxyModel;
         filterProxyModel.setSourceModel(&appsListModel);
 
-        FavoriteAppsProxyModel favoriteAppsModel;
-        favoriteAppsModel.setSourceModel(&appsListModel);
-
         ProxyWindowLocalServer server;
         if (!server.startServer(proxyWinAddress)) {
             return -1;
@@ -135,7 +134,6 @@ int main(int argc, char *argv[])
         engine.rootContext()->setContextProperty("HOME", homePath);
         //Apps List models
         engine.rootContext()->setContextProperty("appsListModel", &filterProxyModel);
-        engine.rootContext()->setContextProperty("favoriteAppsModel", &favoriteAppsModel);
 
         engine.rootContext()->setContextProperty("backend", &backend);
 
@@ -162,10 +160,11 @@ int main(int argc, char *argv[])
         setWindowGeometry(engine, xOption, yOption, widthOption, heightOption, proxyVisibleOption);
         server.installWindow(engine);
 
-        auto retVal = app.exec();
-        qDebug() << "ĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘĘ CLIENT extit with retVal = " << retVal;
+        auto retValue = app.exec();
+
+        qDebug() << "PROXY CLIENT EXIT SUCESSFULL with retValue=" << retValue;
         logger.uninit();
-        return retVal;
+        return retValue;
     }
 }
 

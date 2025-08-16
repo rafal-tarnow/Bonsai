@@ -4,7 +4,7 @@
 #include <QDBusInterface>
 #include <qqml.h>
 
-class BFrontendManager : public QAbstractListModel
+class BFrontendModel : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
@@ -12,8 +12,8 @@ class BFrontendManager : public QAbstractListModel
     Q_PROPERTY(QString activeFrontend READ activeFrontend WRITE setActiveFrontend NOTIFY activeFrontendChanged)
 
 public:
-    explicit BFrontendManager(QObject *parent = nullptr);
-    ~BFrontendManager();
+    explicit BFrontendModel(QObject *parent = nullptr);
+    ~BFrontendModel();
 
     enum FrontendRoles {
         IdRole = Qt::UserRole + 1,

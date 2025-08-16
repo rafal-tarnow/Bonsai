@@ -41,8 +41,8 @@ qt_add_qml_module(${PROJECT_NAME}
     RESOURCES
     SOURCES AudioBackend.hpp
     SOURCES AudioBackend.cpp
-    SOURCES FavoriteAppsListModel.hpp
-    SOURCES FavoriteAppsListModel.cpp
+    SOURCES
+    SOURCES
     SOURCES ThemesModel.hpp
     SOURCES ThemesModel.cpp
     SOURCES WindowManagerDBus.hpp
@@ -72,8 +72,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES BTaskbarModel.cpp
     SOURCES BTaskbarBaseModel.hpp
     SOURCES BTaskbarBaseModel.cpp
-    SOURCES BFrontendManager.hpp
-    SOURCES BFrontendManager.cpp
+    SOURCES BFrontendModel.hpp
+    SOURCES BFrontendModel.cpp
     SOURCES server/FrontendManagerService.hpp
     SOURCES server/FrontendManagerService.cpp
     SOURCES private/ProxyWindowServer.cpp
@@ -94,6 +94,9 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES server/FavoriteAppsService.cpp
     SOURCES server/Application.hpp
     SOURCES server/Application.cpp
+    SOURCES BFavoritesAppsModel.hpp
+    SOURCES BFavoritesAppsModel.cpp
+    SOURCES server/FavoriteAppsListModel.hpp
 )
 
 qt6_add_statecharts(${PROJECT_NAME}

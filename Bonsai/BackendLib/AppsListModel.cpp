@@ -120,9 +120,15 @@ QString ApplicationModel::getExecById(const QString &appId) const {
             return app.exec;
         }
     }
-    return QString(""); // Zwraca pusty QString, jeśli nie znaleziono aplikacji
+    return QString("");
 }
 
-
-
-
+Application ApplicationModel::getApplicationById(const QString &appId) const
+{
+    for (const Application &app : apps) {
+        if (app.id == appId) {
+            return app;
+        }
+    }
+    return {};
+}

@@ -35,12 +35,9 @@ void QmlGui::initQmlEngine()
 
     filterProxyModel.setSourceModel(&appsListModel);
 
-    favoriteAppsModel.setSourceModel(&appsListModel);
-
     engine.rootContext()->setContextProperty("HOME", homePath);
     //Apps List models
     engine.rootContext()->setContextProperty("appsListModel", &filterProxyModel);
-    engine.rootContext()->setContextProperty("favoriteAppsModel", &favoriteAppsModel);
 
     engine.rootContext()->setContextProperty("backend", &backend);
 
@@ -52,7 +49,6 @@ void QmlGui::initQmlEngine()
         &QQmlApplicationEngine::objectCreationFailed,
         m_app,
         []() {
-            qDebug() << "QQQQQQQQQQQQQQQQQQQQQQQQQ";
             QCoreApplication::exit(-1);
         },
         Qt::QueuedConnection);

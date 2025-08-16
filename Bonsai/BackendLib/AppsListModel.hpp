@@ -39,7 +39,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
+
     QString getExecById(const QString& appId) const;
+    Application getApplicationById(const QString &appId) const;
 
 private:
     QList<Application> apps;

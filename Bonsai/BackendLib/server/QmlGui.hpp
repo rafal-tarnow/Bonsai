@@ -7,8 +7,8 @@
 #include "../AudioBackend.hpp"
 #include "../Backend.hpp"
 #include "../BackendAppsIconsProvider.hpp"
-#include "../FavoriteAppsListModel.hpp"
 #include "../TaskbarIconProvider.hpp"
+#include "FavoriteAppsListModel.hpp"
 
 class QmlGui : public QObject
 {
@@ -34,6 +34,5 @@ private:
     TaskbarIconsProvider taskbarIconProvider;
     ApplicationModel appsListModel;
     FilterProxyModel filterProxyModel;
-    FavoriteAppsProxyModel favoriteAppsModel;
     AudioBackend audioBackend;
 };

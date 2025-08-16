@@ -1,47 +1,58 @@
 #pragma once
 
-#include <QSortFilterProxyModel>
-#include <QtConcurrent>
 #include <QFuture>
 #include <QSettings>
-#include "AppsListModel.hpp"
+#include <QSortFilterProxyModel>
+#include <QtConcurrent>
+#include "../AppsListModel.hpp"
 
-class FavoriteAppsProxyModel : public QSortFilterProxyModel {
+class FavoriteAppsProxyModel : public QSortFilterProxyModel
+{
     Q_OBJECT
 public:
     explicit FavoriteAppsProxyModel(QObject *parent = nullptr)
-        : QSortFilterProxyModel(parent){
-
+        : QSortFilterProxyModel(parent)
+    {
         loadFavoritesAsync();
     }
 
-    Q_INVOKABLE void addFavorite(const QString &appId) {
+    Q_INVOKABLE void addFavorite(const QString &appId)
+    {
+        qDebug() << "333333333333333333333" << __PRETTY_FUNCTION__;
         if (!favoriteAppsIds.contains(appId)) {
             favoriteAppsIds.append(appId);
             saveFavoritesAsync();
             invalidateFilter();
+            qDebug() << "4444444444444444444444" << __PRETTY_FUNCTION__;
+            emit favoriteAdded(appId);
             emit favoritesChanged();
         }
     }
 
-    Q_INVOKABLE void removeFavorite(const QString &appId) {
+    Q_INVOKABLE void removeFavorite(const QString &appId)
+    {
         if (favoriteAppsIds.contains(appId)) {
             favoriteAppsIds.removeAll(appId);
             saveFavoritesAsync();
             invalidateFilter();
+            emit favoriteRemoved(appId);
             emit favoritesChanged();
         }
     }
 
-    Q_INVOKABLE bool isFavorite(const QString &appId) const {
+    Q_INVOKABLE bool isFavorite(const QString &appId) const
+    {
         return favoriteAppsIds.contains(appId);
     }
 
 signals:
     void favoritesChanged();
+    void favoriteAdded(const QString &appId);
+    void favoriteRemoved(const QString &appId);
 
 protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override {
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override
+    {
         QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
         QString appId = index.data(ApplicationModel::IdRole).toString();
         return isFavorite(appId);
@@ -50,7 +61,8 @@ protected:
 private:
     QStringList favoriteAppsIds;
 
-    void loadFavoritesAsync() {
+    void loadFavoritesAsync()
+    {
         QFuture<QStringList> future = QtConcurrent::run([] {
             QSettings settings;
             return settings.value("FavoriteAppsList", QStringList()).toStringList();
@@ -67,7 +79,8 @@ private:
         watcher->setFuture(future);
     }
 
-    void saveFavoritesAsync() {
+    void saveFavoritesAsync()
+    {
         QStringList copy = favoriteAppsIds;
         [[maybe_unused]] auto future = QtConcurrent::run([copy]() {
             QSettings settings;

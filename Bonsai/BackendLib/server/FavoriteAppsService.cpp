@@ -4,8 +4,9 @@
 #include <QDebug>
 
 FavoriteAppsDBus::FavoriteAppsDBus(QObject *parent)
-    : QDBusAbstractAdaptor(parent)
+    : QObject(parent)
 {
+    qDebug() << "-1-1-1-1-1-1-1-1-1-1-1-1-1-1" << __PRETTY_FUNCTION__;
     FavApplication::registerDBusTypes();
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
@@ -15,58 +16,135 @@ FavoriteAppsDBus::FavoriteAppsDBus(QObject *parent)
 
     if (!sessionBus.registerObject("/FavoriteApplications",
                                    this,
-                                   QDBusConnection::ExportScriptableSlots)) {
+                                   QDBusConnection::ExportScriptableSlots
+                                       | QDBusConnection::ExportScriptableSignals)) {
         qFatal("Failed to register D-Bus object: %s", qPrintable(sessionBus.lastError().message()));
     }
 }
 
 FavoriteAppsDBus::~FavoriteAppsDBus() {}
 
+void FavoriteAppsDBus::setFavoritesModel(FavoriteAppsProxyModel *model)
+{
+    if (m_favoritesModel) {
+        disconnect(m_favoritesModel, nullptr, this, nullptr);
+    }
+
+    m_favoritesModel = model;
+
+    if (m_favoritesModel) {
+        connect(m_favoritesModel,
+                &FavoriteAppsProxyModel::favoriteAdded,
+                this,
+                &FavoriteAppsDBus::_onFavoriteAdded);
+
+        connect(m_favoritesModel,
+                &FavoriteAppsProxyModel::favoriteRemoved,
+                this,
+                &FavoriteAppsDBus::_onFavoriteRemoved);
+
+        connect(m_favoritesModel,
+                &FavoriteAppsProxyModel::favoritesChanged,
+                this,
+                &FavoriteAppsDBus::favoritesChanged);
+    }
+}
+
 void FavoriteAppsDBus::addFavorite(const QString &appId)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " id=" << appId;
-    return;
+    qDebug() << "1111111111111111111" << __PRETTY_FUNCTION__;
+    if (m_favoritesModel) {
+        qDebug() << "2222222222222222" << __PRETTY_FUNCTION__;
+        m_favoritesModel->addFavorite(appId);
+    } else {
+        qWarning() << "Favorite model not set in DBus adaptor!";
+    }
 }
 
 void FavoriteAppsDBus::removeFavorite(const QString &appId)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " id=" << appId;
-    return;
+    if (m_favoritesModel) {
+        m_favoritesModel->removeFavorite(appId);
+    } else {
+        qWarning() << "Favorite model not set in DBus adaptor!";
+    }
 }
 
 QVector<FavApplication> FavoriteAppsDBus::getFavorites()
 {
-    qDebug() << "TEST 3 TEST 3 TEST 3 TEST 3 TEST 3 TEST 3 TEST 3 D-BUS";
-
     QVector<FavApplication> favApplications;
+    if (!m_favoritesModel) {
+        qWarning() << "Favorite model not set in DBus adaptor!";
+        return favApplications;
+    }
 
-    FavApplication app;
-    app.name = "app 1";
-    app.id = "id 1";
+    auto *sourceModel = dynamic_cast<ApplicationModel *>(m_favoritesModel->sourceModel());
+    if (!sourceModel) {
+        qWarning() << "Invalid source model!";
+        return favApplications;
+    }
 
-    favApplications.append(app);
+    for (int i = 0; i < m_favoritesModel->rowCount(); ++i) {
+        QModelIndex proxyIndex = m_favoritesModel->index(i, 0);
+        QString appId = m_favoritesModel->data(proxyIndex, ApplicationModel::IdRole).toString();
+        Application appData = sourceModel->getApplicationById(appId);
 
-    app.name = "app 2";
-    app.id = "id 2";
-
-    favApplications.append(app);
+        if (!appData.id.isEmpty()) {
+            FavApplication app{appData.id, appData.name, appData.exec, appData.icon};
+            favApplications.append(app);
+        }
+    }
 
     return favApplications;
 }
 
-void FavoriteAppsDBus::testSlot()
+void FavoriteAppsDBus::_onFavoriteAdded(const QString &appId)
 {
-    qDebug() << "TEST 1 TEST 1 TEST 1 TEST 1 TEST 1 TEST 1 TEST 1 D-BUS";
+    qDebug() << "5555555555555555555" << __PRETTY_FUNCTION__;
+    if (!m_favoritesModel)
+        return;
+
+    auto *sourceModel = dynamic_cast<ApplicationModel *>(m_favoritesModel->sourceModel());
+
+    if (!sourceModel)
+        return;
+
+    Application appData = sourceModel->getApplicationById(appId);
+
+    if (appData.id.isEmpty())
+        return;
+
+    FavApplication favApp{appData.id, appData.name, appData.exec, appData.icon};
+    qDebug() << "66666666666666666666666" << __PRETTY_FUNCTION__;
+    emit favoriteAdded(favApp);
 }
 
-void FavoriteAppsDBus::testSlotSecond()
+void FavoriteAppsDBus::_onFavoriteRemoved(const QString &appId)
 {
-    qDebug() << "TEST 2 TEST 2 TEST 2 TEST 2 TEST 2 TEST 2 TEST 2 D-BUS";
+    if (!m_favoritesModel)
+        return;
+
+    auto *sourceModel = dynamic_cast<ApplicationModel *>(m_favoritesModel->sourceModel());
+
+    if (!sourceModel)
+        return;
+
+    Application appData = sourceModel->getApplicationById(appId);
+
+    if (appData.id.isEmpty())
+        return;
+
+    FavApplication favApp{appData.id, appData.name, appData.exec, appData.icon};
+    qDebug() << "EEEEEEEEEEEEemit signal : emit favoriteRemoved(favApp); ";
+    emit favoriteRemoved(favApp);
 }
 
-FavoriteAppsService::FavoriteAppsService(QObject *parent)
+FavoriteAppsService::FavoriteAppsService(QObject *parent, QAbstractItemModel *sourceModel)
     : QObject(parent)
-    , favoriteAppsDBus(this)
-{}
+    , m_favoriteAppsDBus(this)
+{
+    m_favoriteAppsModel.setSourceModel(sourceModel);
+    m_favoriteAppsDBus.setFavoritesModel(&m_favoriteAppsModel);
+}
 
 FavoriteAppsService::~FavoriteAppsService() {}

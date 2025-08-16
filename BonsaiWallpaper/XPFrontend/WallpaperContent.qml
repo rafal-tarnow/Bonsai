@@ -52,7 +52,7 @@ Image {
 
 
 
-    BFrontendManager{
+    BFrontendModel{
         id: frontendManager
     }
 

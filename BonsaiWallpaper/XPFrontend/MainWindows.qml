@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick3D
 import QtWebEngine
+import QtQuick.Effects
+
 import Bonsai.Backend
 
 import "./common_components"
@@ -37,7 +39,6 @@ Window {
     //property var sink:
 
     //----------------------------------------
-
 
 
     Timer {
@@ -318,12 +319,29 @@ Window {
         anchors.top: parent.top
         anchors.right: parent.right
 
+         visible: true
+
                 color: "#66cded"
 
         transformOrigin: Item.BottomRight
         rotation: 6*diff
 
         property int diff: 3
+
+        // layer.enabled: true
+
+        // layer.effect: MultiEffect {
+
+        //     autoPaddingEnabled: true
+        //     shadowEnabled: true
+        //     shadowBlur: 0.4
+        //     shadowHorizontalOffset: 2.4
+        //     shadowOpacity: 0.5
+        //     shadowScale: 1.0
+        //     shadowVerticalOffset: 2.4
+        //     visible: true //don't work in layer
+        //     opacity: 1.0 //don't work in layer
+        // }
 
         Rectangle{
             height: 260
@@ -424,6 +442,24 @@ Window {
         }
 
     }
+
+    // MultiEffect {
+    //     source: baseNote
+    //     anchors.fill: baseNote
+
+    //     transformOrigin: Item.BottomRight
+    //     rotation: 6*3
+
+    // autoPaddingEnabled: true
+    // shadowEnabled: true
+    // shadowBlur: 0.4
+    // shadowHorizontalOffset: 2.4
+    // shadowOpacity: 0.5
+    // shadowScale: 1.0
+    // shadowVerticalOffset: 2.4
+    // visible: true //don't work in layer
+    // opacity: 1.0 //don't work in layer
+    // }
 
 
 }

@@ -147,10 +147,9 @@ void Logger::connectToServer(const QString &serverName)
 
 void Logger::sendLog(const QString message)
 {
-    qDebug() << __PRETTY_FUNCTION__;
     if (m_socket.state() != QLocalSocket::ConnectedState) {
-        qDebug() << "[ERROR] " << __PRETTY_FUNCTION__
-                 << " Controller: Socket not connected. Cannot send command.";
+        //qDebug() << "[ERROR] " << __PRETTY_FUNCTION__
+        //         << " Controller: Socket not connected. Cannot send command.";
         return;
     }
 

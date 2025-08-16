@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
+import Bonsai.Backend
 import "../common_components"
 
 Image{
@@ -27,6 +28,10 @@ Image{
         if(!visible){
             resetState()
         }
+    }
+
+    BFavoritesAppsModel{
+    id: favoriteAppsModel
     }
 
     FontLoader {
@@ -62,10 +67,10 @@ Image{
                     width: parent.width
                     height: 36
 
-                    required property string name
-                    required property string icon
-                    required property string exec
-                    required property string id
+                    required property string appName
+                    required property string appIcon
+                    required property string appExec
+                    required property string appId
 
                     color: recentAppsDelegateMouseArea.containsMouse ? "#316ac5" : "#FFFFFF"
 
@@ -74,7 +79,7 @@ Image{
                         anchors.left: parent.left
                         anchors.leftMargin: 2
                         anchors.verticalCenter: parent.verticalCenter
-                        source: "image://backend_app_icon/" + recentAppsDelegate.icon
+                        source: "image://backend_app_icon/" + recentAppsDelegate.appIcon
                         width: 32
                         height: 32
                         fillMode: Image.PreserveAspectFit
@@ -88,7 +93,7 @@ Image{
                         anchors.leftMargin: 4
                         anchors.verticalCenter: parent.verticalCenter
                         width: parent.width - recentAppsImage.width - anchors.leftMargin - 8 // Odjęcie marginesów
-                        text: recentAppsDelegate.name
+                        text: recentAppsDelegate.appName
 
                         font.family: "Tahoma"
                         font.styleName: "Regular"
@@ -117,8 +122,8 @@ Image{
                                            recentAppsContextMenu.popup(mouse.x + 1, mouse.y)
                                        } else {
                                            root.requestHide()
-                                           console.log("qml: try run app: id = " + id + " exec = " + exec);
-                                           backend.runCommand(exec)
+                                           console.log("qml: try run app: id = " + appId + " exec = " + appExec);
+                                           backend.runCommand(appExec)
                                        }
                                    }
                     }
@@ -163,7 +168,7 @@ Image{
                         XPMenuItem {
                             text: "Remove from This List"
                             onTriggered: {
-                                favoriteAppsModel.removeFavorite(id);
+                                favoriteAppsModel.removeFavorite(appId);
                             }
                         }
                         XPMenuItem {

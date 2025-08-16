@@ -1,12 +1,13 @@
-#include "BFrontendManager.hpp"
+#include "BFrontendModel.hpp"
+#include <QDBusPendingReply>
 #include <QDir>
 #include <QUuid>
-#include <QDBusPendingReply>
 #include <QVariant>
 #include <QVariantList>
 #include <qdbusmetatype.h>
 
-BFrontendManager::BFrontendManager(QObject *parent) : QAbstractListModel(parent)
+BFrontendModel::BFrontendModel(QObject *parent)
+    : QAbstractListModel(parent)
 {
     //qDebug() << ">>>>>>>>>>>>>>>> new >>>>>>>>>>>>>>>>>>>>" << __PRETTY_FUNCTION__;
     qDBusRegisterMetaType<QVariantMap>();
@@ -32,20 +33,18 @@ BFrontendManager::BFrontendManager(QObject *parent) : QAbstractListModel(parent)
             this,
             SLOT(handleActiveFrontendChanged(QString)));
 
-    // Pobierz początkową listę frontendów
-    //qDebug() << "RRRRRRRRRRRRRRRRRRRR getFrontendList()";
     QDBusPendingCall call = m_dbusInterface->asyncCall("getFrontendList");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher,
             &QDBusPendingCallWatcher::finished,
             this,
-            &BFrontendManager::handleFrontendListReply);
+            &BFrontendModel::handleFrontendListReply);
 
     // Pobierz początkowy activeFrontendId
     loadActiveFrontend();
 }
 
-void BFrontendManager::loadActiveFrontend()
+void BFrontendModel::loadActiveFrontend()
 {
     //qDebug() << "RRRRRRRRRRRRRRRRRRRR activeFrontend()";
     QDBusPendingCall call = m_dbusInterface->asyncCall("activeFrontend");
@@ -66,19 +65,20 @@ void BFrontendManager::loadActiveFrontend()
             });
 }
 
-BFrontendManager::~BFrontendManager()
+BFrontendModel::~BFrontendModel()
 {
     //qDebug() << "<<<<<<<<<<<<<<<<<< delete <<<<<<<<<<<<<<<<<<" << __PRETTY_FUNCTION__;
-    delete m_dbusInterface;
+    m_dbusInterface->deleteLater();
+    m_dbusInterface = nullptr;
 }
 
-int BFrontendManager::rowCount(const QModelIndex &parent) const
+int BFrontendModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_frontends.size();
 }
 
-QVariant BFrontendManager::data(const QModelIndex &index, int role) const
+QVariant BFrontendModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() >= m_frontends.size())
         return QVariant();
@@ -100,7 +100,7 @@ QVariant BFrontendManager::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> BFrontendManager::roleNames() const
+QHash<int, QByteArray> BFrontendModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[IdRole] = "frontendId";
@@ -111,12 +111,12 @@ QHash<int, QByteArray> BFrontendManager::roleNames() const
     return roles;
 }
 
-QString BFrontendManager::activeFrontend() const
+QString BFrontendModel::activeFrontend() const
 {
     return m_activeFrontendIdMirror;
 }
 
-void BFrontendManager::setActiveFrontend(const QString &frontendId)
+void BFrontendModel::setActiveFrontend(const QString &frontendId)
 {
     //qDebug() << "Client 1 " << __PRETTY_FUNCTION__ << " Client side, befor send request via d-bus";
     QDBusPendingCall call = m_dbusInterface->asyncCall("setActiveFrontend", frontendId);
@@ -129,7 +129,7 @@ void BFrontendManager::setActiveFrontend(const QString &frontendId)
     });
 }
 
-void BFrontendManager::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
+void BFrontendModel::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
 {
     //qDebug() << "##################### " << __PRETTY_FUNCTION__;
     QDBusPendingReply<QVariantList> reply = *watcher;
@@ -182,10 +182,10 @@ void BFrontendManager::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
     watcher->deleteLater();
 }
 
-void BFrontendManager::handleFrontendAdded(const QString &id,
-                                           const QString &name,
-                                           const QString &description,
-                                           const QString &path)
+void BFrontendModel::handleFrontendAdded(const QString &id,
+                                         const QString &name,
+                                         const QString &description,
+                                         const QString &path)
 {
     //qDebug() << "############## " << __PRETTY_FUNCTION__;
     beginInsertRows(QModelIndex(), m_frontends.size(), m_frontends.size());
@@ -199,7 +199,7 @@ void BFrontendManager::handleFrontendAdded(const QString &id,
     endInsertRows();
 }
 
-void BFrontendManager::handleFrontendRemoved(const QString &id)
+void BFrontendModel::handleFrontendRemoved(const QString &id)
 {
     //qDebug() << "############## " << __PRETTY_FUNCTION__;
     for (int i = 0; i < m_frontends.size(); ++i) {
@@ -212,7 +212,7 @@ void BFrontendManager::handleFrontendRemoved(const QString &id)
     }
 }
 
-void BFrontendManager::handleActiveFrontendChanged(const QString &frontendId)
+void BFrontendModel::handleActiveFrontendChanged(const QString &frontendId)
 {
     //qDebug() << "##################### " << __PRETTY_FUNCTION__;
     //qDebug() << "Frontend id = " << frontendId;
@@ -235,7 +235,7 @@ void BFrontendManager::handleActiveFrontendChanged(const QString &frontendId)
     }
 }
 
-void BFrontendManager::handleGetActiveFrontend(const QString &frontendId)
+void BFrontendModel::handleGetActiveFrontend(const QString &frontendId)
 {
     //qDebug() << "##################### " << __PRETTY_FUNCTION__;
     //qDebug() << "Frontend id = " << frontendId;
