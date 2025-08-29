@@ -1,25 +1,25 @@
 #include "Backend.hpp"
 
-#include <QGuiApplication>
-#include <QRegularExpression>
 #include <QDebug>
 #include <QDir>
+#include <QDirIterator>
 #include <QFile>
+#include <QGuiApplication>
+#include <QRegularExpression>
 #include <QStandardPaths>
 #include <QUrl>
-#include <QDirIterator>
 
 #include <KX11Extras>
 
 #include "./helper/Process.hpp"
 
 Backend::Backend(QString homeEnv, QObject *parent)
-    : QObject(parent),
-    m_cpuFile("/proc/stat"),
-    m_measureCpuLoad(false),
-    HOME_ENV(homeEnv),
-    mask(this),
-    strutManager(this)
+    : QObject(parent)
+    , m_cpuFile("/proc/stat")
+    , m_measureCpuLoad(false)
+    , HOME_ENV(homeEnv)
+    , mask(this)
+    , strutManager(this)
 {
     m_platformName = QGuiApplication::platformName();
     if (m_platformName == "xcb") {
@@ -31,9 +31,10 @@ Backend::Backend(QString homeEnv, QObject *parent)
     connect(&m_timer, &QTimer::timeout, this, &Backend::updateCpuLoad);
 }
 
-Backend::~Backend() {
+Backend::~Backend()
+{
     if (m_cpuFile.isOpen()) {
-        m_cpuFile.close();  // Zamknięcie pliku w destruktorze
+        m_cpuFile.close(); // Zamknięcie pliku w destruktorze
     }
 }
 
@@ -47,14 +48,13 @@ void Backend::setActiveFrontend(const QString &themeId)
     qDebug() << __PRETTY_FUNCTION__ << " ==================================== ";
 }
 
-
-
-void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall) {
+void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall)
+{
     qDebug() << __PRETTY_FUNCTION__ << themeUrl;
 
-
     // // Docelowa lokalizacja: $HOME/.local/share/aurorae/themes
-    QString targetDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/aurorae/themes";
+    QString targetDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+                            + "/aurorae/themes";
     QDir targetDir(targetDirPath);
 
     if (!targetDir.exists()) {
@@ -97,7 +97,8 @@ void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall) {
     // Sprawdź, czy motyw już istnieje i zdecyduj, co robić
     if (targetThemeDir.exists()) {
         if (forceReinstall) {
-            qDebug() << "Theme already exists at:" << targetThemePath << ". Forcing reinstallation.";
+            qDebug() << "Theme already exists at:" << targetThemePath
+                     << ". Forcing reinstallation.";
             targetThemeDir.removeRecursively(); // Usuń istniejący katalog, aby nadpisać
         } else {
             qDebug() << "Theme already exists at:" << targetThemePath << ". Skipping installation.";
@@ -119,7 +120,8 @@ void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall) {
     }
 }
 
-bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targetPath) {
+bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targetPath)
+{
     QDir targetDir(targetPath);
 
     if (!targetDir.exists() && !targetDir.mkpath(".")) {
@@ -153,7 +155,8 @@ bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targe
     return true;
 }
 
-bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetPath) {
+bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetPath)
+{
     QDir targetDir(targetPath);
     if (!targetDir.exists() && !targetDir.mkpath(".")) {
         qWarning() << "Failed to create target directory:" << targetPath;
@@ -209,16 +212,15 @@ void Backend::minimalizeAllWindows()
     }
 }
 
-void Backend::startApplication(const QString &id)
+void Backend::startApplication(const QString &id) {}
+
+void Backend::startProcess(const QString &proc)
 {
-
-}
-
-void Backend::startProcess(const QString &proc) {
     QProcess::startDetached(proc);
 }
 
-void Backend::runCommand(const QString &cmd) {
+void Backend::runCommand(const QString &cmd)
+{
     QStringList parts = cmd.split(' ', Qt::SkipEmptyParts);
     QString program = parts.takeFirst();
     QStringList filteredArgs;
@@ -228,9 +230,13 @@ void Backend::runCommand(const QString &cmd) {
         }
     }
 
+    // Dlaczego filtrujemy zmienne środowiskowe, założmy ze mamy bonsai skompilowane z innymi bibliotekami niż aplikacja w docelowym systemie, jezeli w zmiennych bedzie
+    // LD_LIBRARY_PATH do sciezki z bibliotekami bonsai to aplikacja bedzie linkowala do bibliotek bonsai zamiast do bibliotek systemowych
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
-    filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
+    QString homePath = qgetenv("HOME");
+    //filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
+    filterProcessEnvironment(env, homePath + "/Bonsai_install/Bonsai_1.0.0/lib");
 
     QProcess process;
     process.setProgram(program);
@@ -239,10 +245,9 @@ void Backend::runCommand(const QString &cmd) {
     process.startDetached();
 }
 
-void Backend::reservePanelLeftArea(QQuickWindow * window, int x, int y, int width, int height)
+void Backend::reservePanelLeftArea(QQuickWindow *window, int x, int y, int width, int height)
 {
     strutManager.reservePanelLeftArea(window, x, y, width, height);
-
 }
 
 void Backend::reservePanelRightArea(QQuickWindow *window, int x, int y, int width, int height)
@@ -273,7 +278,7 @@ void Backend::setX11WindowTypeAsNormal(QQuickWindow *window)
 void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
 {
     //qDebug() << __PRETTY_FUNCTION__;
-    if(window){
+    if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Desktop);
     }
 }
@@ -281,7 +286,7 @@ void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
 void Backend::setX11WindowTypeAsDock(QQuickWindow *window)
 {
     //qDebug() << __PRETTY_FUNCTION__;
-    if(window){
+    if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Dock);
     }
 }
@@ -305,7 +310,7 @@ void Backend::setX11WindowTypeAsMenu(QQuickWindow *window)
 void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
 {
     //qDebug() << __PRETTY_FUNCTION__;
-    if(window){
+    if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Override);
     }
 }
@@ -313,7 +318,7 @@ void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
 void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
 {
     //qDebug() << __PRETTY_FUNCTION__;
-    if(window){
+    if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::TopMenu);
     }
 }
@@ -329,12 +334,13 @@ void Backend::setX11WindowTypeAsPopupMenu(QQuickWindow *window)
 void Backend::setX11WindowTypeAsNotification(QQuickWindow *window)
 {
     //qDebug() << __PRETTY_FUNCTION__;
-    if(window){
+    if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Notification);
     }
 }
 
-QString Backend::platformName() const {
+QString Backend::platformName() const
+{
     return m_platformName;
 }
 
@@ -343,14 +349,20 @@ QString Backend::qtVersion() const
     return QString(qVersion());
 }
 
-float Backend::cpuLoad() const { return m_cpuLoad; }
+float Backend::cpuLoad() const
+{
+    return m_cpuLoad;
+}
 
-bool Backend::measureCpuLoad() const {
+bool Backend::measureCpuLoad() const
+{
     return m_measureCpuLoad;
 }
 
-void Backend::setMeasureCpuLoad(bool enable) {
-    if (m_measureCpuLoad == enable) return;  // Sprawdzenie, czy stan się zmienił
+void Backend::setMeasureCpuLoad(bool enable)
+{
+    if (m_measureCpuLoad == enable)
+        return; // Sprawdzenie, czy stan się zmienił
 
     m_measureCpuLoad = enable;
     emit measureCpuLoadChanged();
@@ -363,17 +375,18 @@ void Backend::setMeasureCpuLoad(bool enable) {
                 return;
             }
         }
-        m_timer.start(1000);  // Uruchomienie timera
+        m_timer.start(1000); // Uruchomienie timera
     } else {
         // Wyłączenie pomiaru CPU
-        m_timer.stop();  // Zatrzymanie timera
+        m_timer.stop(); // Zatrzymanie timera
         if (m_cpuFile.isOpen()) {
-            m_cpuFile.close();  // Zamknięcie pliku
+            m_cpuFile.close(); // Zamknięcie pliku
         }
     }
 }
 
-void Backend::updateCpuLoad() {
+void Backend::updateCpuLoad()
+{
     if (!m_cpuFile.isOpen()) {
         qWarning() << "Plik /proc/stat nie jest otwarty";
         return;
@@ -386,7 +399,8 @@ void Backend::updateCpuLoad() {
     QString line = in.readLine();
 
     QStringList cpuData = line.split(QRegularExpression("\\s+"));
-    if (cpuData.size() < 8) return;
+    if (cpuData.size() < 8)
+        return;
 
     long long user = cpuData[1].toLongLong();
     long long nice = cpuData[2].toLongLong();
@@ -420,4 +434,3 @@ void Backend::removeMaskedItem(QQuickItem *item)
 {
     mask.removeMaskedItem(item);
 }
-

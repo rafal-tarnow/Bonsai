@@ -12,7 +12,7 @@ include(FindPkgConfig)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 
-find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Gui Quick DBus Concurrent Scxml)
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Core Gui Quick DBus Concurrent Scxml)
 find_package(KF6 ${REQUIRED_KF_VERSION} REQUIRED COMPONENTS Config WindowSystem)
 find_package(KF6PulseAudioQt ${REQUIRED_PULSEAUDIOQT_VERSION} REQUIRED)
 
@@ -110,6 +110,7 @@ add_library(BonsaiBackendLib STATIC "")
 target_include_directories(BonsaiBackendLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME}
+    PRIVATE Qt6::Core
     PRIVATE Qt6::DBus
     PRIVATE Qt6::Gui
     PRIVATE Qt6::Quick
@@ -124,5 +125,16 @@ target_link_libraries(${PROJECT_NAME}
 target_link_libraries(BonsaiBackendLib PRIVATE BonsaiBackend)
 target_link_libraries(BonsaiBackendLib PRIVATE plasma-volume)
 
-install(TARGETS ${PROJECT_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(DIRECTORY assets/wallpapers/ DESTINATION ${KDE_INSTALL_WALLPAPERDIR}/Cask)
+include(GNUInstallDirs)
+
+install(TARGETS ${PROJECT_NAME}
+    # Pliki wykonywalne (runtime) idą do podfolderu /bin
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    # Biblioteki (.so, .dll) idą do podfolderu /lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    # Pliki dla archiwizatora/linkera idą do podfolderu /lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+#install(TARGETS ${PROJECT_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+#install(DIRECTORY assets/wallpapers/ DESTINATION ${KDE_INSTALL_WALLPAPERDIR}/Cask)

@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
     QString modeOption, sourceOption, proxyWinAddress;
     int xOption, yOption, widthOption, heightOption, swapInterwalOption;
     bool proxyVisibleOption;
+
     getCmdLineOptions(app,
                       modeOption,
                       sourceOption,
@@ -87,9 +88,7 @@ int main(int argc, char *argv[])
                       proxyWinAddress,
                       proxyVisibleOption);
 
-    qDebug() << "[INFO] " << "Proxy Window Address: " << proxyWinAddress;
-
-    qDebug() << "ŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻŻZZ proxyVisibleOption = " << proxyVisibleOption;
+    qDebug() << "[STARTUP INFO] " << "Proxy Window Address: " << proxyWinAddress;
 
     if (modeOption == "server") {
         //SERVER

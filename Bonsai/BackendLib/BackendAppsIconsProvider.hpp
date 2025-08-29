@@ -15,6 +15,8 @@ public:
 
         QString homePath = qgetenv("HOME");
         QStringList searchPaths;
+#warning "Icon path system must be better designed"
+        searchPaths << QString(homePath + "/.local/share/icons");
         searchPaths << QString(homePath + "/Bonsai/icons");
         QIcon::setThemeSearchPaths(searchPaths);
         QIcon::setThemeName("oxygen");

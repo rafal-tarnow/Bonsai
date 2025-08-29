@@ -10,6 +10,7 @@ WindowManagerX11Service::WindowManagerX11Service(QObject *parent)
     : QObject(parent)
     , m_kwinBus(QDBusConnection::sessionBus())
 {
+    qDebug() << "[STARTUP INFO] Starting: " << __PRETTY_FUNCTION__;
     QString dbusAddress = qgetenv("DBUS_SESSION_BUS_ADDRESS");
 
     if (!dbusAddress.isEmpty()) {
@@ -54,7 +55,7 @@ WindowManagerX11Service::~WindowManagerX11Service() {}
 
 void WindowManagerX11Service::unloadEffect(const QString &effectName)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " effectName = " << effectName;
+    //qDebug() << __PRETTY_FUNCTION__ << " effectName = " << effectName;
 
     //qDebug() << __PRETTY_FUNCTION__ << effectName;
     QDBusMessage message = QDBusMessage::createMethodCall("org.kde.KWin",         // Serwis
@@ -73,7 +74,8 @@ void WindowManagerX11Service::unloadEffect(const QString &effectName)
         QDBusPendingReply<> reply = *watcher;
         if (reply.isError()) {
             //emit errorOccurred(effectName, reply.error().message());
-            //qDebug() << "Błąd D-Bus dla efektu" << effectName << ":" << reply.error().message();
+            qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " Błąd D-Bus dla efektu" << effectName
+                     << ":" << reply.error().message();
         } else {
             //emit effectUnloaded(effectName);
             //qDebug() << "Efekt" << effectName << "został pomyślnie rozładowany";

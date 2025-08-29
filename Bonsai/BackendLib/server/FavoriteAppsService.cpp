@@ -6,7 +6,7 @@
 FavoriteAppsDBus::FavoriteAppsDBus(QObject *parent)
     : QObject(parent)
 {
-    qDebug() << "-1-1-1-1-1-1-1-1-1-1-1-1-1-1" << __PRETTY_FUNCTION__;
+    qDebug() << "[STARTUP INFO] Starting: " << __PRETTY_FUNCTION__;
     FavApplication::registerDBusTypes();
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();

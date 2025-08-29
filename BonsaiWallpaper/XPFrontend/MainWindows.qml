@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick3D
 import QtWebEngine
 import QtQuick.Effects
+import QtCore
 
 import Bonsai.Backend
 
@@ -429,6 +430,26 @@ Window {
 
                                 transformOrigin: Item.BottomRight
                                 rotation: -baseNote.diff
+
+                                TextArea{
+                                    id: noteTxt
+                                    anchors.fill: parent
+                                    anchors.margins: 10
+
+                                    placeholderText: "New note..."
+                                    wrapMode: Text.WordWrap
+                                    font.family: "Segoe UI"
+                                    font.pointSize: 12
+
+                                    onTextChanged: {
+                                        ustawienia.setValue("tekstNotatki", text);
+                                    }
+
+                                    Settings {
+                                        property alias noteText: noteTxt.text
+                                    }
+
+                                }
 
                             }
 

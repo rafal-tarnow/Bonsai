@@ -86,7 +86,7 @@ void Logger::stop()
 
 void Logger::onSocketConnected()
 {
-    qDebug("[OK] Connected to Proxy Window Server");
+    //qDebug("[OK] Connected to Proxy Window Server");
     reconnect_time = 0;
 }
 
@@ -120,8 +120,8 @@ void Logger::onSocketError(QLocalSocket::LocalSocketError socketError)
     // static int errorsCount;
     // errorsCount++;
 
-    qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << "Local socket error: " << int(socketError)
-             << " " << m_socket.errorString() << " socketState: " << int(m_socket.state());
+    //qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << "Local socket error: " << int(socketError)
+    //         << " " << m_socket.errorString() << " socketState: " << int(m_socket.state());
 
 #warning "So, what do we do if the window gets closed?"
 
@@ -129,19 +129,19 @@ void Logger::onSocketError(QLocalSocket::LocalSocketError socketError)
     m_socket.abort();
 
     reconnect_time = qMin(reconnect_time + 1, 5000);
-    qDebug() << "[ERROR] Logger reconnect time = " << reconnect_time << "ms";
+    //qDebug() << "[ERROR] Logger reconnect time = " << reconnect_time << "ms";
     QTimer::singleShot(reconnect_time, this, [this]() { connectToServer(m_serverName); });
 }
 
 void Logger::connectToServer(const QString &serverName)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     if (m_socket.state() == QLocalSocket::ConnectedState) {
         qWarning() << "[ERROR] " << __PRETTY_FUNCTION__ << " QLocalSocket::ConnectedState";
         return;
     }
     m_serverName = serverName;
-    qDebug() << "ProxyWindowController: Attempting to connect to" << m_serverName;
+    //qDebug() << "Logger: Attempting to connect to" << m_serverName;
     m_socket.connectToServer(m_serverName);
 }
 
@@ -225,7 +225,7 @@ void Logger::messageHandler(QtMsgType type, const QMessageLogContext &context, c
 
 void Logger::uninit()
 {
-    qDebug() << __PRETTY_FUNCTION__ << "Uninitializing logger";
+    //qDebug() << __PRETTY_FUNCTION__ << "Uninitializing logger";
 
     stop();
 

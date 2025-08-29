@@ -148,10 +148,8 @@ void BFavoritesAppsModel::handleFavoriteRemoved(const FavApplication &favApp)
 
 void BFavoritesAppsModel::handleGetFavoritesReply(QDBusPendingCallWatcher *watcher)
 {
-    qDebug() << "10 10 10 10 10 10 10 10 10 10 10 10 10 10 10" << __PRETTY_FUNCTION__;
-
     if (!watcher) {
-        qDebug() << "[ERROR] No valid QDBusPendingCallWatcher found";
+        qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " No valid QDBusPendingCallWatcher found";
         return;
     }
 
@@ -163,16 +161,16 @@ void BFavoritesAppsModel::handleGetFavoritesReply(QDBusPendingCallWatcher *watch
     }
 
     QVector<FavApplication> favorites = reply.value();
-    qDebug() << "Received" << favorites.size() << "favorite applications";
+    //qDebug() << "Received" << favorites.size() << "favorite applications";
 
-    for (const FavApplication &app : favorites) {
-        qDebug() << "-------------------------";
-        qDebug() << "ID:" << app.id;
-        qDebug() << "Name:" << app.name;
-        qDebug() << "Exec:" << app.exec;
-        qDebug() << "Icon:" << app.icon;
-    }
-    qDebug() << "-------------------------";
+    // for (const FavApplication &app : favorites) {
+    //     qDebug() << "-------------------------";
+    //     qDebug() << "ID:" << app.id;
+    //     qDebug() << "Name:" << app.name;
+    //     qDebug() << "Exec:" << app.exec;
+    //     qDebug() << "Icon:" << app.icon;
+    // }
+    //qDebug() << "-------------------------";
 
     beginResetModel();
     favApps.clear();

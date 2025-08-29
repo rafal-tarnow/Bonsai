@@ -5,7 +5,7 @@ project(BonsaiWallpaper VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Quick Quick3D DBus WebEngineQuick)
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Quick Quick3D DBus WebEngineQuick)
 
 qt_standard_project_setup(REQUIRES ${REQUIRED_QT_VERSION})
 
@@ -33,6 +33,7 @@ set_target_properties(appBonsaiWallpaper PROPERTIES
 )
 
 target_link_libraries(appBonsaiWallpaper
+    PRIVATE Qt6::Core
     PRIVATE Qt6::Quick
     PRIVATE Qt6::DBus
     PRIVATE Qt6::Quick3D
@@ -44,6 +45,7 @@ target_link_libraries(appBonsaiWallpaper PRIVATE XPFrontendplugin)
 target_link_libraries(appBonsaiWallpaper PRIVATE plasma-volume)
 
 include(GNUInstallDirs)
+
 install(TARGETS appBonsaiWallpaper
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

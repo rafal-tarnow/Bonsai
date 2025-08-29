@@ -76,6 +76,14 @@ GuiManager::GuiManager(QObject *parent, QGuiApplication *app, int swapIntervalOp
             qDebug() << "Exit state: " << "LoadingFrontend";
         }
     });
+
+    connect(&m_kwin, &QProcess::readyReadStandardOutput, [&]() {
+        qDebug() << "[INFO KWIN] " << m_kwin.readAllStandardOutput();
+    });
+
+    connect(&m_kwin, &QProcess::readyReadStandardError, [&]() {
+        qDebug() << "[ERROR KWIN] " << m_kwin.readAllStandardError();
+    });
 }
 
 GuiManager::~GuiManager()
@@ -126,19 +134,26 @@ bool startKwinAndWaitForReady(QProcess &process, int timeoutMs)
     startupTimer.start();
 
     // Ustawienie środowiska tak jak poprzednio
+    // Dlaczego filtrujemy zmienne środowiskowe, założmy ze mamy bonsai skompilowane z innymi bibliotekami niż kwin w docelowym systemi, jezeli w zmiennych bedzie
+    // LD_LIBRARY_PATH do sciezki z bibliotekami bonsai to kwin bedzie linkowal do bibliotek bonsai zamiast do bibliotek systemowych
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2"); // Odkomentuj jeśli potrzebne
+
+    QString homePath = qgetenv("HOME");
+    filterProcessEnvironment(env,
+                             homePath
+                                 + "/Bonsai_install/Bonsai_1.0.0/lib"); // Odkomentuj jeśli potrzebne
     process.setProcessEnvironment(env);
 
     // Start procesu
     process.start("kwin_x11"); // lub "kwin_wayland" w zależności od sesji
 
-    if (!process.waitForStarted(3000)) {
-        qCritical() << "Nie udało się uruchomić procesu kwin! Błąd:" << process.errorString();
+    if (!process.waitForStarted(5000)) {
+        qDebug() << "Nie udało się uruchomić procesu kwin! Błąd:" << process.errorString();
         return false;
     }
 
-    qDebug() << "Proces kwin uruchomiony. Czekam na rejestrację usługi D-Bus 'org.kde.KWin'...";
+    qDebug() << "[STARTUP INFO] Proces kwin uruchomiony. Czekam na rejestrację usługi D-Bus "
+                "'org.kde.KWin'...";
 
     // Użyj QDBusServiceWatcher do czekania na gotowość
     QDBusServiceWatcher watcher("org.kde.KWin",
@@ -167,14 +182,15 @@ bool startKwinAndWaitForReady(QProcess &process, int timeoutMs)
 
         // NOWOŚĆ: Pobierz i wyświetl czas, jaki upłynął
         qint64 elapsedMs = startupTimer.elapsed();
-        qInfo().nospace() << "KWin jest gotowy (usługa D-Bus zarejestrowana). Uruchomienie zajęło: "
-                          << elapsedMs << " ms.";
+        qDebug().nospace() << "[STARTUP INFO] KWin jest gotowy (usługa D-Bus zarejestrowana). "
+                              "Uruchomienie zajęło: "
+                           << elapsedMs << " ms.";
 
         return true;
     } else {
         // Timer się skończył
-        qCritical() << "Timeout! KWin nie zarejestrował swojej usługi D-Bus w ciągu" << timeoutMs
-                    << "ms.";
+        qDebug() << "[STARTUP ERROR] Timeout! KWin nie zarejestrował swojej usługi D-Bus w ciągu"
+                 << timeoutMs << "ms.";
         process.terminate(); // Zakończ proces, który prawdopodobnie zawisł
         process.waitForFinished(1000);
         return false;
