@@ -1,6 +1,5 @@
-// SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
-// SPDX-FileCopyrightText: 2014-2015 Harald Sitter <sitter@kde.org>
-// SPDX-FileCopyrightText: 2016 David Rosca <nowrep@gmail.com>
+//This class if from KDE plasma-pa source code
+//https://github.com/KDE/plasma-pa/blob/master/src/preferreddevice.h
 
 #pragma once
 
@@ -9,14 +8,13 @@
 #include <PulseAudioQt/Sink>
 #include <PulseAudioQt/Source>
 
-class PreferredDevice : public QObject
+class MPreferredDevice : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(PulseAudioQt::Sink *sink MEMBER m_sink NOTIFY sinkChanged)
-    Q_PROPERTY(PulseAudioQt::Sink *sink READ sink NOTIFY sinkChanged)
     Q_PROPERTY(PulseAudioQt::Source *source MEMBER m_source NOTIFY sourceChanged)
 public:
-    explicit PreferredDevice(QObject *parent = nullptr);
+    explicit MPreferredDevice(QObject *parent = nullptr);
     [[nodiscard]] PulseAudioQt::Sink *sink() const;
     [[nodiscard]] PulseAudioQt::Source *source() const;
 

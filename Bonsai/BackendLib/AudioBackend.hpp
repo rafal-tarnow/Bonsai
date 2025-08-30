@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include "../../third_party/plasma-pa/src/preferreddevice.h"
+#include "./audio/MPreferredDevice.hpp"
 #include <PulseAudioQt/Sink>
 #include <memory>
 
@@ -33,7 +33,7 @@ private slots:
 
 private:
     void registerTypes(const char *uri);
-    std::unique_ptr<PreferredDevice> prefferedDevice;
+    std::unique_ptr<MPreferredDevice> prefferedDevice;
     bool m_preferredOutputMuted = false;
 
 };

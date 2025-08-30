@@ -11,7 +11,7 @@
 #include <PulseAudioQt/Sink>
 #include <PulseAudioQt/Source>
 
-#include "../../third_party/plasma-pa/src/volumefeedback.h"
+//#include "../../third_party/plasma-pa/src/volumefeedback.h" - header from KDE plasma-pa library
 
 static QJSValue pulseaudio_singleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
@@ -50,7 +50,7 @@ void AudioBackend::registerTypes(const char *uri)
     qmlRegisterUncreatableType<PulseAudioQt::Profile>(uri, 0, 1, "Profile", QString());
     qmlRegisterUncreatableType<PulseAudioQt::Port>(uri, 0, 1, "Port", QString());
     //qmlRegisterType<ListItemMenu>(uri, 0, 1, "ListItemMenu");
-    qmlRegisterType<VolumeFeedback>(uri, 0, 1, "VolumeFeedback");
+    //qmlRegisterType<VolumeFeedback>(uri, 0, 1, "VolumeFeedback"); - code from KDE plasma-pa library/module
     //qmlRegisterType<SpeakerTest>(uri, 0, 1, "SpeakerTest");
     //qmlRegisterType<GlobalConfig>(uri, 0, 1, "GlobalConfig");
     //qmlRegisterType<DeviceRenameModel>(uri, 0, 1, "DeviceRenameModel");
@@ -72,11 +72,16 @@ void AudioBackend::registerTypes(const char *uri)
     //     Q_UNUSED(jsEngine);
     //     return new GlobalService();
     // });
-    qmlRegisterSingletonType<PreferredDevice>(uri, 0, 1, "PreferredDevice", [](QQmlEngine *engine, QJSEngine *jsEngine) -> QObject * {
-        Q_UNUSED(engine);
-        Q_UNUSED(jsEngine);
-        return new PreferredDevice();
-    });
+    qmlRegisterSingletonType<MPreferredDevice>(uri,
+                                               0,
+                                               1,
+                                               "MPreferredDevice",
+                                               [](QQmlEngine *engine,
+                                                  QJSEngine *jsEngine) -> QObject * {
+                                                   Q_UNUSED(engine);
+                                                   Q_UNUSED(jsEngine);
+                                                   return new MPreferredDevice();
+                                               });
     qmlRegisterSingletonType<PulseAudioQt::Server>(uri, 0, 1, "Server", [](QQmlEngine *engine, QJSEngine *jsEngine) -> QObject * {
         Q_UNUSED(engine);
         Q_UNUSED(jsEngine);
@@ -93,9 +98,12 @@ AudioBackend::AudioBackend(QObject *parent) : QObject(parent)
 {
     registerTypes("bonsai.org.kde.plasma.private.volume");
 
-    prefferedDevice = std::make_unique<PreferredDevice>();
+    prefferedDevice = std::make_unique<MPreferredDevice>();
     if (prefferedDevice) {
-        connect(prefferedDevice.get(), &PreferredDevice::sinkChanged, this, &AudioBackend::updatePreferredSink);
+        connect(prefferedDevice.get(),
+                &MPreferredDevice::sinkChanged,
+                this,
+                &AudioBackend::updatePreferredSink);
     }
 }
 

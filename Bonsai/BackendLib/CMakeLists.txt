@@ -98,6 +98,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES BFavoritesAppsModel.hpp
     SOURCES BFavoritesAppsModel.cpp
     SOURCES server/FavoriteAppsListModel.hpp
+    SOURCES audio/MPreferredDevice.hpp
+    SOURCES audio/MPreferredDevice.cpp
 )
 
 qt6_add_statecharts(${PROJECT_NAME}
@@ -124,7 +126,6 @@ target_link_libraries(${PROJECT_NAME}
     # PkgConfig::LIBPULSE_MAINLOOP
 )
 target_link_libraries(BonsaiBackendLib PRIVATE BonsaiBackend)
-target_link_libraries(BonsaiBackendLib PRIVATE plasma-volume)
 
 include(GNUInstallDirs)
 

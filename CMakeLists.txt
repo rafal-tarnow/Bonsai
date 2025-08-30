@@ -80,7 +80,6 @@ ecm_setup_version(${BONSAI_VERSION}
 add_subdirectory(Bonsai/BackendLib/)
 #add_subdirectory(Bonsai/ServerLib/)
 add_subdirectory(Bonsai/LoggerApp/)
-add_subdirectory(third_party/plasma-pa/)
 add_subdirectory(BonsaiWallpaper/)
 
 add_custom_target(Documentation)

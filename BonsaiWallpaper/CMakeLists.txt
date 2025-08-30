@@ -42,7 +42,6 @@ target_link_libraries(appBonsaiWallpaper
 
 target_link_libraries(appBonsaiWallpaper PRIVATE BonsaiBackend)
 target_link_libraries(appBonsaiWallpaper PRIVATE XPFrontendplugin)
-target_link_libraries(appBonsaiWallpaper PRIVATE plasma-volume)
 
 include(GNUInstallDirs)
 
