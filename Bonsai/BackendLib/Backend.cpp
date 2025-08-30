@@ -236,7 +236,8 @@ void Backend::runCommand(const QString &cmd)
 
     QString homePath = qgetenv("HOME");
     //filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
-    filterProcessEnvironment(env, homePath + "/Bonsai_install/Bonsai_1.0.0/lib");
+    //filterProcessEnvironment(env, homePath + "/Bonsai_install/Bonsai_1.0.0/lib");
+    filterProcessEnvironment(env, "/opt/Bonsai/Bonsai_1.0.0/lib");
 
     QProcess process;
     process.setProgram(program);

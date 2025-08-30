@@ -32,7 +32,7 @@ project(Bonsai VERSION ${BONSAI_VERSION} LANGUAGES CXX)
 # set project installation directory to  /opt/Bonsai/Bonsai_version/
 #set(CMAKE_INSTALL_PREFIX "/opt/Bonsai/Bonsai_${PROJECT_VERSION}")
 #set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/Bonsai_install/Bonsai_${PROJECT_VERSION}")
-set(CMAKE_INSTALL_PREFIX "/media/rafal/Bonsai_pendrive/Bonsai_${PROJECT_VERSION}")
+set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Bonsai_pendrive/Bonsai_${PROJECT_VERSION}")
 
 set(QT_MAJOR_VERSION 6)
 
