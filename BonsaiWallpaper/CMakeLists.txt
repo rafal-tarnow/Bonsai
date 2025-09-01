@@ -7,6 +7,10 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Quick Quick3D DBus WebEngineQuick)
 
+set(DEPLOY_FILES
+    bonsai-desktop.desktop
+)
+
 qt_standard_project_setup(REQUIRES ${REQUIRED_QT_VERSION})
 
 qt_add_executable(appBonsaiWallpaper
@@ -59,6 +63,12 @@ qt_generate_deploy_qml_app_script(
 
 # Instalacja skryptu (gdzie skrypt będzie uruchomiony podczas instalacji)
 install(SCRIPT ${deploy_script})
+
+# Deploy bonsai-desktop.desktop file
+install(FILES ${DEPLOY_FILES}
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+        PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
+)
 
 
 add_subdirectory(./XPFrontend/)

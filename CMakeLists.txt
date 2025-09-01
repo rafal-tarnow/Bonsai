@@ -32,7 +32,7 @@ project(Bonsai VERSION ${BONSAI_VERSION} LANGUAGES CXX)
 # set project installation directory to  /opt/Bonsai/Bonsai_version/
 #set(CMAKE_INSTALL_PREFIX "/opt/Bonsai/Bonsai_${PROJECT_VERSION}")
 #set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/Bonsai_install/Bonsai_${PROJECT_VERSION}")
-set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Bonsai_pendrive/Bonsai_${PROJECT_VERSION}")
+set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Bonsai_pendrive/Bonsai_deploy/Bonsai_${PROJECT_VERSION}")
 
 set(QT_MAJOR_VERSION 6)
 
@@ -77,10 +77,21 @@ ecm_setup_version(${BONSAI_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR})
 
 
+# backend Library
 add_subdirectory(Bonsai/BackendLib/)
+
 #add_subdirectory(Bonsai/ServerLib/)
+
+# logger application
 add_subdirectory(Bonsai/LoggerApp/)
+
+# gnome frontend qml module
+add_subdirectory(Bonsai/GnomeMod/)
+
 add_subdirectory(BonsaiWallpaper/)
+
+# scripts thats will be copied while deploy
+add_subdirectory(Bonsai/DeployFiles/)
 
 add_custom_target(Documentation)
 target_sources(Documentation PRIVATE
