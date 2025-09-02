@@ -88,7 +88,7 @@ add_subdirectory(Bonsai/LoggerApp/)
 # gnome frontend qml module
 add_subdirectory(Bonsai/GnomeMod/)
 
-add_subdirectory(BonsaiWallpaper/)
+add_subdirectory(Bonsai/BonsaiApp/)
 
 # scripts thats will be copied while deploy
 add_subdirectory(Bonsai/DeployFiles/)

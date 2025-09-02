@@ -45,7 +45,7 @@ void Backend::setQmlEngine(QQmlApplicationEngine *engine)
 
 void Backend::setActiveFrontend(const QString &themeId)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " ==================================== ";
+    qDebug() << "XXXX " << __PRETTY_FUNCTION__ << " ==================================== ";
 }
 
 void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall)
@@ -59,7 +59,7 @@ void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall)
 
     if (!targetDir.exists()) {
         if (!targetDir.mkpath(".")) {
-            qWarning() << "Failed to create target directory:" << targetDirPath;
+            qWarning() << "[ERROR] Failed to create target directory:" << targetDirPath;
             return;
         }
     }
