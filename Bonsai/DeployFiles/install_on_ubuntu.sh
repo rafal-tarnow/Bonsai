@@ -25,10 +25,10 @@ sudo apt install libkf5globalaccel-bin breeze libkf5kcmutils5
 
 
 # Copy "XBoomer" directory to /usr/share/aurorae
-sudo cp -v -r "$(dirname "$0")/XBoomer" "/usr/share/aurorae/themes/"
+# sudo cp -v -r "$(dirname "$0")/XBoomer" "/usr/share/aurorae/themes/"
 
 # Copy "icons" directory to ~/.local/share/aurorae
-sudo cp -v -r "$(dirname "$0")/icons" "/usr/share/"
+# sudo cp -v -r "$(dirname "$0")/icons" "/usr/share/"
 
 
 # Copy "Bonsai/themes" directory to ~/Bonsai/themes
@@ -63,18 +63,5 @@ sudo cp -v "$(dirname "$0")/Bonsai_1.0.0/bin/bonsai-desktop.desktop" "/usr/share
 ## sudo dnf install --setopt=install_weak_deps=False kwin-data - unavaliable
 ## sudo dnf install --setopt=install_weak_deps=False kwin-addons - unavaliable
 
-
-
-# Copy "Bonsai" directory to home directory
-# cp -v -r "$(dirname "$0")/Bonsai" "$HOME/"
-
-# Create the directory ~/.local/share/aurorae if it doesn't exist
-# mkdir -p "$HOME/.local/share/aurorae/themes/"
-
-
-
-# Copy DistributionKit to /opt/Bonsai
-# sudo mkdir -p "/opt/Bonsai"
-# sudo cp -v -r "$(dirname "$0")/DistributionKit_2" "/opt/Bonsai/"
 
 

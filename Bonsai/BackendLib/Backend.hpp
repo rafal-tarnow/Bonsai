@@ -41,6 +41,7 @@ public:
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
 
     Q_INVOKABLE void installAuroraeTheme(const QUrl & themeUrl, bool forceReinstall = false);
+    Q_INVOKABLE void installIconTheme(const QUrl & themeUrl, bool forceReinstall = false);
 
     //mask
     Q_INVOKABLE void addMaskedItem(QQuickItem * item);
@@ -94,6 +95,7 @@ signals:
     void measureCpuLoadChanged();
 
 private:
+    bool installDirInternal(const QUrl &themeUrl, const QString &targetInstallDirPath, bool forceReinstall);
     bool copyLocalDirectory(const QString &sourcePath, const QString &targetPath);
     bool copyQrcDirectory(const QString &sourcePath, const QString &targetPath);
 

@@ -28,6 +28,10 @@ Window {
 
     Component.onCompleted: {
         backend.installAuroraeTheme("qrc:/assets/kwin_themes/XBoomer")
+
+        backend.installIconTheme("qrc:/assets/icons/oxygen")
+        backend.installIconTheme("qrc:/assets/icons/hicolor")
+
         backend.windowManager.setAuroraeTheme("XBoomer")
     }
 

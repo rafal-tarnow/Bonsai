@@ -48,77 +48,23 @@ void Backend::setActiveFrontend(const QString &themeId)
     qDebug() << "XXXX " << __PRETTY_FUNCTION__ << " ==================================== ";
 }
 
+void Backend::installIconTheme(const QUrl &themeUrl, bool forceReinstall)
+{
+    // Docelowa lokalizacja: $HOME/.local/share/icons
+    QString targetInstallDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/icons";
+    installDirInternal(themeUrl, targetInstallDirPath, forceReinstall);
+}
+
 void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall)
 {
     qDebug() << __PRETTY_FUNCTION__ << themeUrl;
 
-    // // Docelowa lokalizacja: $HOME/.local/share/aurorae/themes
-    QString targetDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-                            + "/aurorae/themes";
-    QDir targetDir(targetDirPath);
-
-    if (!targetDir.exists()) {
-        if (!targetDir.mkpath(".")) {
-            qWarning() << "[ERROR] Failed to create target directory:" << targetDirPath;
-            return;
-        }
-    }
-
-    if (!themeUrl.isValid()) {
-        qWarning() << "Invalid theme URL:" << themeUrl;
-        return;
-    }
-
-    QString sourcePath;
-    QDir sourceDir;
-    if (themeUrl.scheme() == "qrc") {
-        sourcePath = themeUrl.path();
-        if (sourcePath.startsWith('/')) {
-            sourcePath = sourcePath.mid(1); // Usuń początkowy "/"
-        }
-        sourceDir.setPath(":/" + sourcePath);
-    } else if (themeUrl.scheme() == "file" || themeUrl.isLocalFile()) {
-        sourcePath = themeUrl.toLocalFile();
-        sourceDir.setPath(sourcePath);
-    } else {
-        qWarning() << "Unsupported scheme in theme URL:" << themeUrl.scheme();
-        return;
-    }
-
-    if (!sourceDir.exists()) {
-        qWarning() << "Source directory does not exist:" << sourcePath;
-        return;
-    }
-
-    QString themeName = sourceDir.dirName();
-    QString targetThemePath = targetDirPath + "/" + themeName;
-    QDir targetThemeDir(targetThemePath);
-
-    // Sprawdź, czy motyw już istnieje i zdecyduj, co robić
-    if (targetThemeDir.exists()) {
-        if (forceReinstall) {
-            qDebug() << "Theme already exists at:" << targetThemePath
-                     << ". Forcing reinstallation.";
-            targetThemeDir.removeRecursively(); // Usuń istniejący katalog, aby nadpisać
-        } else {
-            qDebug() << "Theme already exists at:" << targetThemePath << ". Skipping installation.";
-            return; // Pomiń instalację, jeśli forceReinstall jest false
-        }
-    }
-
-    bool success;
-    if (themeUrl.scheme() == "qrc") {
-        success = copyQrcDirectory(sourcePath, targetThemePath);
-    } else {
-        success = copyLocalDirectory(sourcePath, targetThemePath);
-    }
-
-    if (success) {
-        qDebug() << "Theme installed successfully to:" << targetThemePath;
-    } else {
-        qWarning() << "Failed to install theme from:" << sourcePath;
-    }
+    // Docelowa lokalizacja: $HOME/.local/share/aurorae/themes
+    QString targetInstallDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/aurorae/themes";
+    installDirInternal(themeUrl, targetInstallDirPath, forceReinstall);
 }
+
+
 
 bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targetPath)
 {
@@ -424,6 +370,74 @@ void Backend::updateCpuLoad()
 
     prevTotal = total;
     prevIdle = totalIdle;
+}
+
+bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirPath, bool forceReinstall)
+{
+    QDir targetDir(targetDirPath);
+
+    if (!targetDir.exists()) {
+        if (!targetDir.mkpath(".")) {
+            qWarning() << "[ERROR] Failed to create target directory:" << targetDirPath;
+            return false;
+        }
+    }
+
+    if (!themeUrl.isValid()) {
+        qWarning() << "Invalid theme URL:" << themeUrl;
+        return false;
+    }
+
+    QString sourcePath;
+    QDir sourceDir;
+    if (themeUrl.scheme() == "qrc") {
+        sourcePath = themeUrl.path();
+        if (sourcePath.startsWith('/')) {
+            sourcePath = sourcePath.mid(1); // Usuń początkowy "/"
+        }
+        sourceDir.setPath(":/" + sourcePath);
+    } else if (themeUrl.scheme() == "file" || themeUrl.isLocalFile()) {
+        sourcePath = themeUrl.toLocalFile();
+        sourceDir.setPath(sourcePath);
+    } else {
+        qWarning() << "Unsupported scheme in theme URL:" << themeUrl.scheme();
+        return false;
+    }
+
+    if (!sourceDir.exists()) {
+        qWarning() << "Source directory does not exist:" << sourcePath;
+        return false;
+    }
+
+    QString themeName = sourceDir.dirName();
+    QString targetThemePath = targetDirPath + "/" + themeName;
+    QDir targetThemeDir(targetThemePath);
+
+    // Sprawdź, czy motyw już istnieje i zdecyduj, co robić
+    if (targetThemeDir.exists()) {
+        if (forceReinstall) {
+            qDebug() << "Theme already exists at:" << targetThemePath
+                     << ". Forcing reinstallation.";
+            targetThemeDir.removeRecursively(); // Usuń istniejący katalog, aby nadpisać
+        } else {
+            qDebug() << "Theme already exists at:" << targetThemePath << ". Skipping installation.";
+            return true; // Pomiń instalację, jeśli forceReinstall jest false
+        }
+    }
+
+    bool success;
+    if (themeUrl.scheme() == "qrc") {
+        success = copyQrcDirectory(sourcePath, targetThemePath);
+    } else {
+        success = copyLocalDirectory(sourcePath, targetThemePath);
+    }
+
+    if (success) {
+        qDebug() << "Theme installed successfully to:" << targetThemePath;
+    } else {
+        qWarning() << "Failed to install theme from:" << sourcePath;
+    }
+    return success;
 }
 
 void Backend::addMaskedItem(QQuickItem *item)

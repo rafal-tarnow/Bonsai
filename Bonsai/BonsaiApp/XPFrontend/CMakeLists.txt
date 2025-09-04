@@ -27,6 +27,30 @@ set(XPFRONTEND_QML_FILES
     popups/SystemVolumePopup.qml
 )
 
+set (KWIN_XBOOMER_THEME
+    assets/kwin_themes/XBoomer/alldesktops.svg
+    assets/kwin_themes/XBoomer/close.svg
+    assets/kwin_themes/XBoomer/decoration.svg
+    assets/kwin_themes/XBoomer/LICENSE
+    assets/kwin_themes/XBoomer/maximize.svg
+    assets/kwin_themes/XBoomer/metadata.desktop
+    assets/kwin_themes/XBoomer/minimize.svg
+    assets/kwin_themes/XBoomer/restore.svg
+    assets/kwin_themes/XBoomer/shade.svg
+    assets/kwin_themes/XBoomer/XBoomerrc
+)
+
+
+# Ikony Oxygen
+file(GLOB_RECURSE OXYGEN_ICON_THEME CONFIGURE_DEPENDS
+     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+     "assets/icons/oxygen/*")
+
+ # Ikony Hicolor
+ file(GLOB_RECURSE HICOLOR_ICON_THEME CONFIGURE_DEPENDS
+      RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+      "assets/icons/hicolor/*")
+
 qt_add_resources(XPFrontend "XPFrontendAssets"
     PREFIX "/"
     FILES
@@ -127,18 +151,11 @@ qt_add_resources(XPFrontend "XPFrontendAssets"
     assets/fonts/tahoma.ttf
     assets/fonts/tahomabd.ttf
 
-    assets/kwin_themes/XBoomer/alldesktops.svg
-    assets/kwin_themes/XBoomer/close.svg
-    assets/kwin_themes/XBoomer/decoration.svg
-    assets/kwin_themes/XBoomer/LICENSE
-    assets/kwin_themes/XBoomer/maximize.svg
-    assets/kwin_themes/XBoomer/metadata.desktop
-    assets/kwin_themes/XBoomer/minimize.svg
-    assets/kwin_themes/XBoomer/restore.svg
-    assets/kwin_themes/XBoomer/shade.svg
-    assets/kwin_themes/XBoomer/XBoomerrc
 
+    ${KWIN_XBOOMER_THEME}
     ${XPFRONTEND_QML_FILES}
+    ${OXYGEN_ICON_THEME}
+    ${HICOLOR_ICON_THEME}
 )
 
 qt_add_qml_module(XPFrontend
@@ -147,7 +164,6 @@ qt_add_qml_module(XPFrontend
 
     QML_FILES
     ${XPFRONTEND_QML_FILES}
-
 )
 
 
