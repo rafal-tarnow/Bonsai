@@ -24,12 +24,6 @@ sudo apt install libkf5globalaccel-bin breeze libkf5kcmutils5
 
 
 
-# Copy "XBoomer" directory to /usr/share/aurorae
-# sudo cp -v -r "$(dirname "$0")/XBoomer" "/usr/share/aurorae/themes/"
-
-# Copy "icons" directory to ~/.local/share/aurorae
-# sudo cp -v -r "$(dirname "$0")/icons" "/usr/share/"
-
 
 # Copy "Bonsai/themes" directory to ~/Bonsai/themes
 cp -v -r "$(dirname "$0")/Bonsai" "$HOME/Bonsai/"
