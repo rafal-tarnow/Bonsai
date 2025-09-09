@@ -10,6 +10,10 @@
 #include <QUrl>
 
 #include <KX11Extras>
+#include <KConfig>
+#include <KConfigGroup>
+#include <KSharedConfig>
+#include <qtconcurrentrun.h>
 
 #include "./helper/Process.hpp"
 
@@ -62,6 +66,60 @@ void Backend::installAuroraeTheme(const QUrl &themeUrl, bool forceReinstall)
     // Docelowa lokalizacja: $HOME/.local/share/aurorae/themes
     QString targetInstallDirPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/aurorae/themes";
     installDirInternal(themeUrl, targetInstallDirPath, forceReinstall);
+}
+
+
+
+void Backend::setAuroraeTheme(const QString themeName)
+{
+    qDebug() << "Attempting to set Aurorae theme to:" << themeName;
+
+#warning "This operation is not asynchnous"
+
+    // Step 1: Verify that the theme exists and is valid
+    QString themePath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/aurorae/themes/" + themeName;
+    QDir themeDir(themePath);
+    if (!themeDir.exists()) {
+        qDebug() << "[ERROR] Aurorae theme directory does not exist at:" << themePath;
+        return;
+    }
+    if (!themeDir.exists("metadata.desktop")) {
+        qDebug() << "[ERROR] Invalid Aurorae theme: metadata.desktop not found in" << themePath;
+        return;
+    }
+
+    // Step 2: Update kwinrc configuration using KSharedConfig
+    KSharedConfig::Ptr config = KSharedConfig::openConfig("kwinrc", KConfig::SimpleConfig);
+    KConfigGroup decorationGroup(config, "org.kde.kdecoration2");
+    decorationGroup.writeEntry("theme", "__aurorae__svg__" + themeName);
+    decorationGroup.writeEntry("library", "org.kde.kwin.aurorae");
+    if (!config->sync()) {
+        qDebug() << "[ERROR] Failed to save kwinrc configuration for theme:" << themeName;
+        return;
+    }
+
+    qDebug() << "Successfully updated kwinrc with theme:" << themeName;
+}
+
+void Backend::setDefaultWindowDecoration()
+{
+    qDebug() << "Attempting to set default window decoration";
+
+#warning "This operation is not asynchnous"
+
+    // Step 1: Update kwinrc configuration using KSharedConfig
+    KSharedConfig::Ptr config = KSharedConfig::openConfig("kwinrc", KConfig::SimpleConfig);
+    KConfigGroup decorationGroup(config, "org.kde.kdecoration2");
+
+    // Delete the entire [org.kde.kdecoration2] group to reset to default
+    decorationGroup.deleteGroup();
+
+    if (!config->sync()) {
+        qWarning() << "[ERROR] Failed to save kwinrc configuration after removing [org.kde.kdecoration2]";
+        return;
+    }
+
+    qDebug() << "Successfully removed [org.kde.kdecoration2] group from kwinrc to use default window decoration";
 }
 
 

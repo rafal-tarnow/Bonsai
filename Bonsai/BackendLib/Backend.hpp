@@ -14,7 +14,6 @@
 #include <QQuickWindow>
 #include <QProcess>
 
-#include "WindowManagerDBus.hpp"
 #include "./private/Mask.hpp"
 #include "./strut/StrutManager.hpp"
 
@@ -42,6 +41,8 @@ public:
 
     Q_INVOKABLE void installAuroraeTheme(const QUrl & themeUrl, bool forceReinstall = false);
     Q_INVOKABLE void installIconTheme(const QUrl & themeUrl, bool forceReinstall = false);
+    Q_INVOKABLE void setAuroraeTheme(const QString themeName);
+    Q_INVOKABLE void setDefaultWindowDecoration();
 
     //mask
     Q_INVOKABLE void addMaskedItem(QQuickItem * item);

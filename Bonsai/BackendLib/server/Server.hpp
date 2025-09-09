@@ -8,7 +8,6 @@
 #include "FrontendManagerService.hpp"
 #include "GuiManager.hpp"
 #include "SessionService.hpp"
-#include "WindowManagerDBus.hpp"
 
 class Server : public QObject
 {
@@ -19,13 +18,13 @@ public:
 
     //d-bus request from client
     void handleFrontendChangeRequest(const QString &themeId);
+    void handleFrontendChangeRequest(const FrontendInfo & forntend);
 
 private slots:
     void sessionLogout();
     void handleGuiManagerFrontendChanged(const QString &themeId);
 
 private:
-    WindowManagerDBus windowManagerDBus;
     SessionService m_sessionService;
     FrontendManagerService m_frontendManagerService;
 

@@ -1,5 +1,4 @@
 module GnomeFrontend
-ControlBoard 1.0 ControlBoard.qml
 singleton UIStyle 1.0 UIStyle.qml
 Main 1.0 Main.qml
 AppLauncher 1.0 AppLauncher.qml

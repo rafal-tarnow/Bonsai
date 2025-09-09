@@ -21,6 +21,7 @@ Window {
     Component.onCompleted: {
         //backend.windowManager.reconfigure();
         backend.setX11WindowTypeAsDesktop(root)
+        backend.setDefaultWindowDecoration()
     }
 
     BFrontendModel{

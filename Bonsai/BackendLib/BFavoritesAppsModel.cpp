@@ -4,7 +4,7 @@
 
 BFavoritesAppsModel::BFavoritesAppsModel(QObject *parent)
 {
-    qDebug() << "000000000000000000000000" << __PRETTY_FUNCTION__;
+    //qDebug() << "[STARTUP INFO] " << __PRETTY_FUNCTION__;
     FavApplication::registerDBusTypes();
 
     m_dbusInterface = new QDBusInterface("org.bonsai.FavoriteApplications",

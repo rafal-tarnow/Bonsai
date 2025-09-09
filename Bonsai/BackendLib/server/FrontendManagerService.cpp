@@ -6,6 +6,11 @@
 #include <QUuid>
 #include <qdbusmetatype.h>
 
+#include <KSharedConfig>
+#include <KConfigGroup>
+
+#include "bonsai_version.h"
+
 FrontendManagerService::FrontendManagerService(QObject *parent) :
     QObject(parent)
 {
@@ -36,32 +41,31 @@ FrontendManagerService::~FrontendManagerService()
 
 void FrontendManagerService::activeFrontendChangeConfirmation(const QString &frontendId)
 {
-    //qDebug() << "Server 11 " << __PRETTY_FUNCTION__;
     if (m_activeFrontendId == frontendId)
         return;
 
     m_activeFrontendId = frontendId;
 
-    for (Frontend &frontend : m_frontends) { // Note: Removed const to allow modification
-        frontend.active = (frontend.id == m_activeFrontendId);
-    }
-    //qDebug()
-    //    << "Server 12 "
-    //    << " ******************************  D-Bus signal: emit activeFrontendChanged(frontendId);";
-    emit activeFrontendChanged(frontendId);
+    saveActiveFronted(m_activeFrontendId);
+    emit activeFrontendChanged(m_activeFrontendId);
+}
+
+FrontendInfo FrontendManagerService::getCurrentFrontent()
+{
+    return m_frontends[m_activeFrontendId];
 }
 
 QVariantList FrontendManagerService::getFrontendList()
 {
     //qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
     QVariantList frontends;
-    for(const Frontend &frontend : m_frontends) {
+    for(const FrontendInfo &frontend : m_frontends) {
         QVariantMap map;
         map["id"] = frontend.id;
         map["name"] = frontend.name;
         map["description"] = frontend.description;
-        map["path"] = frontend.path;
-        map["active"] = frontend.active;
+        map["path"] = frontend.qmlFilePath;
+        map["active"] = frontend.id == m_activeFrontendId;
         frontends.append(map);
     }
     return frontends;
@@ -76,76 +80,94 @@ QString FrontendManagerService::activeFrontend() const
 //d-bus interface
 void FrontendManagerService::setActiveFrontend(const QString &frontendId)
 {
-    // qDebug() << "Server 2 " << __PRETTY_FUNCTION__
-    //          << "Server side, dbus received , frontendId=" << frontendId;
     if (frontendId.isEmpty()) {
-        // qDebug() << "3.1-- " << __PRETTY_FUNCTION__;
-        // qDebug() << "Invalid frontend ID: empty";
         return;
     }
 
     if (m_activeFrontendId == frontendId) {
-        //qDebug() << "3.3-- " << __PRETTY_FUNCTION__;
         return;
     }
 
-    //qDebug() << "Server 3 " << __PRETTY_FUNCTION__ << " emit activeFrontendChangeRequest";
+
+    if (!m_frontends.contains(frontendId)) {
+        qDebug() << "[ERROR] Frontend with ID" << frontendId << "not found.";
+        return;
+    }
+
+    emit activeFrontendChangeRequest(m_frontends[frontendId]);
     emit activeFrontendChangeRequest(frontendId);
 }
 
 void FrontendManagerService::loadFrontends()
 {
-    // QDir dir("frontends");
-    // QStringList frontendFiles = dir.entryList(QStringList() << "*.qml", QDir::Files);
+    m_frontends.clear();
 
-    // m_frontends.clear();
-    // for(const QString &file : frontendFiles) {
-    //     Frontend frontend;
-    //     frontend.id = QUuid::createUuid().toString(QUuid::WithoutBraces);
-    //     frontend.name = file.section(".", 0, 0);
-    //     frontend.description = "Frontend: " + frontend.name;
-    //     frontend.path = dir.absoluteFilePath(file);
-    //     m_frontends.append(frontend);
-    // }
-
-    Frontend frontend;
+    FrontendInfo frontend;
     frontend.name = "Gnome";
     frontend.description = "Ubuntu Gnome like frontend";
-    frontend.path = "/home/rafal/Bonsai/thmes/gnome/";
+    frontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
     frontend.id = QString(QCryptographicHash::hash(frontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
     qDebug() << "Gnome Frontend id = " << frontend.id;
-    frontend.active = false;
-
-    m_frontends.append(frontend);
+    m_frontends.insert(frontend.id, frontend);
 
     frontend.name = "XP Luna";
     frontend.description = "XP Luna like frontend";
-    frontend.path = "/home/rafal/Bonsai/thmes/xp_luna/";
+    frontend.qmlFilePath = "";
+    frontend.qmlUri = "XPFrontend";
+    frontend.qmlTypeName = "Main";
     frontend.id = QString(QCryptographicHash::hash(frontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
     qDebug() << "Luna XP id = " << frontend.id;
-    frontend.active = true;
+    m_frontends.insert(frontend.id, frontend);
 
-    m_frontends.append(frontend);
 
-    m_activeFrontendId = frontend.id;
+    QString savedFrontendId = readActiveFronted();
+
+    // Ustawiamy aktywny frontend: zapisany, jeśli istnieje i jest ważny, w przeciwnym razie domyślny
+    if (!savedFrontendId.isEmpty() && m_frontends.contains(savedFrontendId)) {
+        m_activeFrontendId = savedFrontendId;
+    } else {
+        m_activeFrontendId = m_frontends.isEmpty() ? "" : m_frontends.firstKey(); // Domyślny frontend
+    }
+
+    //Emitujemy sygnał, jeśli aktywny frontend jest ustawiony
+    if (!m_activeFrontendId.isEmpty()) {
+        emit activeFrontendChanged(m_activeFrontendId);
+    }
 }
 
-void FrontendManagerService::addFrontend(const Frontend &frontend)
+void FrontendManagerService::addFrontend(const FrontendInfo &frontend)
 {
-    m_frontends.append(frontend);
-    emit frontendAdded(frontend.id, frontend.name, frontend.description, frontend.path);
+    m_frontends.insert(frontend.id, frontend);
+    emit frontendAdded(frontend.id, frontend.name, frontend.description, frontend.qmlFilePath);
 }
 
 void FrontendManagerService::removeFrontend(const QString &frontendId)
 {
-    for(int i = 0; i < m_frontends.size(); ++i){
-        if(m_frontends[i].id == frontendId){
-            m_frontends.removeAt(i);
-            emit frontendRemoved(frontendId);
-            if(m_activeFrontendId == frontendId && !m_frontends.isEmpty()){
-                setActiveFrontend(m_frontends.first().id);
-            }
-            return;
+    if (m_frontends.remove(frontendId)) {
+        emit frontendRemoved(frontendId);
+        if (m_activeFrontendId == frontendId && !m_frontends.isEmpty()) {
+            // Use iterator to get an arbitrary key
+            setActiveFrontend(m_frontends.firstKey());
         }
     }
+}
+
+QString FrontendManagerService::readActiveFronted()
+{
+#warning "this code is not asynchronous"
+
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + BONSAI_VERSION_STRING);
+    KConfigGroup group = config->group("FrontendManagerService");
+    return group.readEntry("activeFrontendId", QString());
+}
+
+void FrontendManagerService::saveActiveFronted(const QString &frontedId)
+{
+#warning "This method is not asynchronous"
+
+    // Zapisujemy activeFrontendId do KSharedConfig
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + BONSAI_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/bonsairc
+    KConfigGroup group = config->group("FrontendManagerService");
+    group.writeEntry("activeFrontendId", frontedId);
+    config->sync(); // Zapewniamy zapis do pliku
 }

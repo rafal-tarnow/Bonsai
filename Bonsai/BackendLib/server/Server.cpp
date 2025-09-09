@@ -17,14 +17,22 @@ Server::Server(QGuiApplication *app, int swapIntervalOption)
     connect(&m_sessionService, &SessionService::logoutRequest, this, &Server::sessionLogout);
 
     connect(&m_frontendManagerService,
-            &FrontendManagerService::activeFrontendChangeRequest,
+            qOverload<const QString & >(&FrontendManagerService::activeFrontendChangeRequest),
             this,
-            &Server::handleFrontendChangeRequest);
+            qOverload<const QString & >(&Server::handleFrontendChangeRequest));
+
+    connect(&m_frontendManagerService,
+            qOverload<const FrontendInfo & >(&FrontendManagerService::activeFrontendChangeRequest),
+            this,
+            qOverload<const FrontendInfo & >(&Server::handleFrontendChangeRequest));
 
     connect(&m_guiManager,
             &GuiManager::frontendChanged,
             this,
             &Server::handleGuiManagerFrontendChanged);
+
+
+    m_guiManager.startGui(m_frontendManagerService.getCurrentFrontent());
 }
 
 Server::~Server()
@@ -36,9 +44,13 @@ void Server::handleFrontendChangeRequest(const QString &themeId)
 {
     qDebug() << "Server 4 " << __PRETTY_FUNCTION__
              << " Server logisc received signal with request to change theme, id=" << themeId;
-
-    m_guiManager.setActiveFrontend(themeId);
 }
+
+void Server::handleFrontendChangeRequest(const FrontendInfo &forntend)
+{
+    m_guiManager.tryLoadFrontend(forntend);
+}
+
 
 void Server::sessionLogout()
 {

@@ -125,7 +125,7 @@ void WindowManagerX11Service::reconfigure()
 
 void WindowManagerX11Service::hideFromTaskbar(WId winId, bool hide)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
+    //qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
     if (hide)
         KX11Extras::setState(winId, NET::SkipTaskbar);
     else
@@ -134,7 +134,7 @@ void WindowManagerX11Service::hideFromTaskbar(WId winId, bool hide)
 
 void WindowManagerX11Service::hideFromPager(WId winId, bool hide)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
+    //qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
     if (hide)
         KX11Extras::setState(winId, NET::SkipPager);
     else
@@ -143,7 +143,7 @@ void WindowManagerX11Service::hideFromPager(WId winId, bool hide)
 
 void WindowManagerX11Service::hideFromSwitcher(WId winId, bool hide)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
+    //qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
     if (hide)
         KX11Extras::setState(winId, NET::SkipSwitcher);
     else

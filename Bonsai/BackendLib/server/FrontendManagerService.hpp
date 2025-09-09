@@ -1,7 +1,10 @@
 #pragma once
 
 #include <QObject>
+#include <QMap>
 #include <QVariantList>
+
+#include "FrontendInfo.hpp"
 
 class FrontendManagerService : public QObject {
     Q_OBJECT
@@ -13,6 +16,7 @@ public:
 
     //internal Server api
     void activeFrontendChangeConfirmation(const QString &frontendId);
+    FrontendInfo getCurrentFrontent();
 
 public slots:
     //D-Bus API
@@ -31,20 +35,16 @@ signals:
 
     //internal Server api
     void activeFrontendChangeRequest(const QString & forntendId);
+    void activeFrontendChangeRequest(const FrontendInfo & forntendId);
 
 private:
-    struct Frontend{
-        QString id;
-        QString name;
-        QString description;
-        QString path;
-        bool active;
-    };
-
-    QList<Frontend> m_frontends;
+    QMap<QString, FrontendInfo> m_frontends;
     QString m_activeFrontendId;
 
     void loadFrontends();
-    void addFrontend(const Frontend &frontend);
+    void addFrontend(const FrontendInfo &frontend);
     void removeFrontend(const QString &frontendId);
+
+    QString readActiveFronted();
+    void saveActiveFronted(const QString &frontedId);
 };

@@ -3,11 +3,10 @@
 #include <QObject>
 #include <QProcess>
 
+#include "FrontendInfo.hpp"
 #include "QmlGui.hpp"
 #include "X11WindowManagerService.hpp"
 
-//generated scxml classes
-//#include "GuiManagerStateMachine.h"
 #include <QScxmlStateMachine>
 #include "GuiManagerStateMachine.h"
 
@@ -20,7 +19,9 @@ public:
                         int swapIntervalOption = 0);
     ~GuiManager();
 
-    void setActiveFrontend(const QString &themeId);
+    void startGui(const FrontendInfo & frontend);
+
+    void tryLoadFrontend(const FrontendInfo &frontend);
 
     void uninit();
 
@@ -31,10 +32,13 @@ private slots:
     void handleKwinReconfigured();
 
 private:
+    void loadFrontend();
+
+private:
     QString HOME_ENV;
     WindowManagerX11Service m_x11WindowManagerService;
     QmlGui m_qmlGui;
     QProcess m_kwin;
-    QString m_currentThemeId;
+    FrontendInfo m_currentFrontend;
     GuiManagerStateMachine changeFrontendStateMachine;
 };

@@ -107,7 +107,7 @@ void MPreferredDevice::updatePreferredSink()
                                     PulseAudioQt::Context::instance()->server()->defaultSink());
 
     if (sink != m_sink) {
-        qDebug() << "Changing preferred sink to" << sink << (sink ? sink->name() : "");
+        //qDebug() << "Changing preferred sink to" << sink << (sink ? sink->name() : "");
         m_sink = sink;
         Q_EMIT sinkChanged();
     }
@@ -119,7 +119,7 @@ void MPreferredDevice::updatePreferredSource()
                                       PulseAudioQt::Context::instance()->server()->defaultSource());
 
     if (source != m_source) {
-        qDebug() << "Changing preferred source to" << source << (source ? source->name() : "");
+        //qDebug() << "Changing preferred source to" << source << (source ? source->name() : "");
         m_source = source;
         Q_EMIT sourceChanged();
     }

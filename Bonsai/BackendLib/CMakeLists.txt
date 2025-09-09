@@ -12,16 +12,18 @@ include(FindPkgConfig)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 
+# Generate bonsai_version.h file with version #definitions, file will be generated in build directories
+ecm_setup_version(${BONSAI_VERSION}
+    VARIABLE_PREFIX BONSAI
+    VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/bonsai_version.h"
+    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/BonsaiConfigVersion.cmake"
+    SOVERSION ${PROJECT_VERSION_MAJOR})
+
+
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Core Gui Quick DBus Concurrent Scxml)
 find_package(KF6 ${REQUIRED_KF_VERSION} REQUIRED COMPONENTS Config WindowSystem)
 
 find_package(KF6PulseAudioQt ${REQUIRED_PULSEAUDIOQT_VERSION} REQUIRED)
-
-
-# Statecharts:
-# qt6_add_statecharts(${PROJECT_NAME}
-#     GuiManagerStateMachine.scxml
-# )
 
 
 
@@ -46,8 +48,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES
     SOURCES ThemesModel.hpp
     SOURCES ThemesModel.cpp
-    SOURCES WindowManagerDBus.hpp
-    SOURCES WindowManagerDBus.cpp
+    SOURCES
+    SOURCES
     SOURCES helper/Process.hpp
     SOURCES helper/Process.cpp
     SOURCES private/Mask.hpp
@@ -100,6 +102,7 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES server/FavoriteAppsListModel.hpp
     SOURCES audio/MPreferredDevice.hpp
     SOURCES audio/MPreferredDevice.cpp
+    SOURCES server/FrontendInfo.hpp
 )
 
 qt6_add_statecharts(${PROJECT_NAME}

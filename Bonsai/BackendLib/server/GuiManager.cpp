@@ -13,14 +13,36 @@ GuiManager::GuiManager(QObject *parent, QGuiApplication *app, int swapIntervalOp
     , m_qmlGui(this, app, swapIntervalOption)
     , changeFrontendStateMachine(this)
 {
-    HOME_ENV = qgetenv("HOME");
+        HOME_ENV = qgetenv("HOME");
+
+    connect(&m_kwin, &QProcess::readyReadStandardOutput, [&]() {
+        qDebug() << "[INFO KWIN] " << m_kwin.readAllStandardOutput();
+    });
+
+    connect(&m_kwin, &QProcess::readyReadStandardError, [&]() {
+        qDebug() << "[ERROR KWIN] " << m_kwin.readAllStandardError();
+    });
+}
+
+GuiManager::~GuiManager()
+{
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void GuiManager::startGui(const FrontendInfo & frontend)
+{
+
+
+
+
     //START KWIN
     startKwinAndWaitForReady(m_kwin);
 
     //---- Start Gui ----
     m_qmlGui.initQmlEngine();
-    m_qmlGui.loadFromModule("XPFrontend", "Main");
-    //m_gui.load(HOME_ENV + "/Bonsai/themes/gnome/Main.qml");
+
+    m_currentFrontend = frontend;
+    loadFrontend();
 
     connect(&m_x11WindowManagerService,
             &WindowManagerX11Service::reconfigureFinished,
@@ -53,7 +75,7 @@ GuiManager::GuiManager(QObject *parent, QGuiApplication *app, int swapIntervalOp
             qDebug() << "Enter state: " << "EmittingFrontendChanged";
 
             qDebug() << "Server 9 " << __PRETTY_FUNCTION__ << " emit frontendChanged()";
-            emit frontendChanged(m_currentThemeId);
+            emit frontendChanged(m_currentFrontend.id);
 
             changeFrontendStateMachine.submitEvent("frontendChangedEmitted");
         } else {
@@ -65,37 +87,18 @@ GuiManager::GuiManager(QObject *parent, QGuiApplication *app, int swapIntervalOp
         if (active) {
             qDebug() << "Enter state: " << "LoadingFrontend";
 
-            if (m_currentThemeId == "862b771db54b6d6764f8d72ece0e31e994bf0058") {
-                m_qmlGui.load(HOME_ENV + "/Bonsai/themes/gnome/Main.qml");
-            } else if (m_currentThemeId == "351c97c34271d2a3ac6c180b951c920528de19d8") { //XP Luna
-                m_qmlGui.loadFromModule("XPFrontend", "Main");
-            }
+            loadFrontend();
 
             changeFrontendStateMachine.submitEvent("frontendLoaded");
         } else {
             qDebug() << "Exit state: " << "LoadingFrontend";
         }
     });
-
-    connect(&m_kwin, &QProcess::readyReadStandardOutput, [&]() {
-        qDebug() << "[INFO KWIN] " << m_kwin.readAllStandardOutput();
-    });
-
-    connect(&m_kwin, &QProcess::readyReadStandardError, [&]() {
-        qDebug() << "[ERROR KWIN] " << m_kwin.readAllStandardError();
-    });
 }
 
-GuiManager::~GuiManager()
+void GuiManager::tryLoadFrontend(const FrontendInfo &frontend)
 {
-    qDebug() << __PRETTY_FUNCTION__;
-}
-
-void GuiManager::setActiveFrontend(const QString &themeId)
-{
-    qDebug() << "Server 5 " << __PRETTY_FUNCTION__ << "Gui manager: main switch frontend function";
-
-    m_currentThemeId = themeId;
+    m_currentFrontend = frontend;
     changeFrontendStateMachine.submitEvent("startFrontendChange");
 }
 
@@ -115,6 +118,15 @@ void GuiManager::handleKwinReconfigured()
     if (changeFrontendStateMachine.isActive("ReconfiguringWindowManager")) {
         qDebug() << "changeFrontendStateMachine.submitEvent(windowManagerReconfigured);";
         changeFrontendStateMachine.submitEvent("windowManagerReconfigured");
+    }
+}
+
+void GuiManager::loadFrontend()
+{
+    if(m_currentFrontend.qmlFilePath != ""){
+        m_qmlGui.load(m_currentFrontend.qmlFilePath);
+    }else if (m_currentFrontend.qmlUri != "") {
+        m_qmlGui.loadFromModule(m_currentFrontend.qmlUri, m_currentFrontend.qmlTypeName);
     }
 }
 

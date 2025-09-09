@@ -32,7 +32,9 @@ Window {
         backend.installIconTheme("qrc:/assets/icons/oxygen")
         backend.installIconTheme("qrc:/assets/icons/hicolor")
 
-        backend.windowManager.setAuroraeTheme("XBoomer")
+        backend.setAuroraeTheme("XBoomer")
+        //backend.setDefaultWindowDecoration()
+
     }
 
 
