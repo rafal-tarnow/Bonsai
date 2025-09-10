@@ -46,6 +46,7 @@ set (KWIN_XBOOMER_THEME
 # Ikony Oxygen
 file(GLOB_RECURSE OXYGEN_ICON_THEME CONFIGURE_DEPENDS
      RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+     #CONFIGURE_DEPENDS
      "assets/icons/oxygen/*")
 
  message("[WARNING], collecting oxygen icon files in this way slows down the cmake configuration process a lot, maybe this should be changed somehow ")
@@ -53,6 +54,7 @@ file(GLOB_RECURSE OXYGEN_ICON_THEME CONFIGURE_DEPENDS
  # Ikony Hicolor
  file(GLOB_RECURSE HICOLOR_ICON_THEME CONFIGURE_DEPENDS
       RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+      #CONFIGURE_DEPENDS
       "assets/icons/hicolor/*")
 
    message("[WARNING], collecting hicolor icon files in this way slows down the cmake configuration process a lot, maybe this should be changed somehow ")
