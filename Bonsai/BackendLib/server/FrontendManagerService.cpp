@@ -9,7 +9,7 @@
 #include <KSharedConfig>
 #include <KConfigGroup>
 
-#include "bonsai_version.h"
+#include "../maia_version.h"
 
 FrontendManagerService::FrontendManagerService(QObject *parent) :
     QObject(parent)
@@ -102,22 +102,24 @@ void FrontendManagerService::loadFrontends()
 {
     m_frontends.clear();
 
-    FrontendInfo frontend;
-    frontend.name = "Gnome";
-    frontend.description = "Ubuntu Gnome like frontend";
-    frontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
-    frontend.id = QString(QCryptographicHash::hash(frontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
-    qDebug() << "Gnome Frontend id = " << frontend.id;
-    m_frontends.insert(frontend.id, frontend);
+    FrontendInfo gnomeFrontend;
+    gnomeFrontend.name = "Ubuntu 24.04";
+    gnomeFrontend.description = "Ubuntu 24.04 like frontend";
+    gnomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+    gnomeFrontend.id = QString(QCryptographicHash::hash(gnomeFrontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
+    qDebug() << "Gnome Frontend id = " << gnomeFrontend.id;
+    m_frontends.insert(gnomeFrontend.id, gnomeFrontend);
 
-    frontend.name = "XP Luna";
-    frontend.description = "XP Luna like frontend";
-    frontend.qmlFilePath = "";
-    frontend.qmlUri = "XPFrontend";
-    frontend.qmlTypeName = "Main";
-    frontend.id = QString(QCryptographicHash::hash(frontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
-    qDebug() << "Luna XP id = " << frontend.id;
-    m_frontends.insert(frontend.id, frontend);
+
+    FrontendInfo lunaFrontend;
+    lunaFrontend.name = "XP Luna";
+    lunaFrontend.description = "XP Luna like frontend";
+    lunaFrontend.qmlFilePath = "";
+    lunaFrontend.qmlUri = "XPFrontend";
+    lunaFrontend.qmlTypeName = "Main";
+    lunaFrontend.id = QString(QCryptographicHash::hash(lunaFrontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
+    qDebug() << "Luna XP id = " << lunaFrontend.id;
+    m_frontends.insert(lunaFrontend.id, lunaFrontend);
 
 
     QString savedFrontendId = readActiveFronted();
@@ -126,7 +128,7 @@ void FrontendManagerService::loadFrontends()
     if (!savedFrontendId.isEmpty() && m_frontends.contains(savedFrontendId)) {
         m_activeFrontendId = savedFrontendId;
     } else {
-        m_activeFrontendId = m_frontends.isEmpty() ? "" : m_frontends.firstKey(); // Domyślny frontend
+        m_activeFrontendId = m_frontends.isEmpty() ? "" : gnomeFrontend.id; // Domyślny frontend
     }
 
     //Emitujemy sygnał, jeśli aktywny frontend jest ustawiony
@@ -156,7 +158,7 @@ QString FrontendManagerService::readActiveFronted()
 {
 #warning "this code is not asynchronous"
 
-    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + BONSAI_VERSION_STRING);
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + MAIA_VERSION_STRING);
     KConfigGroup group = config->group("FrontendManagerService");
     return group.readEntry("activeFrontendId", QString());
 }
@@ -166,7 +168,7 @@ void FrontendManagerService::saveActiveFronted(const QString &frontedId)
 #warning "This method is not asynchronous"
 
     // Zapisujemy activeFrontendId do KSharedConfig
-    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + BONSAI_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/bonsairc
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + MAIA_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/bonsairc
     KConfigGroup group = config->group("FrontendManagerService");
     group.writeEntry("activeFrontendId", frontedId);
     config->sync(); // Zapewniamy zapis do pliku

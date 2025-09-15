@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import "./common_components"
+import "./style_items"
 import "./contents"
 import Bonsai.Backend
 

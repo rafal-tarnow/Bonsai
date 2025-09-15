@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import "../common_components"
+import "../style_items"
 
 TiledImage{
     id: normalButtonImage

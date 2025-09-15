@@ -220,11 +220,28 @@ export PATH=/home/rafal/Qt/Qt_6_8_2/6.8.2/gcc_64/bin:$PATH
 
 
 
-To change icon theme on GTK applications edit file:
+# Linux qt and gtk apps look customization
+
 ~/.config/gtk-3.0/settings.ini
 ~/.config/gtk-4.0/settings.ini
 
-To change qt app apperance use qt5ct app
+qt qml style:
+
+export QT_QUICK_CONTROLS_STYLE=Basic
+export QT_QUICK_CONTROLS_STYLE=Material
+
+QT_STYLE_OVERRIDE
+
+export QT_STYLE_OVERRIDE="Breeze"
+export QT_STYLE_OVERRIDE="Windows"
+export QT_STYLE_OVERRIDE="Fusion"
+
+
+QT_QPA_PLATFORMTHEME
+
+To change qt app apperance eg. pcmanfm-qt, qterminal use qt5ct app
+and set enviroment variable
+export QT_QPA_PLATFORMTHEME=qt5ct
 
 # Run Bonsai in Xephyr
 

@@ -12,11 +12,11 @@ include(FindPkgConfig)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 
-# Generate bonsai_version.h file with version #definitions, file will be generated in build directories
+# Generate maia_version.h file with version #definitions, file will be generated in build directories
 ecm_setup_version(${BONSAI_VERSION}
-    VARIABLE_PREFIX BONSAI
-    VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/bonsai_version.h"
-    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/BonsaiConfigVersion.cmake"
+    VARIABLE_PREFIX MAIA
+    VERSION_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/maia_version.h"
+    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/MaiaConfigVersion.cmake"
     SOVERSION ${PROJECT_VERSION_MAJOR})
 
 

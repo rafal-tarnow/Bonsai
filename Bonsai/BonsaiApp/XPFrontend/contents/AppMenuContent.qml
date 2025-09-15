@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
 import Bonsai.Backend
-import "../common_components"
+import "../style_items"
 
 Image{
     id: root

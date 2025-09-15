@@ -1,6 +1,6 @@
 import QtQuick
 
-import "./common_components"
+import "./style_items"
 
 Item{
 

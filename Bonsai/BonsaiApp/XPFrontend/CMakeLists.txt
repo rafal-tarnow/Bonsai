@@ -5,11 +5,11 @@ qt_add_library(XPFrontend STATIC)
 set(XPFRONTEND_QML_FILES
     Main.qml
     TaskbarButton.qml
-    common_components/TiledImage.qml
-    common_components/XPMenu.qml
-    common_components/XPMenuItem.qml
-    common_components/XPMenuSeparator.qml
-    common_components/TiledImageVertical.qml
+    style_items/TiledImage.qml
+    style_items/XPMenu.qml
+    style_items/XPMenuItem.qml
+    style_items/XPMenuSeparator.qml
+    style_items/TiledImageVertical.qml
     windows/AppMenuWindow.qml
     windows/SystemVolumeWindow.qml
     contents/AppMenuContent.qml
@@ -25,6 +25,7 @@ set(XPFRONTEND_QML_FILES
     popups/AppMenuPopup.qml
     contents/SystemVolumeContent.qml
     popups/SystemVolumePopup.qml
+    components/LicenseWarning.qml
 )
 
 set (KWIN_XBOOMER_THEME
@@ -155,6 +156,7 @@ qt_add_resources(XPFrontend "XPFrontendAssets"
     #assets/images/arrow.svg
     #assets/images/arrow_pixel_art.svg
     assets/images/arrow_pixel_art.png
+    assets/images/license_warning.svg
 
     assets/fonts/tahoma.ttf
     assets/fonts/tahomabd.ttf

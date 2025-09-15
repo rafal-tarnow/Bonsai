@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import "../"
-import "../common_components"
+import "../style_items"
 import "../contents"
 
 Popup {

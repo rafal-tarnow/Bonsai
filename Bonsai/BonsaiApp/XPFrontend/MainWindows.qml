@@ -7,10 +7,11 @@ import QtCore
 
 import Bonsai.Backend
 
-import "./common_components"
+import "./style_items"
 import "./windows"
 import "./popups"
 import "../"
+import "./components"
 
 
 
@@ -260,6 +261,7 @@ Window {
         }
     }
 
+
     // Column{
     //     anchors.right: parent.right
     //     anchors.verticalCenter: parent.verticalCenter
@@ -488,6 +490,9 @@ Window {
     // opacity: 1.0 //don't work in layer
     // }
 
+    LicenseWarning{
+        anchors.centerIn: wallpaper
+    }
 
 }
 

@@ -24,6 +24,8 @@
 #include <private/ProxyWindowServer.hpp>
 #include <server/Server.hpp>
 
+#include "maia_version.h"
+
 #include "logger.hpp"
 
 #include <QtQml/QQmlExtensionPlugin>
@@ -42,11 +44,9 @@ void getCmdLineOptions(const QCoreApplication &app,
 
 static void signalHandler(int signal)
 {
-    qDebug() << "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ:" << signal << ". Zamykam aplikację...";
     //use exit instead quit, exit always work ok, quit not always
     //QCoreApplication::quit();
     QCoreApplication::exit();
-    qDebug() << "After QCoreApplication::exit()";
 }
 
 void setWindowGeometry(
@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
     QString gnomeModulePath = homePath + "/Bonsai/themes/gnome";
 
     //INIT APPLICATION
-    QGuiApplication::setApplicationName("bonsai");
-    QGuiApplication::setOrganizationName("Bonsai");
+    QGuiApplication::setApplicationName(QString("Maia_") + MAIA_VERSION_STRING);
+    QGuiApplication::setOrganizationName("Maia");
     QtWebEngineQuick::initialize();
 
     QGuiApplication app(argc, argv);
