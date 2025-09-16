@@ -1,5 +1,6 @@
 import QtQuick.Controls.Material
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import Bonsai.Backend
 
@@ -19,12 +20,14 @@ Rectangle {
     border.width: 1
     border.color: "#dedede"
 
-    Material.primary: "#03a9f4"
-    //Material.accent: "#03a9f4"
-    //Material.background: "#ffffff"
-    Material.accent: "#0073e5" //slider
-    Material.background: "blue"
-    Material.foreground:  "#3d3d3d" //text
+    //Material.primary: "#03a9f4"
+    //Material.primary: "green"
+    // //Material.accent: "#03a9f4"
+    Material.accent: UIStyle.accentColor
+    // //Material.background: "#ffffff"
+    // Material.accent: "#0073e5" //slider
+    // Material.background: "blue"
+    // Material.foreground:  "#3d3d3d" //text
 
     states: [
         State{
@@ -72,15 +75,20 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             height: parent.height + 12
             width: 86
+            enabled: false
             leftPadding:0
             rightPadding: 0
             icon.source: "../icons/battery-level-100-symbolic.svg"
-            icon.color: UIStyle.colorButtonBatteryLevelIcon
+            icon.color: enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
             icon.width: 15
             icon.height: 15
             Component.onCompleted: {
-                background.color = UIStyle.colorButtonBatteryLevel
-                contentItem.color = UIStyle.colorButtonBatteryLevelIcon
+                background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
+                if(enabled){
+                    contentItem.color = UIStyle.colorButtonBatteryLevelIcon
+                }else{
+                    contentItem.color =  UIStyle.disabledTextColor
+                }
                 contentItem.font.pointSize = UIStyle.pointSizeControlBoardFont
                 contentItem.font.family = UIStyle.familyControlBoardFont
             }
@@ -95,46 +103,49 @@ Rectangle {
 
             Button {
                 icon.source: "../icons/screenshot-app-symbolic.svg"
-                icon.color: UIStyle.colorButtonScreenshotIcon
+                icon.color: enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
                 icon.width: 15
                 icon.height: 15
                 leftPadding:0
                 rightPadding: 0
+                enabled: false
                 height: parent.height + 12
                 width: height - 12
                 anchors.verticalCenter: parent.verticalCenter
                 Component.onCompleted: {
-                    background.color = UIStyle.colorButtonScreenshot
+                    background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
                 }
             }
 
             Button {
                 icon.source: "../icons/system-settings-symbolic.svg"
-                icon.color: UIStyle.colorButtonSystemSettingsIcon
+                icon.color: enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
                 icon.width: 15
                 icon.height: 15
                 leftPadding:0
                 rightPadding: 0
+                enabled: false
                 height: parent.height + 12
                 width: height - 12
                 anchors.verticalCenter: parent.verticalCenter
                 Component.onCompleted: {
-                    background.color = UIStyle.colorButtonSystemSettings
+                    background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
                 }
             }
 
             Button {
                 icon.source: "../icons/system-lock-screen-symbolic.svg"
-                icon.color: UIStyle.colorButtonLockIcon
+                icon.color: enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
                 icon.width: 15
                 icon.height: 15
                 leftPadding:0
                 rightPadding: 0
                 height: parent.height + 12
                 width: height - 12
+                enabled: false
                 anchors.verticalCenter: parent.verticalCenter
                 Component.onCompleted: {
-                    background.color = UIStyle.colorButtonLock
+                    background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
                 }
             }
 
@@ -362,8 +373,9 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: -6
+            enabled: false
             icon.source: "../icons/display-brightness-symbolic.svg"
-            icon.color: UIStyle.colorControlBoardIcon
+            icon.color: enabled ? UIStyle.colorControlBoardIcon : UIStyle.disabledTextColor
             display: AbstractButton.IconOnly
 
             background: Rectangle{
@@ -377,6 +389,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.left: brightness.right
+            enabled: false
         }
     }
 
@@ -410,8 +423,12 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 leftText: "Wi-Fi"
                 leftIconSource: "../images/network-wireless-connected-symbolic.svg"
+                enabled: false
+                active: false
                 iconColorActive: UIStyle.colorControlBoardIconActive
                 iconColorInactive: UIStyle.colorControlBoardIcon
+                disabledTextColor: UIStyle.disabledTextColor
+                disabledBackgroundColor: UIStyle.disabledButtonColor
             }
 
             // Button{
@@ -425,8 +442,12 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 leftText: "Bluetooth"
                 leftIconSource: "../icons/bluetooth-active-symbolic.svg"
+                active: false
+                enabled: false
                 iconColorActive: UIStyle.colorControlBoardIconActive
                 iconColorInactive: UIStyle.colorControlBoardIcon
+                disabledTextColor: UIStyle.disabledTextColor
+                disabledBackgroundColor: UIStyle.disabledButtonColor
             }
         }
     }
@@ -450,17 +471,22 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 leftText: "Power Profile"
                 leftIconSource: "../images/network-wireless-connected-symbolic.svg"
+                enabled: false
+                active: false
                 iconColorActive: UIStyle.colorControlBoardIconActive
                 iconColorInactive: UIStyle.colorControlBoardIcon
+                disabledTextColor: UIStyle.disabledTextColor
+                disabledBackgroundColor: UIStyle.disabledButtonColor
             }
             Button{
                 width:160
                 height: parent.height + 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Night Mode")
+                enabled: false
                 Component.onCompleted: {
-                    background.color = UIStyle.colorButtonBatteryLevel
-                    contentItem.color = UIStyle.colorButtonBatteryLevelIcon
+                    background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
+                    contentItem.color = enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
                     contentItem.font.pointSize = UIStyle.pointSizeControlBoardFont
                     contentItem.font.family = UIStyle.familyControlBoardFont
                 }
@@ -486,9 +512,10 @@ Rectangle {
                 height: parent.height + 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Dark Style")
+                enabled: false
                 Component.onCompleted: {
-                    background.color = UIStyle.colorButtonBatteryLevel
-                    contentItem.color = UIStyle.colorButtonBatteryLevelIcon
+                    background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
+                    contentItem.color = enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
                     contentItem.font.pointSize = UIStyle.pointSizeControlBoardFont
                     contentItem.font.family = UIStyle.familyControlBoardFont
                 }
@@ -498,9 +525,10 @@ Rectangle {
                 height: parent.height + 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Airplane Mode")
+                enabled: false
                 Component.onCompleted: {
-                    background.color = UIStyle.colorButtonBatteryLevel
-                    contentItem.color = UIStyle.colorButtonBatteryLevelIcon
+                    background.color = enabled ? UIStyle.colorButtonBatteryLevel : UIStyle.disabledButtonColor
+                    contentItem.color = enabled ? UIStyle.colorButtonBatteryLevelIcon : UIStyle.disabledTextColor
                     contentItem.font.pointSize = UIStyle.pointSizeControlBoardFont
                     contentItem.font.family = UIStyle.familyControlBoardFont
                 }

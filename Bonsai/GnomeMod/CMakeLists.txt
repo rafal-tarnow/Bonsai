@@ -14,7 +14,6 @@ set(GNOME_QML_FILES
         Main.qml
         SidePanel.qml
         SidePanelContent.qml
-        UIStyle.qml
 
         common_qml/ActionButton.qml
 
@@ -24,6 +23,7 @@ set(GNOME_QML_FILES
 
         popups/ControlBoardPopup.qml
 
+        style/UIStyle.qml
         style/GMenu.qml
         style/GMenuItem.qml
         style/GMenuSeparator.qml

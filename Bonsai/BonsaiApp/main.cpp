@@ -60,7 +60,6 @@ int main(int argc, char *argv[])
 
     //READ ENVIROMENT VARIABLES
     QString homePath = qgetenv("HOME");
-    QString gnomeModulePath = homePath + "/Bonsai/themes/gnome";
 
     //INIT APPLICATION
     QGuiApplication::setApplicationName(QString("Maia_") + MAIA_VERSION_STRING);
@@ -100,7 +99,7 @@ int main(int argc, char *argv[])
         return retValue;
 
     } else {
-        //CLIENT
+        //QML PROXY WINDOW
 
         //INIT SURFACE
         QSurfaceFormat surfaceFormat = QQuick3D::idealSurfaceFormat();
@@ -110,10 +109,8 @@ int main(int argc, char *argv[])
         QSurfaceFormat::setDefaultFormat(surfaceFormat);
 
         QQmlApplicationEngine engine;
-        engine.addImportPath(gnomeModulePath);
 
         Backend backend(homePath);
-        backend.setQmlEngine(&engine);
 
         //INIT QML ENGINE ICON PROVIDERS
         BackendAppsIconsProvider appsIconProvider;

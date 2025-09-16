@@ -133,18 +133,6 @@ Image {
             id: frontendSubmenu
             title: "Change Frontend"
             height: 40
-            // XPMenuItem {
-            //     text: "XP Luna"
-            //     active: false
-            // }
-            // XPMenuItem {
-            //     text: "Gnome"
-            //     active: true
-            //     onTriggered: {
-            //         backend.setActiveFrontend("Gnome")
-            //     }
-            // }
-
             enabled: frontendsInstantiator.count > 0
 
             Instantiator {

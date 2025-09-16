@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import "./"
 import "../"
 
 MenuItem {
@@ -15,7 +16,7 @@ MenuItem {
         rightPadding: 32
         text: root.text
         verticalAlignment: Text.AlignVCenter
-        color: root.active ? UIStyle.colorControlBoardIcon : "#9c9c9c"
+        color: root.active ? UIStyle.colorControlBoardIcon : UIStyle.disabledTextColor
     }
 
     // arrow: Canvas {

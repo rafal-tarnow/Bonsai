@@ -37,6 +37,9 @@ Button{
     property alias leftText: leftButton.text
     property alias rightTex: rightButton.text
 
+    property color disabledTextColor: "grey"
+    property color disabledBackgroundColor: "grey"
+
     property alias leftIconSource: leftButton.icon.source
     property color iconColorActive : "pink"
     property color iconColorInactive: "orange"
@@ -68,20 +71,24 @@ Button{
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 6
         anchors.right: separator.left
+        enabled: root.enabled
         Material.foreground: root.active ? root.iconColorActive : root.iconColorInactive
 
         background: Rectangle{
-             color:  root.active ? (leftButton.hovered ? (leftButton.pressed ? (root.colorLeftActivePressed) : (root.colorLeftActiveHover)) : (root.colorLeftActiveNormal)):(leftButton.hovered ? (leftButton.pressed ? (root.colorLeftPressed) : (root.colorLeftHover)) : (root.colorLeftNormal))
-             anchors.fill: parent
-             topLeftRadius: height/2
-             bottomLeftRadius: height/2
+            color:  root.enabled ? (root.active ? (leftButton.hovered ? (leftButton.pressed ? (root.colorLeftActivePressed) : (root.colorLeftActiveHover)) : (root.colorLeftActiveNormal)):(leftButton.hovered ? (leftButton.pressed ? (root.colorLeftPressed) : (root.colorLeftHover)) : (root.colorLeftNormal))) : (root.disabledBackgroundColor)
+            anchors.fill: parent
+            topLeftRadius: height/2
+            bottomLeftRadius: height/2
         }
         onClicked: {
             root.active = !root.active
         }
-        // Component.onCompleted: {
-        //      leftButton.contentItem.color = "white";
-        // }
+        Component.onCompleted: {
+            if(!root.enabled){
+                leftButton.contentItem.color = disabledTextColor;
+                leftButton.icon.color = disabledTextColor;
+            }
+        }
     }
     Rectangle{
         id: separator
@@ -97,7 +104,7 @@ Button{
     Button{
         id: rightButton
 
-        width: 35
+        width: 45
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.topMargin: 6
@@ -111,13 +118,20 @@ Button{
         topPadding: 0
         bottomPadding: 0
         rightPadding: 0
+        enabled: root.enabled
         Material.foreground: root.active ? root.iconColorActive : root.iconColorInactive
 
         background: Rectangle{
-            color:  root.active ? (rightButton.hovered ? (rightButton.pressed ? (root.colorRightActivePressed) : (root.colorRightActiveHover)) : (root.colorRightActiveNormal)):(rightButton.hovered ? (rightButton.pressed ? (root.colorRightPressed) : (root.colorRightHover)) : (root.colorRightNormal))
+            color:  root.enabled ? (root.active ? (rightButton.hovered ? (rightButton.pressed ? (root.colorRightActivePressed) : (root.colorRightActiveHover)) : (root.colorRightActiveNormal)):(rightButton.hovered ? (rightButton.pressed ? (root.colorRightPressed) : (root.colorRightHover)) : (root.colorRightNormal))) : (root.disabledBackgroundColor)
             anchors.fill: parent
             topRightRadius: height/2
             bottomRightRadius: height/2
+        }
+        Component.onCompleted: {
+            if(!root.enabled){
+                rightButton.contentItem.color = disabledTextColor;
+                rightButton.icon.color = disabledTextColor;
+            }
         }
     }
 

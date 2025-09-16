@@ -42,16 +42,6 @@ Backend::~Backend()
     }
 }
 
-void Backend::setQmlEngine(QQmlApplicationEngine *engine)
-{
-    qmlEngine = engine;
-}
-
-void Backend::setActiveFrontend(const QString &themeId)
-{
-    qDebug() << "XXXX " << __PRETTY_FUNCTION__ << " ==================================== ";
-}
-
 void Backend::installIconTheme(const QUrl &themeUrl, bool forceReinstall)
 {
     // Docelowa lokalizacja: $HOME/.local/share/icons

@@ -105,8 +105,21 @@ void FrontendManagerService::loadFrontends()
     FrontendInfo gnomeFrontend;
     gnomeFrontend.name = "Ubuntu 24.04";
     gnomeFrontend.description = "Ubuntu 24.04 like frontend";
-    gnomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
-    gnomeFrontend.id = QString(QCryptographicHash::hash(gnomeFrontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
+
+#ifdef QT_DEBUG
+    // Debug build: use path relative to the build directory
+    nomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+
+#else
+    // Release build: use absolute path
+    //gnomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+
+    gnomeFrontend.qmlFilePath
+        = "/media/rafal/Bonsai_pendrive/Bonsai_deploy/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+#endif
+
+    gnomeFrontend.id = QString(
+        QCryptographicHash::hash(gnomeFrontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
     qDebug() << "Gnome Frontend id = " << gnomeFrontend.id;
     m_frontends.insert(gnomeFrontend.id, gnomeFrontend);
 

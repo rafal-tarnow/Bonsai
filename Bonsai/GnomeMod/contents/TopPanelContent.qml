@@ -1,5 +1,6 @@
 import QtQuick
 import "../"
+import "../style"
 
 Rectangle{
     id: topPanel

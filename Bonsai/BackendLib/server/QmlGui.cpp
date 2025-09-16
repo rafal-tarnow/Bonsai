@@ -27,8 +27,6 @@ void QmlGui::initQmlEngine()
 
     engine.addImportPath(gnomeModulePath);
 
-    backend.setQmlEngine(&engine);
-
     //INIT QML ENGINE ICON PROVIDERS
     engine.addImageProvider(QLatin1String("backend_app_icon"), &appsIconProvider);
     engine.addImageProvider(QLatin1String("backendTaskbarIcons"), &taskbarIconProvider);

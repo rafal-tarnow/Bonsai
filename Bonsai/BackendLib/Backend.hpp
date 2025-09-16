@@ -10,7 +10,6 @@
 #include <QTimer>
 #include <QFile>
 #include <QtGui/qwindowdefs.h>
-#include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <QProcess>
 
@@ -23,10 +22,6 @@ class Backend : public QObject {
 public:
     explicit Backend(QString homeEnv, QObject *parent = nullptr);
     ~Backend();
-
-    void setQmlEngine(QQmlApplicationEngine * engine);
-
-    Q_INVOKABLE  void setActiveFrontend(const QString& frontendId);
 
     //cpu load
     Q_PROPERTY(float cpuLoad READ cpuLoad NOTIFY cpuLoadChanged)
@@ -102,7 +97,6 @@ private:
 
 private:
     QString HOME_ENV;
-    QQmlApplicationEngine *qmlEngine = nullptr;
     QString m_platformName;
     Mask mask;
     StrutManager strutManager;
