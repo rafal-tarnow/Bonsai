@@ -101,6 +101,8 @@ int main(int argc, char *argv[])
     } else {
         //QML PROXY WINDOW
 
+        qDebug() << "[INFO] INIT QML PROXY WINDOW PROCESS ---------------------------";
+
         //INIT SURFACE
         QSurfaceFormat surfaceFormat = QQuick3D::idealSurfaceFormat();
         //QSurfaceFormat surfaceFormat = QSurfaceFormat::defaultFormat();
@@ -147,7 +149,7 @@ int main(int argc, char *argv[])
             },
             Qt::QueuedConnection);
 
-        engine.load(sourceOption);
+        engine.load(QUrl(sourceOption));
 
         //Make sure the main QML object is loaded.
         if (engine.rootObjects().isEmpty())

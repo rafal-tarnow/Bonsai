@@ -11,16 +11,18 @@ View3D {
         id: timeDisplay3D
         anchors.fill: parent
 
-        text: Qt.formatTime(new Date(), "h:mm")
+        text: "Maia"
+        //text: Qt.formatTime(new Date(), "h:mm")
         font.pointSize: width*0.29
-        color: "white"
+        color: "#FFFFFFFF"
         visible: false
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
         Timer {
             interval: 10000
-            running: true
+            running: false
+            //running: true
             repeat: true
             onTriggered: {
                 timeDisplay3D.text = Qt.formatTime(new Date(), "h:mm")
@@ -51,10 +53,12 @@ View3D {
         eulerRotation.y: 90
 
         Vector3dAnimation on eulerRotation {
-            loops: Animation.Infinite
+            //loops: Animation.Infinite
+            loops: 1
             duration: 5000
             from: Qt.vector3d(0, 0, 0)
             to: Qt.vector3d(360, 0, 360)
         }
     }
 }
+

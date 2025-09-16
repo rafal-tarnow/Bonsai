@@ -14,7 +14,7 @@ BProxyWindow::BProxyWindow(QQuickItem *parent)
     , m_serverName(QString("/tmp/BProxyWindowServer%1")
                        .arg(QUuid::createUuid().toString(QUuid::WithoutBraces).remove('-')))
 {
-    //qDebug() << "111111111111111111 ---- " << __PRETTY_FUNCTION__;
+    //qDebug() << "111111111111111111111111111111111111111111111 ---- " << __PRETTY_FUNCTION__;
     setFlag(ItemHasContents, false);
     setVisible(false);
 
@@ -49,10 +49,10 @@ BProxyWindow::BProxyWindow(QQuickItem *parent)
 
 BProxyWindow::~BProxyWindow()
 {
-    qDebug() << __PRETTY_FUNCTION__ << "Process state:" << m_process->state();
+    //qDebug() << __PRETTY_FUNCTION__ << "Process state:" << m_process->state();
 
     // Sprzątamy kontroler
-    qDebug() << "Disconnecting and deleting ProxyWindowController...";
+    //qDebug() << "Disconnecting and deleting ProxyWindowController...";
     m_winController->disconnect();
     m_winController->deleteLater();
     m_winController = nullptr;
@@ -69,7 +69,7 @@ BProxyWindow::~BProxyWindow()
 
 void BProxyWindow::setSource(const QUrl &source)
 {
-    qDebug() << "4444444444444444444" << source;
+    //qDebug() << "4444444444444444444" << source;
 
     QUrl finalSource = source;
 
@@ -89,18 +89,15 @@ void BProxyWindow::setSource(const QUrl &source)
         }
     }
 
-    qDebug() << "BProxyWindow received source:" << source;
-    qDebug() << "BProxyWindow resolved source to:" << finalSource;
-
-    if (m_source != finalSource) {
-        m_source = finalSource;
+    if (m_sourceUrl != finalSource) {
+        m_sourceUrl = finalSource;
         emit sourceChanged();
     }
 }
 
 bool BProxyWindow::proxyVisible() const
 {
-    qDebug() << "[INFO] " << __PRETTY_FUNCTION__;
+    //qDebug() << "[INFO] " << __PRETTY_FUNCTION__;
     return m_proxyWindowVisible;
 }
 
@@ -150,12 +147,12 @@ void BProxyWindow::onAfterSynchronizing()
 
 void BProxyWindow::startProcess()
 {
-    //qDebug() << "3333333333333333" << __PRETTY_FUNCTION__;
+    //qDebug() << "33333333333333333333333333" << __PRETTY_FUNCTION__;
     if (m_process->state() == QProcess::Running) {
         return;
     }
 
-    if (m_source.isEmpty()) {
+    if (m_sourceUrl.isEmpty()) {
         return;
     }
 
@@ -164,7 +161,7 @@ void BProxyWindow::startProcess()
     QStringList args = {"--mode",
                         "client",
                         "--source",
-                        m_source.path(),
+                        m_sourceUrl.toString(),
                         "--proxy-window-addr",
                         m_serverName,
                         "--x",
@@ -188,7 +185,7 @@ void BProxyWindow::startProcess()
 
 void BProxyWindow::onProcessStarted()
 {
-    qDebug() << "[INFO] " << __PRETTY_FUNCTION__ << " Try connect to Proxy Window Server";
+    //qDebug() << "[INFO] " << __PRETTY_FUNCTION__ << " Try connect to Proxy Window Server";
     m_winController->connectToServer(m_serverName);
 }
 
@@ -206,12 +203,12 @@ void BProxyWindow::onProcessReadyReadStandardError()
     // Odczytaj wszystko, co jest dostępne na standardowym błędzie
     const QByteArray data = m_process->readAllStandardError();
     // Wypisz to jako ostrzeżenie w konsoli głównego procesu z odpowiednim prefiksem
-    //qWarning().noquote() << "[REMOTE STDERR]" << QString::fromLocal8Bit(data).trimmed();
+    //qDebug().noquote() << "[REMOTE STDERR]" << QString::fromLocal8Bit(data).trimmed();
 }
 
 void BProxyWindow::handleVisibleReceived(bool visible)
 {
-    qDebug() << "7777777777777" << __PRETTY_FUNCTION__ << "visible=" << visible;
+    //qDebug() << "7777777777777" << __PRETTY_FUNCTION__ << "visible=" << visible;
     if (m_proxyWindowVisible != visible) {
         m_proxyWindowVisible = visible;
         emit proxyVisibleChanged();
@@ -225,7 +222,7 @@ void BProxyWindow::handleProxyWindowConnected()
 
 void BProxyWindow::stopProcess()
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     if (m_process->state() != QProcess::NotRunning) {
         m_process->terminate();
     }

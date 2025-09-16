@@ -274,18 +274,19 @@ Window {
     //     }
     // }
 
-    // BProxyWindow{
-    //     id: clock3D
-    //     source: "qrc:///windows/Clock3DWindow.qml"
-    //     //source: "qrc:///Clock3D.qml"
-    //     //source: "qrc:///MainTest.qml"
-    //     proxyVisible: true
-    //     anchors.bottom: panel.top
-    //     anchors.right: panel.right
-    //     width: 200
-    //     height: 200
-    //     swapInterval: 1
-    // }
+    BProxyWindow{
+        id: clock3D
+        source: "qrc:///windows/Clock3DWindow.qml"
+        //sourceStr: "qrc:///windows/Clock3DWindow.qml"
+        //source: "qrc:///Clock3D.qml"
+        //source: "qrc:///MainTest.qml"
+        proxyVisible: true
+        anchors.bottom: panel.top
+        anchors.right: panel.right
+        width: 200
+        height: 200
+        swapInterval: 1
+    }
 
     TaskbarContent{
         id: panel

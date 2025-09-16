@@ -112,10 +112,10 @@ void FrontendManagerService::loadFrontends()
 
 #else
     // Release build: use absolute path
-    //gnomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+    gnomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
 
-    gnomeFrontend.qmlFilePath
-        = "/media/rafal/Bonsai_pendrive/Bonsai_deploy/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+    //gnomeFrontend.qmlFilePath
+    //    = "/media/rafal/Bonsai_pendrive/Bonsai_deploy/Bonsai_1.0.0/frontends/Gnome/Main.qml";
 #endif
 
     gnomeFrontend.id = QString(

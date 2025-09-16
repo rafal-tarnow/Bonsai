@@ -20,7 +20,7 @@ public:
     ~BProxyWindow();
 
     //source
-    QUrl source() const { return m_source; }
+    QUrl source() const { return m_sourceUrl; }
     void setSource(const QUrl &source);
 
     //proxyVisible
@@ -50,7 +50,7 @@ private:
     void stopProcess();
 
     QProcess *m_process;
-    QUrl m_source;
+    QUrl m_sourceUrl;
     ProxyWindowController *m_winController;
     QString m_serverName;
 
