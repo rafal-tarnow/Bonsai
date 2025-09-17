@@ -4,9 +4,14 @@ import "./"
 import "../"
 
 MenuItem {
+
     id: root
+
     leftPadding: 0
     rightPadding: 0
+
+    // implicitHeight: 32
+    // implicitWidth: 213
 
     property bool active: true
 
@@ -15,6 +20,8 @@ MenuItem {
         leftPadding: 32
         rightPadding: 32
         text: root.text
+        font.family: "Ubuntu Sans"
+        font.pointSize: 11
         verticalAlignment: Text.AlignVCenter
         color: root.active ? UIStyle.colorControlBoardIcon : UIStyle.disabledTextColor
     }
@@ -70,6 +77,9 @@ MenuItem {
     }
 
     background: Rectangle{
+        anchors.fill: parent
+        implicitHeight: 32
+        implicitWidth: 213
         color: root.active ? (root.highlighted ? ("#dedede") : (root.hovered ? "#dedede" : "#FFFFFF")) : "#FFFFFF"
         radius: 4
         Behavior on color {

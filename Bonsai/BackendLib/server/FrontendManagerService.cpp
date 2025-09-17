@@ -171,7 +171,8 @@ QString FrontendManagerService::readActiveFronted()
 {
 #warning "this code is not asynchronous"
 
-    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + MAIA_VERSION_STRING);
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("./Maia/maiarc_")
+                                                          + MAIA_VERSION_STRING);
     KConfigGroup group = config->group("FrontendManagerService");
     return group.readEntry("activeFrontendId", QString());
 }
@@ -181,7 +182,9 @@ void FrontendManagerService::saveActiveFronted(const QString &frontedId)
 #warning "This method is not asynchronous"
 
     // Zapisujemy activeFrontendId do KSharedConfig
-    KSharedConfig::Ptr config = KSharedConfig::openConfig(QString("bonsairc_") + MAIA_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/bonsairc
+    KSharedConfig::Ptr config = KSharedConfig::openConfig(
+        QString("./Maia/maiarc_")
+        + MAIA_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/Maia/maiarc_1.0.0
     KConfigGroup group = config->group("FrontendManagerService");
     group.writeEntry("activeFrontendId", frontedId);
     config->sync(); // Zapewniamy zapis do pliku

@@ -160,6 +160,7 @@ qt_add_resources(XPFrontend "XPFrontendAssets"
 
     assets/fonts/tahoma.ttf
     assets/fonts/tahomabd.ttf
+    assets/fonts/NeverMindHandwriting-Regular.ttf
 
 
     ${KWIN_XBOOMER_THEME}

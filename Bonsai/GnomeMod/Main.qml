@@ -24,13 +24,23 @@ Window {
         backend.setDefaultWindowDecoration()
     }
 
+    FontLoader {
+        id: ubuntuSans
+        source: "./fonts/UbuntuSans.ttf"
+    }
+
+    FontLoader{
+        id: neverMindHandwritingMedium
+        source: "./fonts/NeverMindHandwriting-Medium.ttf"
+    }
+
     BFrontendModel{
         id: frontendManager
     }
 
     GMenu {
         id: contextMenu
-        width: 209
+        //width: 209
         popupType: Popup.Window
 
         GMenuItem {
@@ -51,7 +61,7 @@ Window {
         GMenu {
             id: frontendSubmenu
             title: "Change Frontend"
-            height: 40
+            //height: 100
 
             enabled: frontendsInstantiator.count > 0
 
@@ -311,5 +321,40 @@ Window {
     //     visible: false
     // }
 
+
+    Text {
+        id: maiaText
+        text: "Maia Shell"
+        font.family: "NeverMind Handwriting"
+        font.pointSize: 24
+        color: "#FFFFFF"
+        opacity: 0  // Start with fully transparent
+        anchors.bottom: wallpaper.bottom
+        anchors.bottomMargin: 18
+        anchors.rightMargin: 20
+        anchors.right: wallpaper.right
+
+        // Timer to trigger the animation after 5 seconds
+        Timer {
+            id: fadeInTimer
+            interval: 3000  // 5 seconds delay
+            running: true
+            repeat: false
+            onTriggered: {
+                fadeInAnimation.start()
+            }
+        }
+
+        // Animation to fade in the text
+        NumberAnimation {
+            id: fadeInAnimation
+            target: maiaText
+            property: "opacity"
+            from: 0
+            to: 0.7  // Target opacity
+            duration: 1000  // Duration of the fade-in effect (1 second)
+            easing.type: Easing.InOutQuad  // Smooth easing curve
+        }
+    }
 
 }

@@ -14,6 +14,8 @@ View3D {
         text: "Maia"
         //text: Qt.formatTime(new Date(), "h:mm")
         font.pointSize: width*0.29
+        font.family: "NeverMind Handwriting"
+        font.styleName: "Medium"
         color: "#FFFFFFFF"
         visible: false
         horizontalAlignment: Text.AlignHCenter
