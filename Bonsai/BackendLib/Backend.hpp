@@ -94,6 +94,9 @@ private:
     bool installDirInternal(const QUrl &themeUrl, const QString &targetInstallDirPath, bool forceReinstall);
     bool copyLocalDirectory(const QString &sourcePath, const QString &targetPath);
     bool copyQrcDirectory(const QString &sourcePath, const QString &targetPath);
+    bool isUrlInstalled(const QString &themeName, const QUrl &themeUrl);
+    void saveInstalledUrl(const QString &themeName, const QUrl &themeUrl);
+    void clearInstalledUrl(const QString &themeName);
 
 private:
     QString HOME_ENV;

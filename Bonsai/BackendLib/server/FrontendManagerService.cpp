@@ -108,14 +108,14 @@ void FrontendManagerService::loadFrontends()
 
 #ifdef QT_DEBUG
     // Debug build: use path relative to the build directory
-    nomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+    nomeFrontend.qmlFilePath = "/opt/Maia/Maia_1.0.0/frontends/Gnome/Main.qml";
 
 #else
     // Release build: use absolute path
-    gnomeFrontend.qmlFilePath = "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+    gnomeFrontend.qmlFilePath = "/opt/Maia/Maia_1.0.0/frontends/Gnome/Main.qml";
 
     //gnomeFrontend.qmlFilePath
-    //    = "/media/rafal/Bonsai_pendrive/Bonsai_deploy/Bonsai_1.0.0/frontends/Gnome/Main.qml";
+    //    = "/media/rafal/Bonsai_pendrive/Maia_deploy/Maia_1.0.0/frontends/Gnome/Main.qml";
 #endif
 
     gnomeFrontend.id = QString(

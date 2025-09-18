@@ -173,11 +173,8 @@ bool startKwinAndWaitForReady(QProcess &process, int timeoutMs)
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
     QString homePath = qgetenv("HOME");
-    // filterProcessEnvironment(env,
-    //                          homePath
-    //                              + "/Bonsai_install/Bonsai_1.0.0/lib"); // Odkomentuj jeśli potrzebne
 
-    filterProcessEnvironment(env, "/opt/Bonsai/Bonsai_1.0.0/lib");
+    filterProcessEnvironment(env, "/opt/Maia/Maia_1.0.0/lib");
     process.setProcessEnvironment(env);
 
     // Start procesu

@@ -24,25 +24,21 @@ sudo apt install libkf5globalaccel-bin breeze libkf5kcmutils5
 
 
 
-
-# Copy "Bonsai/themes" directory to ~/Bonsai/themes
-cp -v -r "$(dirname "$0")/Bonsai" "$HOME/Bonsai/"
-
 #
-sudo rm -v -r "/opt/Bonsai/Bonsai_1.0.0"
+sudo rm -v -r "/opt/Maia/Maia_1.0.0"
 
-# Create /opt/Bonsai dir
-sudo mkdir -p "/opt/Bonsai"
+# Create /opt/Maia dir
+sudo mkdir -p "/opt/Maia"
 
-# Copy "Bonsai_version to ~/Bonsai_install/Bonsai_version
-sudo cp -v -r "$(dirname "$0")/Bonsai_1.0.0" "/opt/Bonsai/Bonsai_1.0.0"
+# Copy "Maia_version to /opt/Maia/Maia_version
+sudo cp -v -r "$(dirname "$0")/Maia_1.0.0" "/opt/Maia/Maia_1.0.0"
 
-sudo chmod +x "/opt/Bonsai/Bonsai_1.0.0/bin/run.sh"
-sudo chmod +x "/opt/Bonsai/Bonsai_1.0.0/bin/run_logger.sh"
-sudo chmod +x "/opt/Bonsai/Bonsai_1.0.0/bin/run_bonsai_in_xephyr.sh"
+sudo chmod +x "/opt/Maia/Maia_1.0.0/bin/run.sh"
+sudo chmod +x "/opt/Maia/Maia_1.0.0/bin/run_logger.sh"
+sudo chmod +x "/opt/Maia/Maia_1.0.0/bin/run_bonsai_in_xephyr.sh"
 
 #copy bonsai-desktop.desktop file to /usr/share/xsessions
-sudo cp -v "$(dirname "$0")/Bonsai_1.0.0/bin/bonsai-desktop.desktop" "/usr/share/xsessions/"
+sudo cp -v "$(dirname "$0")/Maia_1.0.0/bin/bonsai-desktop.desktop" "/usr/share/xsessions/"
 
 
 
@@ -56,6 +52,5 @@ sudo cp -v "$(dirname "$0")/Bonsai_1.0.0/bin/bonsai-desktop.desktop" "/usr/share
 #sudo dnf install --setopt=install_weak_deps=False kwin-common
 ## sudo dnf install --setopt=install_weak_deps=False kwin-data - unavaliable
 ## sudo dnf install --setopt=install_weak_deps=False kwin-addons - unavaliable
-
 
 

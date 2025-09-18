@@ -8,6 +8,7 @@
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QUrl>
+#include <QSettings>
 
 #include <KX11Extras>
 #include <KConfig>
@@ -228,10 +229,7 @@ void Backend::runCommand(const QString &cmd)
     // LD_LIBRARY_PATH do sciezki z bibliotekami bonsai to aplikacja bedzie linkowala do bibliotek bonsai zamiast do bibliotek systemowych
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
-    QString homePath = qgetenv("HOME");
-    //filterProcessEnvironment(env, "/opt/Bonsai/DistributionKit_2");
-    //filterProcessEnvironment(env, homePath + "/Bonsai_install/Bonsai_1.0.0/lib");
-    filterProcessEnvironment(env, "/opt/Bonsai/Bonsai_1.0.0/lib");
+    filterProcessEnvironment(env, "/opt/Maia/Maia_1.0.0/lib");
 
     QProcess process;
     process.setProgram(program);
@@ -461,18 +459,20 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
     QString targetThemePath = targetDirPath + "/" + themeName;
     QDir targetThemeDir(targetThemePath);
 
-    // Sprawdź, czy motyw już istnieje i zdecyduj, co robić
-    if (targetThemeDir.exists()) {
-        if (forceReinstall) {
-            qDebug() << "Theme already exists at:" << targetThemePath
-                     << ". Forcing reinstallation.";
-            targetThemeDir.removeRecursively(); // Usuń istniejący katalog, aby nadpisać
-        } else {
-            qDebug() << "Theme already exists at:" << targetThemePath << ". Skipping installation.";
-            return true; // Pomiń instalację, jeśli forceReinstall jest false
-        }
+    // Sprawdź, czy motyw jest już zainstalowany z tym samym URL
+    if (!forceReinstall && isUrlInstalled(themeName, themeUrl)) {
+        qDebug() << "Theme already installed with matching URL, skipping:" << themeName;
+        return true;
     }
 
+    // Usuń stary/partial katalog i wpis w ustawieniach, jeśli istnieje
+    if (targetThemeDir.exists()) {
+        qDebug() << "Removing existing/partial theme directory:" << targetThemePath;
+        targetThemeDir.removeRecursively();
+    }
+    clearInstalledUrl(themeName); // Wyczyść stare ustawienie
+
+    // Kopiuj
     bool success;
     if (themeUrl.scheme() == "qrc") {
         success = copyQrcDirectory(sourcePath, targetThemePath);
@@ -481,8 +481,29 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
     }
 
     if (success) {
-        qDebug() << "Theme installed successfully to:" << targetThemePath;
+        // Weryfikacja metadanych
+        QString requiredFile;
+        if (targetDirPath.endsWith("/aurorae/themes")) {
+            requiredFile = targetThemePath + "/metadata.desktop";
+        } else if (targetDirPath.endsWith("/icons")) {
+            requiredFile = targetThemePath + "/index.theme";
+        }
+        if (!requiredFile.isEmpty() && !QFile::exists(requiredFile)) {
+            qWarning() << "Required metadata file missing after install, removing partial theme:" << requiredFile;
+            targetThemeDir.removeRecursively();
+            clearInstalledUrl(themeName);
+            success = false;
+        } else {
+            // Zapisz w ustawieniach
+            saveInstalledUrl(themeName, themeUrl);
+            qDebug() << "Theme installed successfully and marked in settings:" << targetThemePath;
+        }
     } else {
+        // Usuń partial po błędzie
+        if (targetThemeDir.exists()) {
+            targetThemeDir.removeRecursively();
+        }
+        clearInstalledUrl(themeName);
         qWarning() << "Failed to install theme from:" << sourcePath;
     }
     return success;
@@ -496,4 +517,31 @@ void Backend::addMaskedItem(QQuickItem *item)
 void Backend::removeMaskedItem(QQuickItem *item)
 {
     mask.removeMaskedItem(item);
+}
+
+bool Backend::isUrlInstalled(const QString &themeName, const QUrl &themeUrl)
+{
+    QSettings settings;
+    settings.beginGroup("[Installed_themes_URLs]");
+    QString savedUrl = settings.value(themeName, "").toString();
+    settings.endGroup();
+    return savedUrl == themeUrl.toString();
+}
+
+void Backend::saveInstalledUrl(const QString &themeName, const QUrl &themeUrl)
+{
+    QSettings settings;
+    settings.beginGroup("[Installed_themes_URLs]");
+    settings.setValue(themeName, themeUrl.toString());
+    settings.endGroup();
+    settings.sync(); // Zapewnij zapis na dysk
+}
+
+void Backend::clearInstalledUrl(const QString &themeName)
+{
+    QSettings settings;
+    settings.beginGroup("[Installed_themes_URLs]");
+    settings.remove(themeName);
+    settings.endGroup();
+    settings.sync();
 }

@@ -1,15 +1,5 @@
 [Desktop Entry]
-Name=Bonsai
+Name=Maia
 Comment=Desktop Environment using Qt
-
-# don't work
-#Exec=sh -c 'exec "/home/john/Bonsai_install/run.sh"'
-
-# don't work
-#Exec=/home/john/Bonsai_install/Bonsai_1.0.0/run.sh
-
-# work ok
-Exec=env LD_LIBRARY_PATH=/opt/Bonsai/Bonsai_1.0.0/lib GTK_USE_PORTAL=0 /opt/Bonsai/Bonsai_1.0.0/bin/appBonsaiWallpaper
-
-#Exec=env LD_LIBRARY_PATH=$HOME/Bonsai_install/Bonsai_1.0.0/lib $HOME/Bonsai_install/Bonsai_1.0.0/bin/appBonsaiWallpaper
+Exec=env LD_LIBRARY_PATH=/opt/Maia/Maia_1.0.0/lib GTK_USE_PORTAL=0 /opt/Maia/Maia_1.0.0/bin/appBonsaiWallpaper
 Type=Application

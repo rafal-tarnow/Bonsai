@@ -29,10 +29,9 @@ set(Plasma_DIR ${KDE_INSTALL_PREFIX}/Plasma)
 set(BONSAI_VERSION 1.0.0)
 project(Bonsai VERSION ${BONSAI_VERSION} LANGUAGES CXX)
 
-# set project installation directory to  /opt/Bonsai/Bonsai_version/
-#set(CMAKE_INSTALL_PREFIX "/opt/Bonsai/Bonsai_${PROJECT_VERSION}")
-#set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/Bonsai_install/Bonsai_${PROJECT_VERSION}")
-set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Bonsai_pendrive/Bonsai_deploy/Bonsai_${PROJECT_VERSION}")
+# set project installation directory to  /opt/Maia/Maia_version/
+#set(CMAKE_INSTALL_PREFIX "/opt/Maia/Maia_${PROJECT_VERSION}")
+set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Bonsai_pendrive/Maia_deploy/Maia_${PROJECT_VERSION}")
 
 set(QT_MAJOR_VERSION 6)
 

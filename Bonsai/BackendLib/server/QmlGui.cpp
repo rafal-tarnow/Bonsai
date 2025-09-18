@@ -14,8 +14,7 @@ void QmlGui::initQmlEngine()
 {
     //READ ENVIROMENT VARIABLES
     QString homePath = qgetenv("HOME");
-    //QString gnomeModulePath = homePath + "/Bonsai/themes/gnome";
-    QString gnomeModulePath = homePath + "/opt/Bonsai/Bonsai_1.0.0/frontends/Gnome";
+    QString gnomeModulePath = homePath + "/opt/Maia/Maia_1.0.0/frontends/Gnome";
 
 
     //INIT SURFACE
