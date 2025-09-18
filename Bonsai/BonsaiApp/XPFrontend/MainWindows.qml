@@ -12,6 +12,7 @@ import "./windows"
 import "./popups"
 import "../"
 import "./components"
+import "./contents"
 
 
 
@@ -262,17 +263,6 @@ Window {
     }
 
 
-    // Column{
-    //     anchors.right: parent.right
-    //     anchors.verticalCenter: parent.verticalCenter
-
-    //     Button{
-    //         text: "clock3d visible"
-    //         onClicked: {
-    //             clock3D.proxyVisible = !clock3D.proxyVisible
-    //         }
-    //     }
-    // }
 
     // BProxyWindow{
     //     id: clock3D
@@ -286,6 +276,13 @@ Window {
     //     width: 200
     //     height: 200
     //     swapInterval: 1
+    // }
+
+    // Clock3DContent{
+    //     anchors.left: wallpaper.left
+    //     anchors.top: wallpaper.top
+    //     width: 200
+    //     height: 200
     // }
 
     TaskbarContent{

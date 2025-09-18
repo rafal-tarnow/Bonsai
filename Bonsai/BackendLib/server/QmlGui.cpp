@@ -56,7 +56,7 @@ void QmlGui::initQmlEngine()
 
 void QmlGui::deleteQmlEngineRootObjects()
 {
-    qDebug() << "Server 6" << __PRETTY_FUNCTION__;
+    qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << __PRETTY_FUNCTION__;
     //close all root QQuickWindows, if we dont close all windows, when we switch frontend, thhey sometimes stay some windows, for example some side panel windows
     for (QObject *rootObject : engine.rootObjects()) {
         if (QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject)) {
@@ -72,7 +72,7 @@ void QmlGui::deleteQmlEngineRootObjects()
 
 void QmlGui::loadFromModule(QAnyStringView uri, QAnyStringView typeName)
 {
-    qDebug() << "Server 8 " << __PRETTY_FUNCTION__;
+    qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << __PRETTY_FUNCTION__;
     engine.loadFromModule(uri, typeName);
 
     //Make sure the main QML object is loaded.
@@ -84,7 +84,7 @@ void QmlGui::loadFromModule(QAnyStringView uri, QAnyStringView typeName)
 
 void QmlGui::load(const QString &filePath)
 {
-    qDebug() << "Server 7 " << __PRETTY_FUNCTION__;
+    qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXX " << __PRETTY_FUNCTION__;
     engine.load(filePath);
 
     //Make sure the main QML object is loaded.

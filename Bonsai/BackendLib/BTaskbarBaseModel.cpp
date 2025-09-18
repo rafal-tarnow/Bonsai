@@ -11,16 +11,16 @@ static bool isTaskbarEntry(const KWindowInfo &info)
     //why winType == 0 ? , because not all clients set window type, so clients without set window type we treat as normal window
     const bool isNormalType = (winType & NET::Normal) || (winType & NET::Dialog) || (winType == 0);
     const bool isSkipped = (winState & NET::SkipTaskbar);
-    qDebug() << "Stop: " << __PRETTY_FUNCTION__;
+    //qDebug() << "Stop: " << __PRETTY_FUNCTION__;
     return isNormalType && !isSkipped;
 }
 
 static bool isTaskbarEntry(WId id)
 {
-    qDebug() << "Start: " << __PRETTY_FUNCTION__;
+    //qDebug() << "Start: " << __PRETTY_FUNCTION__;
     KWindowInfo info(id, NET::WMWindowType | NET::WMState);
     if (!info.valid()) {
-        qDebug() << "Stop: " << __PRETTY_FUNCTION__;
+        //qDebug() << "Stop: " << __PRETTY_FUNCTION__;
         return false;
     }
     return isTaskbarEntry(info);

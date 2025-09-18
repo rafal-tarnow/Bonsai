@@ -55,8 +55,8 @@ View3D {
         eulerRotation.y: 90
 
         Vector3dAnimation on eulerRotation {
-            //loops: Animation.Infinite
-            loops: 1
+            loops: Animation.Infinite
+            //loops: 1
             duration: 5000
             from: Qt.vector3d(0, 0, 0)
             to: Qt.vector3d(360, 0, 360)

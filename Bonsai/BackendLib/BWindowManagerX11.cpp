@@ -54,13 +54,13 @@ void BWindowManagerX11::unloadEffect(const QString &effectName)
 
 void BWindowManagerX11::hideFromTaskbar(const QWindow *window, const bool hide)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
 
     if (!window)
         return;
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "D-Bus nie jest dostępny dla logout!";
+        qWarning() << "[ERROR] D-Bus nie jest dostępny dla logout!";
         return;
     }
 

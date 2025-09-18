@@ -13,7 +13,7 @@ GuiManager::GuiManager(QObject *parent, QGuiApplication *app, int swapIntervalOp
     , m_qmlGui(this, app, swapIntervalOption)
     , changeFrontendStateMachine(this)
 {
-        HOME_ENV = qgetenv("HOME");
+    HOME_ENV = qgetenv("HOME");
 
     connect(&m_kwin, &QProcess::readyReadStandardOutput, [&]() {
         qDebug() << "[INFO KWIN] " << m_kwin.readAllStandardOutput();
@@ -29,12 +29,8 @@ GuiManager::~GuiManager()
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-void GuiManager::startGui(const FrontendInfo & frontend)
+void GuiManager::startGui(const FrontendInfo &frontend)
 {
-
-
-
-
     //START KWIN
     startKwinAndWaitForReady(m_kwin);
 
@@ -42,7 +38,7 @@ void GuiManager::startGui(const FrontendInfo & frontend)
     m_qmlGui.initQmlEngine();
 
     m_currentFrontend = frontend;
-    loadFrontend();
+    //loadFrontend();
 
     connect(&m_x11WindowManagerService,
             &WindowManagerX11Service::reconfigureFinished,
@@ -70,6 +66,26 @@ void GuiManager::startGui(const FrontendInfo & frontend)
         }
     });
 
+    //We need to reconfigure kwin after loading the QML frontend,
+    //among other reasons, because QML modules control kwin window decorations.
+    //Changing the window decorations involves opening the kwin
+    //configuration file 'kwinrc' and modifying its contents.
+    //For this change to take effect, kwin needs to be reloaded.
+
+    changeFrontendStateMachine.connectToState("ReconfigureWindowManagerAfterLoading",
+                                              [=](bool active) {
+                                                  if (active) {
+                                                      qDebug()
+                                                          << "Enter state: "
+                                                          << "ReconfigureWindowManagerAfterLoading";
+                                                      m_x11WindowManagerService.reconfigure();
+                                                  } else {
+                                                      qDebug()
+                                                          << "Exit state: "
+                                                          << "ReconfigureWindowManagerAfterLoading";
+                                                  }
+                                              });
+
     changeFrontendStateMachine.connectToState("EmittingFrontendChanged", [=](bool active) {
         if (active) {
             qDebug() << "Enter state: " << "EmittingFrontendChanged";
@@ -94,6 +110,9 @@ void GuiManager::startGui(const FrontendInfo & frontend)
             qDebug() << "Exit state: " << "LoadingFrontend";
         }
     });
+
+    //START QML GUI, submit event that kik off state machine form idle to running state
+    changeFrontendStateMachine.submitEvent("initialStart");
 }
 
 void GuiManager::tryLoadFrontend(const FrontendInfo &frontend)
@@ -118,14 +137,17 @@ void GuiManager::handleKwinReconfigured()
     if (changeFrontendStateMachine.isActive("ReconfiguringWindowManager")) {
         qDebug() << "changeFrontendStateMachine.submitEvent(windowManagerReconfigured);";
         changeFrontendStateMachine.submitEvent("windowManagerReconfigured");
+    } else if (changeFrontendStateMachine.isActive("ReconfigureWindowManagerAfterLoading")) {
+        qDebug() << "changeFrontendStateMachine.submitEvent(reconfigured);";
+        changeFrontendStateMachine.submitEvent("reconfigured");
     }
 }
 
 void GuiManager::loadFrontend()
 {
-    if(m_currentFrontend.qmlFilePath != ""){
+    if (m_currentFrontend.qmlFilePath != "") {
         m_qmlGui.load(m_currentFrontend.qmlFilePath);
-    }else if (m_currentFrontend.qmlUri != "") {
+    } else if (m_currentFrontend.qmlUri != "") {
         m_qmlGui.loadFromModule(m_currentFrontend.qmlUri, m_currentFrontend.qmlTypeName);
     }
 }

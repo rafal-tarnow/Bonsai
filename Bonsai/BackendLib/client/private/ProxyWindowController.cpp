@@ -17,7 +17,7 @@ ProxyWindowController::ProxyWindowController(QObject *parent)
 
 ProxyWindowController::~ProxyWindowController()
 {
-    qDebug() << __PRETTY_FUNCTION__ << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
+    //qDebug() << __PRETTY_FUNCTION__ << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
     if (m_socket.isOpen()) {
         m_socket.flush();
         m_socket.close();
@@ -27,7 +27,7 @@ ProxyWindowController::~ProxyWindowController()
 
 void ProxyWindowController::setVisible(bool visible)
 {
-    qDebug() << __PRETTY_FUNCTION__;
+    //qDebug() << __PRETTY_FUNCTION__;
     sendSetVisible(visible);
 }
 
@@ -82,16 +82,14 @@ void ProxyWindowController::connectToServer(const QString &serverName)
         return;
     }
     m_serverName = serverName;
-    qDebug() << "ProxyWindowController: Attempting to connect to" << m_serverName;
+    //qDebug() << "ProxyWindowController: Attempting to connect to" << m_serverName;
     m_socket.connectToServer(m_serverName);
 }
 
 void ProxyWindowController::onSocketConnected()
 {
-    qDebug("[OK] Connected to Proxy Window Server");
+    //qDebug("[OK] Connected to Proxy Window Server");
     reconnect_time = 0;
-    //qDebug() << "ŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚŚ on Socket Connected set visible = "
-    //         << m_proxyWindowVisible;
     emit proxyWindowConnected();
 }
 
@@ -130,7 +128,7 @@ void ProxyWindowController::handleStateUpdate(QDataStream &stream)
     auto updateType = static_cast<CommandReceived>(updateTypeRaw);
 
     if (updateType == CommandReceived::SET_VISIBLE) {
-        qDebug() << "[INFO] Received visible update frame";
+        //qDebug() << "[INFO] Received visible update frame";
         bool serverVisible;
         stream >> serverVisible;
         //qDebug() << "Controller: Received VisibleChanged, visible:" << serverVisible;
@@ -153,6 +151,6 @@ void ProxyWindowController::onSocketError(QLocalSocket::LocalSocketError socketE
     m_socket.close();
     m_socket.abort();
 
-    qDebug() << "[INFO] Proxy Window reconnect time = " << reconnect_time << "ms";
+    //qDebug() << "[INFO] Proxy Window reconnect time = " << reconnect_time << "ms";
     QTimer::singleShot(reconnect_time++, this, [this]() { connectToServer(m_serverName); });
 }
