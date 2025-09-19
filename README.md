@@ -1,4 +1,4 @@
-sudo nano /usr/share/xsessions/bonsai-desktop.desktop
+sudo nano /usr/share/xsessions/maia-desktop.desktop
 
 sudo apt update
 sudo apt install snapd
@@ -243,30 +243,30 @@ To change qt app apperance eg. pcmanfm-qt, qterminal use qt5ct app
 and set enviroment variable
 export QT_QPA_PLATFORMTHEME=qt5ct
 
-# Run Bonsai in Xephyr
+# Run Maia in Xephyr
 
 ```console
-DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/bonsai-dev-dbus.sock dbus-run-session Xephyr :1 -screen 1280x720 -ac &
+DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/maia-dev-dbus.sock dbus-run-session Xephyr :1 -screen 1280x720 -ac &
 ```
 
 Run -> Add.. -> Custom Executable
 
 Executable: dbus-run-session
-Command Line Arguments: /home/tom/Bonsai/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper/appBonsaiWallpaper
-Working Directory: /home/tom/Bonsai/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper
+Command Line Arguments: /home/tom/Maia/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper/appMaiaServer
+Working Directory: /home/tom/Maia/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper
 
 Set in QtCreator Run Enviroment Variables:
 DISPLAY=:1
-DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/bonsai-dev-dbus.sock
+DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/maia-dev-dbus.sock
 
 
-![Configure Run Bonsai](doc/qtcreator_bonsai_run_xephyr.png)
+![Configure Run Maia](doc/qtcreator_bonsai_run_xephyr.png)
 
 
-# Add Bonsai to Display Manager
+# Add Maia to Display Manager
 
 ```console
-sudo nano /usr/share/xsessions/bonsai-desktop.desktop
+sudo nano /usr/share/xsessions/maia-desktop.desktop
 ```
 
 # Build Qt6 from sources

@@ -77,20 +77,20 @@ ecm_setup_version(${BONSAI_VERSION}
 
 
 # backend Library
-add_subdirectory(Bonsai/BackendLib/)
+add_subdirectory(Maia/BackendLib/)
 
-#add_subdirectory(Bonsai/ServerLib/)
+#add_subdirectory(Maia/ServerLib/)
 
 # logger application
-add_subdirectory(Bonsai/LoggerApp/)
+add_subdirectory(Maia/LoggerApp/)
 
 # gnome frontend qml module
-add_subdirectory(Bonsai/GnomeMod/)
+add_subdirectory(Maia/GnomeMod/)
 
-add_subdirectory(Bonsai/BonsaiApp/)
+add_subdirectory(Maia/BonsaiApp/)
 
 # scripts thats will be copied while deploy
-add_subdirectory(Bonsai/DeployFiles/)
+add_subdirectory(Maia/DeployFiles/)
 
 add_custom_target(Documentation)
 target_sources(Documentation PRIVATE
