@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(BonsaiWallpaper VERSION 0.1 LANGUAGES CXX)
+project(MaiaServerApp VERSION ${MAIA_VERSION} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
@@ -10,7 +10,7 @@ include(ECMGenerateHeaders)
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Core Quick Quick3D DBus WebEngineQuick)
 
 # Generate maia_version.h file with version #definitions, file will be generated in build directories
-ecm_setup_version(${BONSAI_VERSION}
+ecm_setup_version(${MAIA_VERSION}
     VARIABLE_PREFIX MAIA
     VERSION_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/maia_version.h"
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/MaiaConfigVersion.cmake"
@@ -30,8 +30,6 @@ qt_add_executable(appMaiaServer
     main_proxy_window.hpp
     logger.hpp
     logger.cpp
-
-
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -50,7 +48,7 @@ target_link_libraries(appMaiaServer
     PRIVATE Qt6::Quick
     PRIVATE Qt6::DBus
     PRIVATE Qt6::Quick3D
-    PRIVATE Qt6::WebEngineQuick
+    PUBLIC Qt6::WebEngineQuick
 )
 
 target_link_libraries(appMaiaServer PRIVATE BonsaiBackend)

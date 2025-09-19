@@ -26,8 +26,8 @@ set(Plasma_DIR ${KDE_INSTALL_PREFIX}/Plasma)
 # set(CMAKE_PREFIX_PATH ${HOME_DIR}/kde/usr/lib/cmake;${CMAKE_PREFIX_PATH})
 
 
-set(BONSAI_VERSION 1.0.0)
-project(Bonsai VERSION ${BONSAI_VERSION} LANGUAGES CXX)
+set(MAIA_VERSION 1.0.0)
+project(Bonsai VERSION ${MAIA_VERSION} LANGUAGES CXX)
 
 # set project installation directory to  /opt/Maia/Maia_version/
 #set(CMAKE_INSTALL_PREFIX "/opt/Maia/Maia_${PROJECT_VERSION}")
@@ -65,15 +65,10 @@ if(${ECM_SOURCE_UNDER_VERSION_CONTROL})
     add_definitions(-DGIT_BRANCH="${GIT_BRANCH}")
 
 else()
-    add_definitions(-DGIT_COMMIT_HASH="${BONSAI_VERSION}")
+    add_definitions(-DGIT_COMMIT_HASH="${MAIA_VERSION}")
     add_definitions(-DGIT_BRANCH="Stable")
 endif()
 
-ecm_setup_version(${BONSAI_VERSION}
-    VARIABLE_PREFIX BONSAI
-    VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/bonsai_version.h"
-    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/BonsaiConfigVersion.cmake"
-    SOVERSION ${PROJECT_VERSION_MAJOR})
 
 
 # backend Library

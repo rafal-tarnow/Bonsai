@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick3D
-import QtWebEngine
 import QtQuick.Effects
 import QtCore
 

@@ -1,4 +1,4 @@
-project(BonsaiBackend VERSION ${BONSAI_VERSION})
+project(BonsaiBackend VERSION ${MAIA_VERSION})
 
 set(PROJECT_URI Maia.Client)
 #set(QML_IMPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}")
@@ -13,14 +13,14 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 
 # Generate maia_version.h file with version #definitions, file will be generated in build directories
-ecm_setup_version(${BONSAI_VERSION}
+ecm_setup_version(${MAIA_VERSION}
     VARIABLE_PREFIX MAIA
     VERSION_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/maia_version.h"
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/MaiaConfigVersion.cmake"
     SOVERSION ${PROJECT_VERSION_MAJOR})
 
 
-find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Core Gui Quick DBus Concurrent Scxml)
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Core Gui Quick DBus Concurrent Scxml WebEngineQuick)
 find_package(KF6 ${REQUIRED_KF_VERSION} REQUIRED COMPONENTS Config WindowSystem)
 
 find_package(KF6PulseAudioQt ${REQUIRED_PULSEAUDIOQT_VERSION} REQUIRED)
@@ -122,6 +122,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE Qt6::Quick
     PRIVATE Qt6::Concurrent
     PUBLIC Qt6::Scxml
+    PUBLIC Qt6::WebEngineQuick
     PRIVATE KF6::ConfigCore
     PRIVATE KF6::WindowSystem
     PUBLIC KF6::PulseAudioQt

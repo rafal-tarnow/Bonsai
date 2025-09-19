@@ -1,1 +1,1 @@
-project(BonsaiServerLib VERSION ${BONSAI_VERSION})
+project(BonsaiServerLib VERSION ${MAIA_VERSION})
