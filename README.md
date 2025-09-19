@@ -252,15 +252,15 @@ DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/maia-dev-dbus.sock dbus-run-session Xeph
 Run -> Add.. -> Custom Executable
 
 Executable: dbus-run-session
-Command Line Arguments: /home/tom/Maia/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper/appMaiaServer
-Working Directory: /home/tom/Maia/build/Desktop_Qt_6_9_1-Debug/BonsaiWallpaper
+Command Line Arguments: /home/tom/Maia/build/Desktop_Qt_6_9_1-Debug/MaiaServerApp/appMaiaServer
+Working Directory: /home/tom/Maia/build/Desktop_Qt_6_9_1-Debug/MaiaServerApp
 
 Set in QtCreator Run Enviroment Variables:
 DISPLAY=:1
 DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/maia-dev-dbus.sock
 
 
-![Configure Run Maia](doc/qtcreator_bonsai_run_xephyr.png)
+![Configure Run Maia](doc/qtcreator_maia_run_xephyr.png)
 
 
 # Add Maia to Display Manager

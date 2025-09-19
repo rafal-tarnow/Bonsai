@@ -1,4 +1,4 @@
-project(BonsaiBackend VERSION ${MAIA_VERSION})
+project(MaiaBackend VERSION ${MAIA_VERSION})
 
 set(PROJECT_URI Maia.Client)
 #set(QML_IMPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}")
@@ -109,11 +109,11 @@ qt6_add_statecharts(${PROJECT_NAME}
     scxml/GuiManagerStateMachine.scxml
 )
 
-add_library(BonsaiBackendLib STATIC "")
+add_library(MaiaBackendLib STATIC "")
 
 
 #so that in the main application it would be possible to use headers, e.g., #include <Backend.hpp>
-target_include_directories(BonsaiBackendLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(MaiaBackendLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE Qt6::Core
@@ -129,7 +129,7 @@ target_link_libraries(${PROJECT_NAME}
     # PkgConfig::LIBPULSE
     # PkgConfig::LIBPULSE_MAINLOOP
 )
-target_link_libraries(BonsaiBackendLib PRIVATE BonsaiBackend)
+target_link_libraries(MaiaBackendLib PRIVATE MaiaBackend)
 
 include(GNUInstallDirs)
 

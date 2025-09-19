@@ -74,7 +74,7 @@ endif()
 # backend Library
 add_subdirectory(Maia/BackendLib/)
 
-#add_subdirectory(Maia/ServerLib/)
+add_subdirectory(Maia/MaiaClientLib/)
 
 # logger application
 add_subdirectory(Maia/LoggerApp/)

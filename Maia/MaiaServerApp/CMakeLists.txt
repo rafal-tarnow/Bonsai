@@ -51,7 +51,7 @@ target_link_libraries(appMaiaServer
     PUBLIC Qt6::WebEngineQuick
 )
 
-target_link_libraries(appMaiaServer PRIVATE BonsaiBackend)
+target_link_libraries(appMaiaServer PRIVATE MaiaBackend)
 target_link_libraries(appMaiaServer PRIVATE XPFrontendplugin)
 
 include(GNUInstallDirs)
