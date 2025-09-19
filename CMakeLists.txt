@@ -87,7 +87,7 @@ add_subdirectory(Maia/LoggerApp/)
 # gnome frontend qml module
 add_subdirectory(Maia/GnomeMod/)
 
-add_subdirectory(Maia/BonsaiApp/)
+add_subdirectory(Maia/MaiaServerApp/)
 
 # scripts thats will be copied while deploy
 add_subdirectory(Maia/DeployFiles/)
