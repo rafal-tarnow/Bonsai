@@ -103,7 +103,7 @@ Window{
         anchors.leftMargin: 3
         height: allProgramsButton.width
 
-        icon.source: "file:" + HOME + "/Bonsai/themes/gnome/images/launcher.svg"
+        icon.source: "./images/launcher.svg"
         icon.height: allProgramsButton.height - 30
         icon.width: allProgramsButton.height - 30
 

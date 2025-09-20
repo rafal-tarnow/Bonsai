@@ -17,7 +17,7 @@ Rectangle{
         source: "../fonts/NotoSans-Regular.ttf"
     }
 
-    BFavoritesAppsModel{
+    MFavoritesAppsModel{
     id: favoriteAppsModel
     }
 

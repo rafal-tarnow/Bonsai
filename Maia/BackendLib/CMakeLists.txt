@@ -97,8 +97,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES server/FavoriteAppsService.cpp
     SOURCES server/Application.hpp
     SOURCES server/Application.cpp
-    SOURCES BFavoritesAppsModel.hpp
-    SOURCES BFavoritesAppsModel.cpp
+    SOURCES MFavoritesAppsModel.hpp
+    SOURCES MFavoritesAppsModel.cpp
     SOURCES server/FavoriteAppsListModel.hpp
     SOURCES audio/MPreferredDevice.hpp
     SOURCES audio/MPreferredDevice.cpp

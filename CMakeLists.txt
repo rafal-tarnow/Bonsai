@@ -27,11 +27,11 @@ set(Plasma_DIR ${KDE_INSTALL_PREFIX}/Plasma)
 
 
 set(MAIA_VERSION 1.0.0)
-project(Bonsai VERSION ${MAIA_VERSION} LANGUAGES CXX)
+project(Maia VERSION ${MAIA_VERSION} LANGUAGES CXX)
 
 # set project installation directory to  /opt/Maia/Maia_version/
 #set(CMAKE_INSTALL_PREFIX "/opt/Maia/Maia_${PROJECT_VERSION}")
-set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Bonsai_pendrive/Maia_deploy/Maia_${PROJECT_VERSION}")
+set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Maia_pendrive/Maia_deploy/Maia_${PROJECT_VERSION}")
 
 set(QT_MAJOR_VERSION 6)
 
@@ -86,6 +86,8 @@ add_subdirectory(Maia/MaiaServerApp/)
 
 # scripts thats will be copied while deploy
 add_subdirectory(Maia/DeployFiles/)
+
+add_subdirectory(Experimental/gtk_simple_app/)
 
 add_custom_target(Documentation)
 target_sources(Documentation PRIVATE

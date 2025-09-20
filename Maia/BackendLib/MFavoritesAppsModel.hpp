@@ -6,7 +6,7 @@
 
 #include "server/Application.hpp"
 
-class BFavoritesAppsModel : public QAbstractListModel
+class MFavoritesAppsModel : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
@@ -14,8 +14,8 @@ class BFavoritesAppsModel : public QAbstractListModel
 public:
     enum ApplicationRoles { NameRole = Qt::UserRole + 1, ExecRole, IconRole, IdRole };
 
-    explicit BFavoritesAppsModel(QObject *parent = nullptr);
-    ~BFavoritesAppsModel();
+    explicit MFavoritesAppsModel(QObject *parent = nullptr);
+    ~MFavoritesAppsModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

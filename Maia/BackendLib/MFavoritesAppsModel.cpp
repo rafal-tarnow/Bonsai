@@ -1,8 +1,8 @@
-#include "BFavoritesAppsModel.hpp"
+#include "MFavoritesAppsModel.hpp"
 
 #include <QDBusPendingReply>
 
-BFavoritesAppsModel::BFavoritesAppsModel(QObject *parent)
+MFavoritesAppsModel::MFavoritesAppsModel(QObject *parent)
 {
     //qDebug() << "[STARTUP INFO] " << __PRETTY_FUNCTION__;
     FavApplication::registerDBusTypes();
@@ -35,22 +35,22 @@ BFavoritesAppsModel::BFavoritesAppsModel(QObject *parent)
     connect(watcher,
             &QDBusPendingCallWatcher::finished,
             this,
-            &BFavoritesAppsModel::handleGetFavoritesReply);
+            &MFavoritesAppsModel::handleGetFavoritesReply);
 }
 
-BFavoritesAppsModel::~BFavoritesAppsModel()
+MFavoritesAppsModel::~MFavoritesAppsModel()
 {
     m_dbusInterface->deleteLater();
     m_dbusInterface = nullptr;
 }
 
-int BFavoritesAppsModel::rowCount(const QModelIndex &parent) const
+int MFavoritesAppsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return favApps.size();
 }
 
-QVariant BFavoritesAppsModel::data(const QModelIndex &index, int role) const
+QVariant MFavoritesAppsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() < 0 || index.row() >= favApps.size()) {
         return QVariant();
@@ -71,7 +71,7 @@ QVariant BFavoritesAppsModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> BFavoritesAppsModel::roleNames() const
+QHash<int, QByteArray> MFavoritesAppsModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "appName";
@@ -81,7 +81,7 @@ QHash<int, QByteArray> BFavoritesAppsModel::roleNames() const
     return roles;
 }
 
-void BFavoritesAppsModel::addFavorite(const QString &appId)
+void MFavoritesAppsModel::addFavorite(const QString &appId)
 {
     qDebug() << "Adding favorite with ID:" << appId << __PRETTY_FUNCTION__;
     if (!m_dbusInterface || !m_dbusInterface->isValid()) {
@@ -92,7 +92,7 @@ void BFavoritesAppsModel::addFavorite(const QString &appId)
     m_dbusInterface->asyncCall("addFavorite", appId);
 }
 
-void BFavoritesAppsModel::removeFavorite(const QString &appId)
+void MFavoritesAppsModel::removeFavorite(const QString &appId)
 {
     qDebug() << "Removing favorite with ID:" << appId << __PRETTY_FUNCTION__;
     if (!m_dbusInterface || !m_dbusInterface->isValid()) {
@@ -103,7 +103,7 @@ void BFavoritesAppsModel::removeFavorite(const QString &appId)
     m_dbusInterface->asyncCall("removeFavorite", appId);
 }
 
-void BFavoritesAppsModel::handleFavoriteAdded(const FavApplication &favApp)
+void MFavoritesAppsModel::handleFavoriteAdded(const FavApplication &favApp)
 {
     qDebug() << "777777777777777777777" << __PRETTY_FUNCTION__;
     qDebug() << "favApp.id = " << favApp.id;
@@ -126,7 +126,7 @@ void BFavoritesAppsModel::handleFavoriteAdded(const FavApplication &favApp)
     endInsertRows();
 }
 
-void BFavoritesAppsModel::handleFavoriteRemoved(const FavApplication &favApp)
+void MFavoritesAppsModel::handleFavoriteRemoved(const FavApplication &favApp)
 {
     qDebug() << "9999999999999999999999" << __PRETTY_FUNCTION__;
     qDebug() << "favApp.id = " << favApp.id;
@@ -144,9 +144,9 @@ void BFavoritesAppsModel::handleFavoriteRemoved(const FavApplication &favApp)
     }
 }
 
-//void BFavoritesAppsModel::handleFavoritesChanged() {}
+//void MFavoritesAppsModel::handleFavoritesChanged() {}
 
-void BFavoritesAppsModel::handleGetFavoritesReply(QDBusPendingCallWatcher *watcher)
+void MFavoritesAppsModel::handleGetFavoritesReply(QDBusPendingCallWatcher *watcher)
 {
     if (!watcher) {
         qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " No valid QDBusPendingCallWatcher found";

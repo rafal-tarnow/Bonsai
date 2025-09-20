@@ -115,7 +115,7 @@ void FrontendManagerService::loadFrontends()
     gnomeFrontend.qmlFilePath = "/opt/Maia/Maia_1.0.0/frontends/Gnome/Main.qml";
 
     //gnomeFrontend.qmlFilePath
-    //    = "/media/rafal/Bonsai_pendrive/Maia_deploy/Maia_1.0.0/frontends/Gnome/Main.qml";
+    //    = "/media/rafal/Maia_pendrive/Maia_deploy/Maia_1.0.0/frontends/Gnome/Main.qml";
 #endif
 
     gnomeFrontend.id = QString(

@@ -14,7 +14,7 @@ Rectangle{
 
     signal launcherButtonClicked()
 
-    BFavoritesAppsModel{
+    MFavoritesAppsModel{
         id: favoriteAppsModel
     }
 

@@ -30,7 +30,7 @@ Image{
         }
     }
 
-    BFavoritesAppsModel{
+    MFavoritesAppsModel{
     id: favoriteAppsModel
     }
 
