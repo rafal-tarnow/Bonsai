@@ -4,7 +4,7 @@
 
 // #include "BTaskbarBaseModel.hpp"
 
-// class BTaskbarModel : public QSortFilterProxyModel{
+// class MTaskbarModel : public QSortFilterProxyModel{
 //     Q_OBJECT
 //     QML_ELEMENT
 
@@ -12,7 +12,7 @@
 //     Q_PROPERTY(bool filterNotification READ filterNotification WRITE setFilterNotification NOTIFY filterNotificationChanged)
 
 // public:
-//     explicit BTaskbarModel(QObject *parent = nullptr);
+//     explicit MTaskbarModel(QObject *parent = nullptr);
 
 //     bool filterDesktop() const;
 //     bool setFilterDesktop(bool enabled);

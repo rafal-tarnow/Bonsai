@@ -134,7 +134,7 @@ Rectangle{
             color: "#464646"
         }
 
-        BTaskbarModel{
+        MTaskbarModel{
             id: taskbarModel
         }
 

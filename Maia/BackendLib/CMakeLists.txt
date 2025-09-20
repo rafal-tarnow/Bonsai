@@ -71,10 +71,10 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES server/SessionService.cpp
     SOURCES server/Server.hpp
     SOURCES server/Server.cpp
-    SOURCES BTaskbarModel.hpp
-    SOURCES BTaskbarModel.cpp
-    SOURCES BTaskbarBaseModel.hpp
-    SOURCES BTaskbarBaseModel.cpp
+    SOURCES MTaskbarModel.hpp
+    SOURCES MTaskbarModel.cpp
+    SOURCES MTaskbarBaseModel.hpp
+    SOURCES MTaskbarBaseModel.cpp
     SOURCES MFrontendModel.hpp
     SOURCES MFrontendModel.cpp
     SOURCES server/FrontendManagerService.hpp
@@ -83,8 +83,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES private/ProxyWindowServer.hpp
     SOURCES server/X11WindowManagerService.hpp
     SOURCES server/X11WindowManagerService.cpp
-    SOURCES BWindowManagerX11.hpp
-    SOURCES BWindowManagerX11.cpp
+    SOURCES MWindowManagerX11.hpp
+    SOURCES MWindowManagerX11.cpp
     SOURCES server/QmlGui.hpp
     SOURCES server/QmlGui.cpp
     SOURCES server/GuiManager.hpp

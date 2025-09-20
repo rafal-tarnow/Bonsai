@@ -1,8 +1,8 @@
-#include "BWindowManagerX11.hpp"
+#include "MWindowManagerX11.hpp"
 
 #include <QDBusPendingReply>
 
-BWindowManagerX11::BWindowManagerX11(QObject *parent)
+MWindowManagerX11::MWindowManagerX11(QObject *parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -19,12 +19,12 @@ BWindowManagerX11::BWindowManagerX11(QObject *parent)
     }
 }
 
-BWindowManagerX11::~BWindowManagerX11()
+MWindowManagerX11::~MWindowManagerX11()
 {
     delete m_dbusInterface;
 }
 
-void BWindowManagerX11::reconfigure()
+void MWindowManagerX11::reconfigure()
 {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -35,10 +35,10 @@ void BWindowManagerX11::reconfigure()
 
     QDBusPendingCall call = m_dbusInterface->asyncCall("reconfigure");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &BWindowManagerX11::onCallFinished);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &MWindowManagerX11::onCallFinished);
 }
 
-void BWindowManagerX11::unloadEffect(const QString &effectName)
+void MWindowManagerX11::unloadEffect(const QString &effectName)
 {
     //qDebug() << __PRETTY_FUNCTION__;
 
@@ -49,10 +49,10 @@ void BWindowManagerX11::unloadEffect(const QString &effectName)
 
     QDBusPendingCall call = m_dbusInterface->asyncCall("unloadEffect", effectName);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &BWindowManagerX11::onCallFinished);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &MWindowManagerX11::onCallFinished);
 }
 
-void BWindowManagerX11::hideFromTaskbar(const QWindow *window, const bool hide)
+void MWindowManagerX11::hideFromTaskbar(const QWindow *window, const bool hide)
 {
     //qDebug() << __PRETTY_FUNCTION__;
 
@@ -66,10 +66,10 @@ void BWindowManagerX11::hideFromTaskbar(const QWindow *window, const bool hide)
 
     QDBusPendingCall call = m_dbusInterface->asyncCall("hideFromTaskbar", window->winId(), hide);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &BWindowManagerX11::onCallFinished);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &MWindowManagerX11::onCallFinished);
 }
 
-void BWindowManagerX11::hideFromPager(const QWindow *window, const bool hide)
+void MWindowManagerX11::hideFromPager(const QWindow *window, const bool hide)
 {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -83,10 +83,10 @@ void BWindowManagerX11::hideFromPager(const QWindow *window, const bool hide)
 
     QDBusPendingCall call = m_dbusInterface->asyncCall("hideFromPager", window->winId(), hide);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &BWindowManagerX11::onCallFinished);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &MWindowManagerX11::onCallFinished);
 }
 
-void BWindowManagerX11::hideFromSwitcher(const QWindow *window, const bool hide)
+void MWindowManagerX11::hideFromSwitcher(const QWindow *window, const bool hide)
 {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -100,10 +100,10 @@ void BWindowManagerX11::hideFromSwitcher(const QWindow *window, const bool hide)
 
     QDBusPendingCall call = m_dbusInterface->asyncCall("hideFromSwitcher", window->winId(), hide);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &BWindowManagerX11::onCallFinished);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &MWindowManagerX11::onCallFinished);
 }
 
-void BWindowManagerX11::onCallFinished(QDBusPendingCallWatcher *watcher)
+void MWindowManagerX11::onCallFinished(QDBusPendingCallWatcher *watcher)
 {
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError()) {

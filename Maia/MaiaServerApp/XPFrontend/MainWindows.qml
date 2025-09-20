@@ -61,18 +61,18 @@ Window {
         running: true
         repeat: false
         onTriggered: {
-            //BWindowManagerX11.reconfigure()
+            //MWindowManagerX11.reconfigure()
 
-            BWindowManagerX11.unloadEffect("kwin4_effect_fadingpopups")
-            BWindowManagerX11.unloadEffect("kwin4_effect_scale")
+            MWindowManagerX11.unloadEffect("kwin4_effect_fadingpopups")
+            MWindowManagerX11.unloadEffect("kwin4_effect_scale")
 
-            BWindowManagerX11.unloadEffect("fadingpopups")
-            BWindowManagerX11.unloadEffect("scale")
+            MWindowManagerX11.unloadEffect("fadingpopups")
+            MWindowManagerX11.unloadEffect("scale")
 
 
-            BWindowManagerX11.hideFromTaskbar(root, true);
-            BWindowManagerX11.hideFromSwitcher(root, true);
-            BWindowManagerX11.hideFromPager(root, true);
+            MWindowManagerX11.hideFromTaskbar(root, true);
+            MWindowManagerX11.hideFromSwitcher(root, true);
+            MWindowManagerX11.hideFromPager(root, true);
 
             backend.setX11WindowTypeAsDesktop(root)
         }

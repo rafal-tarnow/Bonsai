@@ -123,9 +123,9 @@ Window {
             // turn off kwin panel effects
             backend.setX11WindowTypeAsDesktop(root);
 
-            BWindowManagerX11.hideFromTaskbar(root, true);
-            BWindowManagerX11.hideFromSwitcher(root, true);
-            BWindowManagerX11.hideFromPager(root, true);
+            MWindowManagerX11.hideFromTaskbar(root, true);
+            MWindowManagerX11.hideFromSwitcher(root, true);
+            MWindowManagerX11.hideFromPager(root, true);
         }
     }
 

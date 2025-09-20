@@ -19,9 +19,9 @@ Window {
         running: true
         repeat: false
         onTriggered: {
-            BWindowManagerX11.hideFromTaskbar(root, true);
-            BWindowManagerX11.hideFromSwitcher(root, true);
-            BWindowManagerX11.hideFromPager(root, true);
+            MWindowManagerX11.hideFromTaskbar(root, true);
+            MWindowManagerX11.hideFromSwitcher(root, true);
+            MWindowManagerX11.hideFromPager(root, true);
 
             backend.setX11WindowTypeAsToolbar(root)
         }

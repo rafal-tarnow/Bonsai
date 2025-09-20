@@ -1,6 +1,6 @@
-// #include "BTaskbarModel.hpp"
+// #include "MTaskbarModel.hpp"
 
-// BTaskbarModel::BTaskbarModel(QObject *parent) :
+// MTaskbarModel::MTaskbarModel(QObject *parent) :
 //     QSortFilterProxyModel(parent),
 //     m_baseModel(this)
 // {
@@ -10,12 +10,12 @@
 //     m_filterTypes[NET::Notification] = false;
 // }
 
-// bool BTaskbarModel::filterDesktop() const
+// bool MTaskbarModel::filterDesktop() const
 // {
 //     return m_filterTypes.value(NET::Desktop, true);
 // }
 
-// bool BTaskbarModel::setFilterDesktop(bool enabled)
+// bool MTaskbarModel::setFilterDesktop(bool enabled)
 // {
 //     if(m_filterTypes[NET::Desktop] != enabled){
 //         m_filterTypes[NET::Desktop] = enabled;
@@ -24,12 +24,12 @@
 //     }
 // }
 
-// bool BTaskbarModel::filterNotification() const
+// bool MTaskbarModel::filterNotification() const
 // {
 //     return m_filterTypes.value(NET::Notification, true);
 // }
 
-// bool BTaskbarModel::setFilterNotification(bool enabled)
+// bool MTaskbarModel::setFilterNotification(bool enabled)
 // {
 //     if(m_filterTypes[NET::Notification] != enabled){
 //         m_filterTypes[NET::Notification] = enabled;

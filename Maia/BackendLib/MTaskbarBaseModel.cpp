@@ -1,4 +1,4 @@
-#include "BTaskbarBaseModel.hpp"
+#include "MTaskbarBaseModel.hpp"
 
 #include <KX11Extras>
 #include <kwindowinfo.h>
@@ -26,7 +26,7 @@ static bool isTaskbarEntry(WId id)
     return isTaskbarEntry(info);
 }
 
-BTaskbarModel::BTaskbarModel(QObject *parent)
+MTaskbarModel::MTaskbarModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     initWindowList();
@@ -35,9 +35,9 @@ BTaskbarModel::BTaskbarModel(QObject *parent)
     connect(KX11Extras::self(),
             &KX11Extras::activeWindowChanged,
             this,
-            &BTaskbarModel::setActiveWindow);
-    connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &BTaskbarModel::addItem);
-    connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, &BTaskbarModel::removeItem);
+            &MTaskbarModel::setActiveWindow);
+    connect(KX11Extras::self(), &KX11Extras::windowAdded, this, &MTaskbarModel::addItem);
+    connect(KX11Extras::self(), &KX11Extras::windowRemoved, this, &MTaskbarModel::removeItem);
 
     connect(KX11Extras::self(),
             &KX11Extras::windowChanged,
@@ -96,15 +96,15 @@ BTaskbarModel::BTaskbarModel(QObject *parent)
             });
 }
 
-BTaskbarModel::~BTaskbarModel() {}
+MTaskbarModel::~MTaskbarModel() {}
 
-int BTaskbarModel::rowCount(const QModelIndex &parent) const
+int MTaskbarModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_items.count();
 }
 
-QVariant BTaskbarModel::data(const QModelIndex &index, int role) const
+QVariant MTaskbarModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() >= m_items.count())
         return QVariant();
@@ -127,7 +127,7 @@ QVariant BTaskbarModel::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> BTaskbarModel::roleNames() const
+QHash<int, QByteArray> MTaskbarModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[WindowNameRole] = "windowName";
@@ -138,7 +138,7 @@ QHash<int, QByteArray> BTaskbarModel::roleNames() const
     return roles;
 }
 
-void BTaskbarModel::addItem(const WId id)
+void MTaskbarModel::addItem(const WId id)
 {
     // check for duplicates
     for (const auto &item : m_items) {
@@ -165,7 +165,7 @@ void BTaskbarModel::addItem(const WId id)
     endInsertRows();
 }
 
-void BTaskbarModel::removeItem(const WId id)
+void MTaskbarModel::removeItem(const WId id)
 {
     for (int i = 0; i < m_items.size(); ++i) {
         if (m_items[i].id == id) {
@@ -177,7 +177,7 @@ void BTaskbarModel::removeItem(const WId id)
     }
 }
 
-void BTaskbarModel::initWindowList()
+void MTaskbarModel::initWindowList()
 {
     QList<WId> windows = KX11Extras::windows();
     for (WId wId : windows) {
@@ -185,12 +185,12 @@ void BTaskbarModel::initWindowList()
     }
 }
 
-void BTaskbarModel::initActiveWindow()
+void MTaskbarModel::initActiveWindow()
 {
     setActiveWindow(KX11Extras::activeWindow());
 }
 
-void BTaskbarModel::setActiveWindow(WId newActiveWindow)
+void MTaskbarModel::setActiveWindow(WId newActiveWindow)
 {
     for (int i = 0; i < m_items.size(); ++i) {
         bool wasActive = m_items[i].windowActive;
@@ -203,7 +203,7 @@ void BTaskbarModel::setActiveWindow(WId newActiveWindow)
     }
 }
 
-void BTaskbarModel::updateWindowName(WId id, const QString &newName)
+void MTaskbarModel::updateWindowName(WId id, const QString &newName)
 {
     for (int i = 0; i < m_items.size(); ++i) {
         if (m_items[i].id == id && m_items[i].text != newName) {
@@ -215,7 +215,7 @@ void BTaskbarModel::updateWindowName(WId id, const QString &newName)
     }
 }
 
-void BTaskbarModel::updateWindowType(WId id, NET::WindowType newType)
+void MTaskbarModel::updateWindowType(WId id, NET::WindowType newType)
 {
     for (int i = 0; i < m_items.size(); ++i) {
         if (m_items[i].id == id && m_items[i].windowType != newType) {

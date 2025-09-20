@@ -99,7 +99,7 @@ Image {
         spacing: 0
         visible: true
 
-        BTaskbarModel{
+        MTaskbarModel{
             id: taskbarModel
         }
 
