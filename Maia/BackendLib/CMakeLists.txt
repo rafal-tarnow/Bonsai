@@ -75,8 +75,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES BTaskbarModel.cpp
     SOURCES BTaskbarBaseModel.hpp
     SOURCES BTaskbarBaseModel.cpp
-    SOURCES BFrontendModel.hpp
-    SOURCES BFrontendModel.cpp
+    SOURCES MFrontendModel.hpp
+    SOURCES MFrontendModel.cpp
     SOURCES server/FrontendManagerService.hpp
     SOURCES server/FrontendManagerService.cpp
     SOURCES private/ProxyWindowServer.cpp

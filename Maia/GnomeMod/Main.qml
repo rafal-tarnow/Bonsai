@@ -34,7 +34,7 @@ Window {
         source: "./fonts/NeverMindHandwriting-Medium.ttf"
     }
 
-    BFrontendModel{
+    MFrontendModel{
         id: frontendManager
     }
 
