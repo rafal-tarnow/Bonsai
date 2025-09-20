@@ -73,7 +73,7 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled : true
                     onClicked: {
-                        BSessionManager.logout()
+                        MSessionManager.logout()
                     }
                 }
             }
@@ -127,7 +127,7 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled : true
                     onClicked: {
-                        BSessionManager.logout()
+                        MSessionManager.logout()
                     }
                 }
             }

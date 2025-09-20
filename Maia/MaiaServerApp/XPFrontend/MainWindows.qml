@@ -263,7 +263,7 @@ Window {
 
 
 
-    // BProxyWindow{
+    // MProxyWindow{
     //     id: clock3D
     //     source: "qrc:///windows/Clock3DWindow.qml"
     //     //sourceStr: "qrc:///windows/Clock3DWindow.qml"

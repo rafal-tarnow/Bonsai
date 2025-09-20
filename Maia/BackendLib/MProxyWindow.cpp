@@ -1,4 +1,4 @@
-#include "BProxyWindow.hpp"
+#include "MProxyWindow.hpp"
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
@@ -8,10 +8,10 @@
 #include <QUuid>
 #include <QVariant>
 
-BProxyWindow::BProxyWindow(QQuickItem *parent)
+MProxyWindow::MProxyWindow(QQuickItem *parent)
     : QQuickItem(parent)
     , m_swapInterval(1)
-    , m_serverName(QString("/tmp/BProxyWindowServer%1")
+    , m_serverName(QString("/tmp/MProxyWindowServer%1")
                        .arg(QUuid::createUuid().toString(QUuid::WithoutBraces).remove('-')))
 {
     //qDebug() << "111111111111111111111111111111111111111111111 ---- " << __PRETTY_FUNCTION__;
@@ -21,33 +21,33 @@ BProxyWindow::BProxyWindow(QQuickItem *parent)
     m_process = new QProcess(this);
     m_winController = new ProxyWindowController(this);
 
-    connect(m_process, &QProcess::started, this, &BProxyWindow::onProcessStarted);
+    connect(m_process, &QProcess::started, this, &MProxyWindow::onProcessStarted);
     connect(m_process, &QProcess::errorOccurred, this, [this](QProcess::ProcessError error) {
-        qWarning() << "BProxyWindow: Failed to start process. Error:" << error;
+        qWarning() << "MProxyWindow: Failed to start process. Error:" << error;
     });
     connect(m_process,
             &QProcess::readyReadStandardOutput,
             this,
-            &BProxyWindow::onProcessReadyReadStandardOutput);
+            &MProxyWindow::onProcessReadyReadStandardOutput);
     connect(m_process,
             &QProcess::readyReadStandardError,
             this,
-            &BProxyWindow::onProcessReadyReadStandardError);
+            &MProxyWindow::onProcessReadyReadStandardError);
 
     connect(m_winController,
             &ProxyWindowController::visibleReceived,
             this,
-            &BProxyWindow::handleVisibleReceived);
+            &MProxyWindow::handleVisibleReceived);
 
     connect(m_winController,
             &ProxyWindowController::proxyWindowConnected,
             this,
-            &BProxyWindow::handleProxyWindowConnected);
+            &MProxyWindow::handleProxyWindowConnected);
 
-    connect(this, &QQuickItem::windowChanged, this, &BProxyWindow::onWindowChanged);
+    connect(this, &QQuickItem::windowChanged, this, &MProxyWindow::onWindowChanged);
 }
 
-BProxyWindow::~BProxyWindow()
+MProxyWindow::~MProxyWindow()
 {
     //qDebug() << __PRETTY_FUNCTION__ << "Process state:" << m_process->state();
 
@@ -67,7 +67,7 @@ BProxyWindow::~BProxyWindow()
     QFile::remove(m_serverName);
 }
 
-void BProxyWindow::setSource(const QUrl &source)
+void MProxyWindow::setSource(const QUrl &source)
 {
     //qDebug() << "4444444444444444444" << source;
 
@@ -83,7 +83,7 @@ void BProxyWindow::setSource(const QUrl &source)
         } else {
             // Ten błąd może się pojawić, jeśli obiekt nie został utworzony przez silnik QML
             // (np. został stworzony ręcznie w C++ i nie jest powiązany z kontekstem).
-            qWarning() << "BProxyWindow: Could not get QML context for object. Cannot resolve "
+            qWarning() << "MProxyWindow: Could not get QML context for object. Cannot resolve "
                           "relative URL:"
                        << source;
         }
@@ -95,13 +95,13 @@ void BProxyWindow::setSource(const QUrl &source)
     }
 }
 
-bool BProxyWindow::proxyVisible() const
+bool MProxyWindow::proxyVisible() const
 {
     //qDebug() << "[INFO] " << __PRETTY_FUNCTION__;
     return m_proxyWindowVisible;
 }
 
-void BProxyWindow::setProxyVisible(bool visible)
+void MProxyWindow::setProxyVisible(bool visible)
 {
     //qDebug() << "66666666666666666 " << __PRETTY_FUNCTION__ << " visible=" << visible;
     if (m_proxyWindowVisible != visible) {
@@ -111,12 +111,12 @@ void BProxyWindow::setProxyVisible(bool visible)
     }
 }
 
-int BProxyWindow::swapInterval() const
+int MProxyWindow::swapInterval() const
 {
     return m_swapInterval;
 }
 
-void BProxyWindow::setSwapInterval(const int swapInterval)
+void MProxyWindow::setSwapInterval(const int swapInterval)
 {
     if (m_swapInterval != swapInterval) {
         m_swapInterval = swapInterval;
@@ -124,28 +124,28 @@ void BProxyWindow::setSwapInterval(const int swapInterval)
     }
 }
 
-void BProxyWindow::onWindowChanged(QQuickWindow *window)
+void MProxyWindow::onWindowChanged(QQuickWindow *window)
 {
     if (window) {
         connect(window,
                 &QQuickWindow::afterSynchronizing,
                 this,
-                &BProxyWindow::onAfterSynchronizing,
+                &MProxyWindow::onAfterSynchronizing,
                 Qt::UniqueConnection);
     }
 }
 
-void BProxyWindow::onAfterSynchronizing()
+void MProxyWindow::onAfterSynchronizing()
 {
     //qDebug() << "222222222222222" << __PRETTY_FUNCTION__;
     startProcess(); //we start windows after synchornization becaouse after synchronization window geomerty is calculated
     disconnect(window(),
                &QQuickWindow::afterSynchronizing,
                this,
-               &BProxyWindow::onAfterSynchronizing); // Odłączamy, aby uniknąć wielokrotnych wywołań
+               &MProxyWindow::onAfterSynchronizing); // Odłączamy, aby uniknąć wielokrotnych wywołań
 }
 
-void BProxyWindow::startProcess()
+void MProxyWindow::startProcess()
 {
     //qDebug() << "33333333333333333333333333" << __PRETTY_FUNCTION__;
     if (m_process->state() == QProcess::Running) {
@@ -183,13 +183,13 @@ void BProxyWindow::startProcess()
     m_process->start(program, args);
 }
 
-void BProxyWindow::onProcessStarted()
+void MProxyWindow::onProcessStarted()
 {
     //qDebug() << "[INFO] " << __PRETTY_FUNCTION__ << " Try connect to Proxy Window Server";
     m_winController->connectToServer(m_serverName);
 }
 
-void BProxyWindow::onProcessReadyReadStandardOutput()
+void MProxyWindow::onProcessReadyReadStandardOutput()
 {
     // Odczytaj wszystko, co jest dostępne na standardowym wyjściu
     const QByteArray data = m_process->readAllStandardOutput();
@@ -198,7 +198,7 @@ void BProxyWindow::onProcessReadyReadStandardOutput()
     //qDebug().noquote() << "[REMOTE STDOUT]" << QString::fromLocal8Bit(data).trimmed();
 }
 
-void BProxyWindow::onProcessReadyReadStandardError()
+void MProxyWindow::onProcessReadyReadStandardError()
 {
     // Odczytaj wszystko, co jest dostępne na standardowym błędzie
     const QByteArray data = m_process->readAllStandardError();
@@ -206,7 +206,7 @@ void BProxyWindow::onProcessReadyReadStandardError()
     //qDebug().noquote() << "[REMOTE STDERR]" << QString::fromLocal8Bit(data).trimmed();
 }
 
-void BProxyWindow::handleVisibleReceived(bool visible)
+void MProxyWindow::handleVisibleReceived(bool visible)
 {
     //qDebug() << "7777777777777" << __PRETTY_FUNCTION__ << "visible=" << visible;
     if (m_proxyWindowVisible != visible) {
@@ -215,12 +215,12 @@ void BProxyWindow::handleVisibleReceived(bool visible)
     }
 }
 
-void BProxyWindow::handleProxyWindowConnected()
+void MProxyWindow::handleProxyWindowConnected()
 {
     m_winController->setVisible(m_proxyWindowVisible);
 }
 
-void BProxyWindow::stopProcess()
+void MProxyWindow::stopProcess()
 {
     //qDebug() << __PRETTY_FUNCTION__;
     if (m_process->state() != QProcess::NotRunning) {

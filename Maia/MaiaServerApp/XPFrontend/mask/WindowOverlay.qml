@@ -119,7 +119,7 @@ Window {
         }
     }
 
-    BMaskedItem{
+    MMaskedItem{
         id: dbgPanelMask
         width: 150
         height:300
@@ -139,7 +139,7 @@ Window {
             Button{
                 text: "Logout"
                 onPressed: {
-                    BSessionManager.logout()
+                    MSessionManager.logout()
                 }
             }
 
@@ -187,7 +187,7 @@ Window {
     }
 
 
-    // BMaskedItem{
+    // MMaskedItem{
     //     x: draggableRect.x
     //     y: draggableRect.y
     //     width: draggableRect.width

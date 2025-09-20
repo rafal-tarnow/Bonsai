@@ -2,7 +2,7 @@
 
 #include <QQuickWindow>
 
-#include "../BMaskedItem.hpp"
+#include "../MMaskedItem.hpp"
 
 QMap<QQuickWindow*, QSet<QQuickItem*>> MaskTracker::instances;
 QSet<QQuickWindow*> MaskTracker::pendingUpdates;

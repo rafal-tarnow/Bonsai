@@ -1,8 +1,8 @@
-#include "BSessionManager.hpp"
+#include "MSessionManager.hpp"
 #include <QDBusPendingReply>
 #include <QDebug>
 
-BSessionManager::BSessionManager(QObject *parent)
+MSessionManager::MSessionManager(QObject *parent)
     : QObject(parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
@@ -22,51 +22,51 @@ BSessionManager::BSessionManager(QObject *parent)
     }
 }
 
-BSessionManager::~BSessionManager()
+MSessionManager::~MSessionManager()
 {
     delete m_dbusInterface;
 }
 
-void BSessionManager::logout()
+void MSessionManager::logout()
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_dbusInterface->isValid()) {
         // Asynchroniczne wywołanie metody logout
         QDBusPendingCall call = m_dbusInterface->asyncCall("logout");
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-        connect(watcher, &QDBusPendingCallWatcher::finished, this, &BSessionManager::onCallFinished);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
         qWarning() << "D-Bus nie jest dostępny dla logout!";
     }
 }
 
-void BSessionManager::reboot()
+void MSessionManager::reboot()
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_dbusInterface->isValid()) {
         // Asynchroniczne wywołanie metody reboot
         QDBusPendingCall call = m_dbusInterface->asyncCall("reboot");
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-        connect(watcher, &QDBusPendingCallWatcher::finished, this, &BSessionManager::onCallFinished);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
         qWarning() << "D-Bus nie jest dostępny dla reboot!";
     }
 }
 
-void BSessionManager::poweroff()
+void MSessionManager::poweroff()
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_dbusInterface->isValid()) {
         // Asynchroniczne wywołanie metody poweroff
         QDBusPendingCall call = m_dbusInterface->asyncCall("poweroff");
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-        connect(watcher, &QDBusPendingCallWatcher::finished, this, &BSessionManager::onCallFinished);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
         qWarning() << "D-Bus nie jest dostępny dla poweroff!";
     }
 }
 
-void BSessionManager::onCallFinished(QDBusPendingCallWatcher *watcher)
+void MSessionManager::onCallFinished(QDBusPendingCallWatcher *watcher)
 {
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError()) {

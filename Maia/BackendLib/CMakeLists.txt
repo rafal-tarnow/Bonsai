@@ -54,8 +54,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES helper/Process.cpp
     SOURCES private/Mask.hpp
     SOURCES private/Mask.cpp
-    SOURCES BMaskedItem.hpp
-    SOURCES BMaskedItem.cpp
+    SOURCES MMaskedItem.hpp
+    SOURCES MMaskedItem.cpp
     SOURCES private/MaskAlgorithm.hpp
     SOURCES private/MaskAlgorithm.cpp
     SOURCES private/MaskTracker.hpp
@@ -65,8 +65,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES strut/Strut.hpp
     SOURCES strut/StrutManager.hpp
     SOURCES strut/StrutManager.cpp
-    SOURCES BSessionManager.hpp
-    SOURCES BSessionManager.cpp
+    SOURCES MSessionManager.hpp
+    SOURCES MSessionManager.cpp
     SOURCES server/SessionService.hpp
     SOURCES server/SessionService.cpp
     SOURCES server/Server.hpp
@@ -91,8 +91,8 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES server/GuiManager.cpp
     SOURCES client/private/ProxyWindowController.hpp
     SOURCES client/private/ProxyWindowController.cpp
-    SOURCES BProxyWindow.hpp
-    SOURCES BProxyWindow.cpp
+    SOURCES MProxyWindow.hpp
+    SOURCES MProxyWindow.cpp
     SOURCES server/FavoriteAppsService.hpp
     SOURCES server/FavoriteAppsService.cpp
     SOURCES server/Application.hpp

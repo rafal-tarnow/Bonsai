@@ -217,7 +217,7 @@ Window {
         }
     }
 
-    BProxyWindow{
+    MProxyWindow{
         id: appLauncherWindow
         source: "./windows/AppsLauncherWindow.qml"
         //source: Qt.resolvedUrl("./windows/AppsLauncherWindow.qml")
@@ -289,19 +289,19 @@ Window {
         // Button{
         //     text: "poweroff"
         //     onClicked: {
-        //         BSessionManager.poweroff()
+        //         MSessionManager.poweroff()
         //     }
         // }
         // Button{
         //     text: "logout"
         //     onClicked: {
-        //         BSessionManager.logout()
+        //         MSessionManager.logout()
         //     }
         // }
         // Button{
         //     text: "reboot"
         //     onClicked: {
-        //         BSessionManager.reboot()
+        //         MSessionManager.reboot()
         //     }
         // }
         // Button{

@@ -7,7 +7,7 @@
 
 #include "./client/private/ProxyWindowController.hpp"
 
-class BProxyWindow : public QQuickItem
+class MProxyWindow : public QQuickItem
 {
     Q_OBJECT
     QML_ELEMENT
@@ -16,8 +16,8 @@ class BProxyWindow : public QQuickItem
     Q_PROPERTY(bool proxyVisible READ proxyVisible WRITE setProxyVisible NOTIFY proxyVisibleChanged)
 
 public:
-    explicit BProxyWindow(QQuickItem *parent = nullptr);
-    ~BProxyWindow();
+    explicit MProxyWindow(QQuickItem *parent = nullptr);
+    ~MProxyWindow();
 
     //source
     QUrl source() const { return m_sourceUrl; }

@@ -16,7 +16,7 @@
 
 #include <AppsListModel.hpp>
 #include <AudioBackend.hpp>
-#include <BSessionManager.hpp>
+#include <MSessionManager.hpp>
 #include <Backend.hpp>
 #include <BackendAppsIconsProvider.hpp>
 #include <TaskbarIconProvider.hpp>

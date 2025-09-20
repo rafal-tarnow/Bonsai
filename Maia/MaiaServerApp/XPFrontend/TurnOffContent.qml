@@ -48,7 +48,7 @@ Rectangle {
                 }
                 onReleased: {
                     if(containsMouse){
-                        BSessionManager.poweroff()
+                        MSessionManager.poweroff()
                     }
                     turnOffButton.source = "qrc:/assets/images/dialog_turn_off_power_button_normal.png"
                 }
@@ -80,7 +80,7 @@ Rectangle {
                 onReleased: {
                     if(containsMouse){
                         restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_hover.png"
-                        BSessionManager.reboot()
+                        MSessionManager.reboot()
                     }else{
                         restartButton.source = "qrc:/assets/images/dialog_turn_off_restart_button_normal.png"
                     }

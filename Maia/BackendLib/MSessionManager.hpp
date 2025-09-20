@@ -5,13 +5,13 @@
 #include <QDBusPendingCallWatcher>
 #include <qqml.h>
 
-class BSessionManager : public QObject {
+class MSessionManager : public QObject {
     Q_OBJECT
     QML_ELEMENT
     QML_SINGLETON
 public:
-    BSessionManager(QObject *parent = nullptr);
-    ~BSessionManager();
+    MSessionManager(QObject *parent = nullptr);
+    ~MSessionManager();
 
     Q_INVOKABLE void logout();
     Q_INVOKABLE void reboot();

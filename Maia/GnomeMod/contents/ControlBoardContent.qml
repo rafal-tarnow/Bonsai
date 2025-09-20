@@ -273,7 +273,7 @@ Rectangle {
                         Layout.preferredHeight: 37
                         text: "Restart..."
                         onTriggered: {
-                            BSessionManager.reboot()
+                            MSessionManager.reboot()
                         }
                     }
                     GMenuItem{
@@ -281,7 +281,7 @@ Rectangle {
                         Layout.preferredHeight: 37
                         text: "Power Off..."
                         onTriggered: {
-                            BSessionManager.poweroff()
+                            MSessionManager.poweroff()
                         }
                     }
                     GMenuSeparator{
@@ -292,7 +292,7 @@ Rectangle {
                         Layout.preferredHeight: 37
                         text: "Log out..."
                         onTriggered: {
-                            BSessionManager.logout()
+                            MSessionManager.logout()
                         }
                     }
                     GMenuItem{
@@ -300,7 +300,7 @@ Rectangle {
                         Layout.preferredHeight: 37
                         text: "Switch User..."
                         onTriggered: {
-                            BSessionManager.logout()
+                            MSessionManager.logout()
                         }
                     }
                 }
