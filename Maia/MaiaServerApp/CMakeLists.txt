@@ -17,7 +17,7 @@ ecm_setup_version(${MAIA_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR})
 
 set(DEPLOY_FILES
-    maia-desktop.desktop
+    "maia_0.1.0-desktop.desktop"
 )
 
 qt_standard_project_setup(REQUIRES ${REQUIRED_QT_VERSION})
@@ -71,7 +71,7 @@ qt_generate_deploy_qml_app_script(
 # Instalacja skryptu (gdzie skrypt będzie uruchomiony podczas instalacji)
 install(SCRIPT ${deploy_script})
 
-# Deploy maia-desktop.desktop file
+# Deploy maia_version-desktop.desktop file
 install(FILES ${DEPLOY_FILES}
         DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
         PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ

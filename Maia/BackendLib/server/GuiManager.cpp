@@ -3,6 +3,7 @@
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 
+#include "../maia_version.h"
 #include "../helper/Process.hpp"
 
 static bool startKwinAndWaitForReady(QProcess &process, int timeoutMs = 15000);
@@ -174,7 +175,7 @@ bool startKwinAndWaitForReady(QProcess &process, int timeoutMs)
 
     QString homePath = qgetenv("HOME");
 
-    filterProcessEnvironment(env, "/opt/Maia/Maia_1.0.0/lib");
+    filterProcessEnvironment(env, QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + QString("/lib"));
     process.setProcessEnvironment(env);
 
     // Start procesu

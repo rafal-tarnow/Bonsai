@@ -26,7 +26,7 @@ set(Plasma_DIR ${KDE_INSTALL_PREFIX}/Plasma)
 # set(CMAKE_PREFIX_PATH ${HOME_DIR}/kde/usr/lib/cmake;${CMAKE_PREFIX_PATH})
 
 
-set(MAIA_VERSION 1.0.0)
+set(MAIA_VERSION 0.1.0)
 project(Maia VERSION ${MAIA_VERSION} LANGUAGES CXX)
 
 # set project installation directory to  /opt/Maia/Maia_version/

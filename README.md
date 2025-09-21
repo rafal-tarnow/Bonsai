@@ -1,4 +1,4 @@
-sudo nano /usr/share/xsessions/maia-desktop.desktop
+sudo nano /usr/share/xsessions/maia_version-desktop.desktop
 
 sudo apt update
 sudo apt install snapd
@@ -235,6 +235,7 @@ QT_STYLE_OVERRIDE
 export QT_STYLE_OVERRIDE="Breeze"
 export QT_STYLE_OVERRIDE="Windows"
 export QT_STYLE_OVERRIDE="Fusion"
+export QT_STYLE_OVERRIDE=Breeze
 
 
 QT_QPA_PLATFORMTHEME
@@ -266,7 +267,7 @@ DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/maia-dev-dbus.sock
 # Add Maia to Display Manager
 
 ```console
-sudo nano /usr/share/xsessions/maia-desktop.desktop
+sudo nano /usr/share/xsessions/maia_version-desktop.desktop
 ```
 
 # Build Qt6 from sources

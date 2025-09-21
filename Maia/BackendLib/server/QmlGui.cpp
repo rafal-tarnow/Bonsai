@@ -3,6 +3,8 @@
 #include <QQmlContext>
 #include <QSurface>
 
+#include "../maia_version.h"
+
 QmlGui::QmlGui(QObject *parent, QGuiApplication *app, int swapIntervalOption)
     : QObject(parent)
     , m_app(app)
@@ -14,7 +16,7 @@ void QmlGui::initQmlEngine()
 {
     //READ ENVIROMENT VARIABLES
     QString homePath = qgetenv("HOME");
-    QString gnomeModulePath = homePath + "/opt/Maia/Maia_1.0.0/frontends/Gnome";
+    QString gnomeModulePath = homePath + QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + "/frontends/Gnome";
 
 
     //INIT SURFACE

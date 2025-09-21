@@ -17,6 +17,7 @@
 #include <qtconcurrentrun.h>
 
 #include "./helper/Process.hpp"
+#include "maia_version.h"
 
 Backend::Backend(QString homeEnv, QObject *parent)
     : QObject(parent)
@@ -229,7 +230,7 @@ void Backend::runCommand(const QString &cmd)
     // LD_LIBRARY_PATH do sciezki z bibliotekami maia to aplikacja bedzie linkowala do bibliotek maia zamiast do bibliotek systemowych
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
-    filterProcessEnvironment(env, "/opt/Maia/Maia_1.0.0/lib");
+    filterProcessEnvironment(env, QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + QString("/lib"));
 
     QProcess process;
     process.setProgram(program);

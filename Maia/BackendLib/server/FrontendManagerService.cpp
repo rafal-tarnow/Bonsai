@@ -108,14 +108,14 @@ void FrontendManagerService::loadFrontends()
 
 #ifdef QT_DEBUG
     // Debug build: use path relative to the build directory
-    nomeFrontend.qmlFilePath = "/opt/Maia/Maia_1.0.0/frontends/Gnome/Main.qml";
+    nomeFrontend.qmlFilePath = QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + "/frontends/Gnome/Main.qml";
 
 #else
     // Release build: use absolute path
-    gnomeFrontend.qmlFilePath = "/opt/Maia/Maia_1.0.0/frontends/Gnome/Main.qml";
+    gnomeFrontend.qmlFilePath = QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + "/frontends/Gnome/Main.qml";
 
     //gnomeFrontend.qmlFilePath
-    //    = "/media/rafal/Maia_pendrive/Maia_deploy/Maia_1.0.0/frontends/Gnome/Main.qml";
+    //    = QString("/media/rafal/Maia_pendrive/Maia_deploy/Maia_") + QString(MAIA_VERSION_STRING) + QString("/frontends/Gnome/Main.qml");
 #endif
 
     gnomeFrontend.id = QString(
@@ -184,7 +184,7 @@ void FrontendManagerService::saveActiveFronted(const QString &frontedId)
     // Zapisujemy activeFrontendId do KSharedConfig
     KSharedConfig::Ptr config = KSharedConfig::openConfig(
         QString("./Maia/maiarc_")
-        + MAIA_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/Maia/maiarc_1.0.0
+        + MAIA_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/Maia/maiarc_0.1.0
     KConfigGroup group = config->group("FrontendManagerService");
     group.writeEntry("activeFrontendId", frontedId);
     config->sync(); // Zapewniamy zapis do pliku
