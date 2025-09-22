@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # Update package lists
-# sudo apt update
-
-
+sudo apt update
 
 # Install kwin-x11
 
@@ -19,12 +17,12 @@ sudo apt install --no-install-recommends --no-install-suggests kwin-addons
 # Ubuntu 24.10
 # additional dependiences for kwin
 sudo apt install libkf5globalaccel-bin breeze libkf5kcmutils5
-# sudo apt install libxcb-cursor-dev
 
 
 
 
-#
+# INSTALL MAIA
+
 sudo rm -v -r "/opt/Maia/Maia_0.1.0"
 
 # Create /opt/Maia dir
@@ -45,12 +43,12 @@ sudo cp -v "$(dirname "$0")/Maia_0.1.0/bin/maia_0.1.0-desktop.desktop" "/usr/sha
 
 
 
-## Sprawdzenie dostępnych aktualizacji (odpowiednik apt update)
+## Check for available updates (equivalent to apt update)
 #sudo dnf check-update
-## Instalacja pakietów KWin bez słabych zależności
+## Install KWin packages without weak dependencies
 #sudo dnf install --setopt=install_weak_deps=False kwin-x11
 #sudo dnf install --setopt=install_weak_deps=False kwin-common
-## sudo dnf install --setopt=install_weak_deps=False kwin-data - unavaliable
-## sudo dnf install --setopt=install_weak_deps=False kwin-addons - unavaliable
+## sudo dnf install --setopt=install_weak_deps=False kwin-data - unavailable
+## sudo dnf install --setopt=install_weak_deps=False kwin-addons - unavailable
 
 

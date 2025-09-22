@@ -20,8 +20,8 @@ private slots:
     void onCallFinished(QDBusPendingCallWatcher *watcher);
 
 private:
-    void executeReboot();
-    void executePoweroff();
+    void executeFreedesktopReboot();
+    void executeFreedesktopPoweroff();
 
 signals:
     void logoutRequest();

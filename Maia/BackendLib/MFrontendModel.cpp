@@ -9,7 +9,6 @@
 MFrontendModel::MFrontendModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    //qDebug() << ">>>>>>>>>>>>>>>> new >>>>>>>>>>>>>>>>>>>>" << __PRETTY_FUNCTION__;
     qDBusRegisterMetaType<QVariantMap>();
     qDBusRegisterMetaType<QVariantList>();
 
@@ -19,7 +18,7 @@ MFrontendModel::MFrontendModel(QObject *parent)
                                          QDBusConnection::sessionBus(),
                                          this);
 
-    // Połącz sygnały D-Bus z slotami
+    // Connect D-Bus signals to slots
     connect(m_dbusInterface,
             SIGNAL(frontendAdded(QString, QString, QString, QString)),
             this,
@@ -40,20 +39,18 @@ MFrontendModel::MFrontendModel(QObject *parent)
             this,
             &MFrontendModel::handleFrontendListReply);
 
-    // Pobierz początkowy activeFrontendId
+    // Load initial activeFrontendId
     loadActiveFrontend();
 }
 
 void MFrontendModel::loadActiveFrontend()
 {
-    //qDebug() << "RRRRRRRRRRRRRRRRRRRR activeFrontend()";
     QDBusPendingCall call = m_dbusInterface->asyncCall("activeFrontend");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     connect(watcher,
             &QDBusPendingCallWatcher::finished,
             this,
             [this](QDBusPendingCallWatcher *watcher) {
-                //qDebug() << "B--- " << "active frontend lambda";
                 QDBusPendingReply<QString> reply = *watcher;
                 if (!reply.isError()) {
                     handleGetActiveFrontend(reply.value());
@@ -67,7 +64,6 @@ void MFrontendModel::loadActiveFrontend()
 
 MFrontendModel::~MFrontendModel()
 {
-    //qDebug() << "<<<<<<<<<<<<<<<<<< delete <<<<<<<<<<<<<<<<<<" << __PRETTY_FUNCTION__;
     m_dbusInterface->deleteLater();
     m_dbusInterface = nullptr;
 }
@@ -131,10 +127,9 @@ void MFrontendModel::setActiveFrontend(const QString &frontendId)
 
 void MFrontendModel::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
 {
-    //qDebug() << "##################### " << __PRETTY_FUNCTION__;
     QDBusPendingReply<QVariantList> reply = *watcher;
     if (reply.isError()) {
-        qDebug() << "D-Bus error:" << reply.error().message();
+        qDebug() << "[ERROR] D-Bus error:" << reply.error().message();
         watcher->deleteLater();
         return;
     }
@@ -146,12 +141,12 @@ void MFrontendModel::handleFrontendListReply(QDBusPendingCallWatcher *watcher)
     //qDebug() << "REPLY = " << frontends;
 
     for (const QVariant &frontendVar : frontends) {
-        // Sprawdź, czy QVariant zawiera QDBusArgument
+        // Check if QVariant contains QDBusArgument
         if (frontendVar.canConvert<QDBusArgument>()) {
             QDBusArgument dbusArg = frontendVar.value<QDBusArgument>();
             QVariantMap map;
 
-            // Deserializuj QDBusArgument jako QVariantMap
+            // Deserialize QDBusArgument as QVariantMap
             if (dbusArg.currentSignature() == "a{sv}") {
                 dbusArg >> map;
             } else {
@@ -187,7 +182,6 @@ void MFrontendModel::handleFrontendAdded(const QString &id,
                                          const QString &description,
                                          const QString &path)
 {
-    //qDebug() << "############## " << __PRETTY_FUNCTION__;
     beginInsertRows(QModelIndex(), m_frontends.size(), m_frontends.size());
     Frontend frontend;
     frontend.id = id;
@@ -201,7 +195,6 @@ void MFrontendModel::handleFrontendAdded(const QString &id,
 
 void MFrontendModel::handleFrontendRemoved(const QString &id)
 {
-    //qDebug() << "############## " << __PRETTY_FUNCTION__;
     for (int i = 0; i < m_frontends.size(); ++i) {
         if (m_frontends[i].id == id) {
             beginRemoveRows(QModelIndex(), i, i);

@@ -24,9 +24,9 @@ private:
     static void updateMaskForWindow(QQuickWindow *win);
     void scheduleMaskUpdateForWindow(QQuickWindow *win);
 
-    static QSet<QQuickWindow*> pendingUpdates; // Lista okien oczekujących na aktualizację
+    static QSet<QQuickWindow*> pendingUpdates; // Set of windows awaiting updates
     static SimpleMaskAlgorithm maskAlgorithm;
-    static QMap<QQuickWindow*, QSet<QQuickItem*>> instances; // Lista wszystkich instancji MaskedItem
+    static QMap<QQuickWindow*, QSet<QQuickItem*>> instances; // List of all MaskedItem instances
     QElapsedTimer elapsedTimer;
     QQuickItem *trackedItem = nullptr;
     QQuickWindow *m_previousWindow = nullptr;

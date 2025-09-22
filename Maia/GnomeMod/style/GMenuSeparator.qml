@@ -14,7 +14,6 @@ MenuSeparator {
     contentItem: Rectangle {
         implicitHeight: 1
         color: "#e1e1e1"
-        //color: "red"
         width: separator.availableWidth
     }
 }

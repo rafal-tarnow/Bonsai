@@ -5,7 +5,6 @@ TextField {
     id :root
 
     leftPadding: height
-    //color: "#f2f2f2"
     color: "#e8e8e8"
     placeholderTextColor: "#e8e8e8"
     font.pointSize: 10
@@ -23,8 +22,6 @@ TextField {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-
-            //color: "red"
 
             Image{
                 id: findImg

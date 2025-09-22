@@ -19,7 +19,7 @@ WindowManagerX11Service::WindowManagerX11Service(QObject *parent)
         qDebug() << "[Warning] DBUS_SESSION_BUS_ADDRESS is not set.";
     }
 
-    // Rejestrujemy obiekt i jego metody na D-Busie
+    // Register the object and its methods on D-Bus
     QDBusConnection bus = QDBusConnection::sessionBus();
 
     if (bus.isConnected()) {
@@ -40,15 +40,13 @@ WindowManagerX11Service::WindowManagerX11Service(QObject *parent)
         qWarning() << "[ERROR] Failed to register D-Bus object.";
     }
 
-    //----------------------------------------
-
-    QDBusConnection::sessionBus().connect("org.kde.KWin",                // Nazwa serwisu
-                                          "/KWin",                       // Ścieżka obiektu
-                                          "org.kde.KWin",                // Nazwa interfejsu
-                                          "reloadConfig",                // Nazwa sygnału
-                                          this,                          // Obiekt odbiorcy
-                                          SLOT(handleKwinConfigReloaded) // Slot, który ma być wywołany
-    );
+    QDBusConnection::sessionBus().connect("org.kde.KWin",                // Service name
+                                          "/KWin",                       // Object path
+                                          "org.kde.KWin",                // Interface name
+                                          "reloadConfig",                // Signal name
+                                          this,                          // Receiver object
+                                          SLOT(handleKwinConfigReloaded) // Slot to be called
+                                          );
 }
 
 WindowManagerX11Service::~WindowManagerX11Service() {}
@@ -86,15 +84,14 @@ void WindowManagerX11Service::unloadEffect(const QString &effectName)
 
 void WindowManagerX11Service::reconfigure()
 {
-    qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.KWin", // Serwis
-                                                          "/KWin",        // Ścieżka
-                                                          "org.kde.KWin", // Interfejs
-                                                          "reconfigure"   // Metoda
-    );
+    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.KWin", // Service
+                                                          "/KWin",        // Path
+                                                          "org.kde.KWin", // Interface
+                                                          "reconfigure"   // Method
+                                                          );
 
-    // Utwórz i uruchom timer
+    // Create and start a timer
     QElapsedTimer timer;
     timer.start();
 
@@ -103,29 +100,27 @@ void WindowManagerX11Service::reconfigure()
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
 
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [=]() mutable {
-        // Zmierz i wyświetl czas, jaki upłynął od momentu timer.start()
+        // Measure and display the time elapsed since timer.start()
         qint64 elapsed_ms = timer.elapsed();
-        double elapsed_us = timer.nsecsElapsed() / 1000.0; // w mikrosekundach dla większej precyzji
+        double elapsed_us = timer.nsecsElapsed() / 1000.0; // In microseconds for greater precision
 
-        qDebug() << ">>> Sygnał 'finished' otrzymany po:" << elapsed_ms << "ms (" << elapsed_us
+        qDebug() << ">>> Signal 'finished' received after:" << elapsed_ms << "ms (" << elapsed_us
                  << "µs)";
 
         QDBusPendingReply<> reply = *watcher;
         bool success = !reply.isError();
         if (reply.isError()) {
-            qDebug() << "Błąd D-Bus podczas rekonfiguracji:" << reply.error().message();
+            qDebug() << "[ERROR] D-Bus error during reconfiguration:" << reply.error().message();
         } else {
-            qDebug() << "Komunikat z kodu: Rekonfiguracja KWin zakończona pomyślnie.";
+            qDebug() << "KWin reconfiguration completed successfully.";
         }
-        emit reconfigureFinished(success); // Emitowanie sygnału z informacją o powodzeniu
+        emit reconfigureFinished(success); // Emit signal with success information
         watcher->deleteLater();
-        qDebug() << "--------------------------------------------------";
     });
 }
 
 void WindowManagerX11Service::hideFromTaskbar(WId winId, bool hide)
 {
-    //qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
     if (hide)
         KX11Extras::setState(winId, NET::SkipTaskbar);
     else
@@ -134,7 +129,6 @@ void WindowManagerX11Service::hideFromTaskbar(WId winId, bool hide)
 
 void WindowManagerX11Service::hideFromPager(WId winId, bool hide)
 {
-    //qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
     if (hide)
         KX11Extras::setState(winId, NET::SkipPager);
     else
@@ -143,7 +137,6 @@ void WindowManagerX11Service::hideFromPager(WId winId, bool hide)
 
 void WindowManagerX11Service::hideFromSwitcher(WId winId, bool hide)
 {
-    //qDebug() << __PRETTY_FUNCTION__ << " windId=" << winId << " hide=" << hide;
     if (hide)
         KX11Extras::setState(winId, NET::SkipSwitcher);
     else
@@ -152,7 +145,5 @@ void WindowManagerX11Service::hideFromSwitcher(WId winId, bool hide)
 
 void WindowManagerX11Service::handleKwinConfigReloaded()
 {
-    qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-                "XXXXXXXXXXXXXXXXXXXXXXX "
-             << __PRETTY_FUNCTION__;
+
 }

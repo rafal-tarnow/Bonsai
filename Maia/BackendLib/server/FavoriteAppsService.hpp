@@ -32,7 +32,7 @@ public slots:
     Q_SCRIPTABLE QVector<FavApplication> getFavorites();
 
 private slots:
-    // Prywatne sloty do obsługi sygnałów z modelu
+    // Private slots for handling signals from the model
     void _onFavoriteAdded(const QString &appId);
     void _onFavoriteRemoved(const QString &appId);
 

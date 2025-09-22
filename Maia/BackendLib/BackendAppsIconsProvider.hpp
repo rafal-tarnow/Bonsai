@@ -11,7 +11,7 @@ public:
     BackendAppsIconsProvider()
         : QQuickImageProvider(QQuickImageProvider::Pixmap)
     {
-#warning "ikony powinny być ustawinae w qml"
+#warning "Icons should be set in QML"
 
         QString homePath = qgetenv("HOME");
         QStringList searchPaths;

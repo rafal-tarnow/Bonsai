@@ -29,8 +29,8 @@ set(Plasma_DIR ${KDE_INSTALL_PREFIX}/Plasma)
 set(MAIA_VERSION 0.1.0)
 project(Maia VERSION ${MAIA_VERSION} LANGUAGES CXX)
 
-# set project installation directory to  /opt/Maia/Maia_version/
-#set(CMAKE_INSTALL_PREFIX "/opt/Maia/Maia_${PROJECT_VERSION}")
+# set project deploy directory to  /opt/Maia/Maia_version/
+#set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/Maia_deploy/Maia_${PROJECT_VERSION}")
 set(CMAKE_INSTALL_PREFIX "/media/$ENV{USER}/Maia_pendrive/Maia_deploy/Maia_${PROJECT_VERSION}")
 
 set(QT_MAJOR_VERSION 6)
@@ -94,7 +94,6 @@ target_sources(Documentation PRIVATE
     README.md
     CONTRIBUTING.md
 )
-
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

@@ -19,7 +19,7 @@ FrontendManagerService::FrontendManagerService(QObject *parent) :
     QDBusConnection bus = QDBusConnection::sessionBus();
 
     if(!bus.registerService("org.maia.FrontendManager")){
-        qFatal("Failed to register D-Bus service: %s", qPrintable(bus.lastError().message()));
+        qDebug("ERROR] Failed to register D-Bus service: %s", qPrintable(bus.lastError().message()));
     }
 
     //register FronendManager object
@@ -28,7 +28,7 @@ FrontendManagerService::FrontendManagerService(QObject *parent) :
                             QDBusConnection::ExportAllSlots
                                 | QDBusConnection::ExportScriptableSignals
                                 | QDBusConnection::ExportAllProperties)) {
-        qFatal("Failed to register D-Bus object: %s", qPrintable(bus.lastError().message()));
+        qDebug("[ERROR] Failed to register D-Bus object: %s", qPrintable(bus.lastError().message()));
     }
 
     loadFrontends();
@@ -57,7 +57,6 @@ FrontendInfo FrontendManagerService::getCurrentFrontent()
 
 QVariantList FrontendManagerService::getFrontendList()
 {
-    //qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
     QVariantList frontends;
     for(const FrontendInfo &frontend : m_frontends) {
         QVariantMap map;
@@ -73,7 +72,6 @@ QVariantList FrontendManagerService::getFrontendList()
 
 QString FrontendManagerService::activeFrontend() const
 {
-    //qDebug() << "Server Call: " << __PRETTY_FUNCTION__;
     return m_activeFrontendId;
 }
 
@@ -115,12 +113,12 @@ void FrontendManagerService::loadFrontends()
     gnomeFrontend.qmlFilePath = QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + "/frontends/Gnome/Main.qml";
 
     //gnomeFrontend.qmlFilePath
-    //    = QString("/media/rafal/Maia_pendrive/Maia_deploy/Maia_") + QString(MAIA_VERSION_STRING) + QString("/frontends/Gnome/Main.qml");
+    //    = QString("/media/john/Maia_pendrive/Maia_deploy/Maia_") + QString(MAIA_VERSION_STRING) + QString("/frontends/Gnome/Main.qml");
 #endif
 
     gnomeFrontend.id = QString(
         QCryptographicHash::hash(gnomeFrontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
-    qDebug() << "Gnome Frontend id = " << gnomeFrontend.id;
+    //qDebug() << "Gnome Frontend id = " << gnomeFrontend.id;
     m_frontends.insert(gnomeFrontend.id, gnomeFrontend);
 
 
@@ -131,20 +129,20 @@ void FrontendManagerService::loadFrontends()
     lunaFrontend.qmlUri = "XPFrontend";
     lunaFrontend.qmlTypeName = "Main";
     lunaFrontend.id = QString(QCryptographicHash::hash(lunaFrontend.name.toUtf8(), QCryptographicHash::Sha1).toHex());
-    qDebug() << "Luna XP id = " << lunaFrontend.id;
+    //qDebug() << "Luna XP id = " << lunaFrontend.id;
     m_frontends.insert(lunaFrontend.id, lunaFrontend);
 
 
     QString savedFrontendId = readActiveFronted();
 
-    // Ustawiamy aktywny frontend: zapisany, jeśli istnieje i jest ważny, w przeciwnym razie domyślny
+    // Set the active frontend: saved if it exists and is valid, otherwise default
     if (!savedFrontendId.isEmpty() && m_frontends.contains(savedFrontendId)) {
         m_activeFrontendId = savedFrontendId;
     } else {
-        m_activeFrontendId = m_frontends.isEmpty() ? "" : gnomeFrontend.id; // Domyślny frontend
+        m_activeFrontendId = m_frontends.isEmpty() ? "" : gnomeFrontend.id; // Default frontend
     }
 
-    //Emitujemy sygnał, jeśli aktywny frontend jest ustawiony
+    // Emit signal if the active frontend is set
     if (!m_activeFrontendId.isEmpty()) {
         emit activeFrontendChanged(m_activeFrontendId);
     }
@@ -181,11 +179,11 @@ void FrontendManagerService::saveActiveFronted(const QString &frontedId)
 {
 #warning "This method is not asynchronous"
 
-    // Zapisujemy activeFrontendId do KSharedConfig
+    // Save activeFrontendId to KSharedConfig
     KSharedConfig::Ptr config = KSharedConfig::openConfig(
         QString("./Maia/maiarc_")
-        + MAIA_VERSION_STRING); // Nazwa pliku konfiguracyjnego, np. ~/.config/Maia/maiarc_0.1.0
+        + MAIA_VERSION_STRING); // Configuration file name, e.g., ~/.config/Maia/maiarc_0.1.0
     KConfigGroup group = config->group("FrontendManagerService");
     group.writeEntry("activeFrontendId", frontedId);
-    config->sync(); // Zapewniamy zapis do pliku
+    config->sync(); // Ensure saving to the file
 }

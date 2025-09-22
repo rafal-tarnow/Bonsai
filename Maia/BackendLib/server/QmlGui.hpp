@@ -4,7 +4,7 @@
 #include <QQmlApplicationEngine>
 
 #include "../AppsListModel.hpp"
-#include "../AudioBackend.hpp"
+#include "../MAudioBackend.hpp"
 #include "../Backend.hpp"
 #include "../BackendAppsIconsProvider.hpp"
 #include "../TaskbarIconProvider.hpp"
@@ -34,5 +34,5 @@ private:
     TaskbarIconsProvider taskbarIconProvider;
     ApplicationModel appsListModel;
     FilterProxyModel filterProxyModel;
-    AudioBackend audioBackend;
+    MAudioBackend audioBackend;
 };

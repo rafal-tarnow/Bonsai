@@ -17,10 +17,8 @@ static bool isTaskbarEntry(const KWindowInfo &info)
 
 static bool isTaskbarEntry(WId id)
 {
-    //qDebug() << "Start: " << __PRETTY_FUNCTION__;
     KWindowInfo info(id, NET::WMWindowType | NET::WMState);
     if (!info.valid()) {
-        //qDebug() << "Stop: " << __PRETTY_FUNCTION__;
         return false;
     }
     return isTaskbarEntry(info);
@@ -43,7 +41,7 @@ MTaskbarModel::MTaskbarModel(QObject *parent)
             &KX11Extras::windowChanged,
             this,
             [this](WId id, NET::Properties properties, NET::Properties2 properties2) {
-                // Sprawdzamy, czy okno jest w ogóle w naszym modelu
+                // Check if the window is in our model at all
                 int rowIndex = -1;
                 for (int i = 0; i < m_items.count(); ++i) {
                     if (m_items[i].id == id) {
@@ -53,29 +51,29 @@ MTaskbarModel::MTaskbarModel(QObject *parent)
                 }
                 const bool isCurrentlyInModel = (rowIndex != -1);
 
-                // --- GŁÓWNA ZMIANA: Obsługa zmiany stanu okna ---
+                // --- Handle window state change ---
                 if (properties & NET::WMState) {
                     //qDebug() << "Window STATE changed for WId:" << id;
 
                     const bool shouldBeInModel = isTaskbarEntry(id);
 
                     if (shouldBeInModel && !isCurrentlyInModel) {
-                        // Okno powinno być na taskbarze, a go nie ma -> dodaj je
+                        // Window should be on the taskbar but isn't -> add it
                         qDebug() << "Window should be on taskbar, adding it:" << id;
                         addItem(id);
                     } else if (!shouldBeInModel && isCurrentlyInModel) {
-                        // Okno nie powinno być na taskbarze, a jest -> usuń je
+                        // Window should not be on the taskbar but is -> remove it
                         qDebug() << "Window should NOT be on taskbar, removing it:" << id;
                         removeItem(id);
                     }
                 }
 
-                // Jeśli okno nie jest w modelu, nie ma sensu aktualizować jego nazwy/typu.
+                // If the window is not in the model, there's no need to update its name/type
                 if (!isCurrentlyInModel) {
                     return;
                 }
 
-                // Aktualizacje dla okien, które już są w modelu
+                // Updates for windows already in the model
                 KWindowInfo info(id, NET::WMWindowType | NET::WMVisibleName);
                 if (!info.valid()) {
                     return;

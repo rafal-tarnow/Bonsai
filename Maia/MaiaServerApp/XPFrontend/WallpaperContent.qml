@@ -118,20 +118,20 @@ Image {
         popupType: Popup.Window
 
         XPMenuItem {
-            text: "Arrange Icons By"
+            text: qsTr("Arrange Icons By")
             active: false
             onTriggered: {
             }
         }
 
         XPMenuItem {
-            text: "Refresh"
+            text: qsTr("Refresh")
             active: false
         }
 
         XPMenu {
             id: frontendSubmenu
-            title: "Change Frontend"
+            title: qsTr("Change Frontend")
             height: 40
             enabled: frontendsInstantiator.count > 0
 

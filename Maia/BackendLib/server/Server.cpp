@@ -42,8 +42,7 @@ Server::~Server()
 
 void Server::handleFrontendChangeRequest(const QString &themeId)
 {
-    qDebug() << "Server 4 " << __PRETTY_FUNCTION__
-             << " Server logisc received signal with request to change theme, id=" << themeId;
+
 }
 
 void Server::handleFrontendChangeRequest(const FrontendInfo &forntend)
@@ -54,15 +53,11 @@ void Server::handleFrontendChangeRequest(const FrontendInfo &forntend)
 
 void Server::sessionLogout()
 {
-    qDebug() << __PRETTY_FUNCTION__;
-
     m_guiManager.uninit();
-
     QCoreApplication::exit(0);
 }
 
 void Server::handleGuiManagerFrontendChanged(const QString &frontendId)
 {
-    qDebug() << "Server 10 " << __PRETTY_FUNCTION__;
     m_frontendManagerService.activeFrontendChangeConfirmation(frontendId);
 }

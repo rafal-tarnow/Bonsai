@@ -1,7 +1,5 @@
 #pragma once
 
-#include <optional>
-
 #include <QObject>
 #include <qqml.h>
 #include <QCoreApplication>

@@ -6,17 +6,17 @@ MSessionManager::MSessionManager(QObject *parent)
     : QObject(parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
-    // Połączenie z interfejsem D-Bus serwera
+    // Connect to the D-Bus interface of the server
     m_dbusInterface = new QDBusInterface(
-        "org.maia.SessionService", // Nazwa serwisu
-        "/Session",            // Ścieżka obiektu
-        "org.maia.SessionInterface", // Interfejs
-        QDBusConnection::sessionBus(), // Połączenie z sesyjnym D-Bus
+        "org.maia.SessionService", // Service name
+        "/Session",            // Object path
+        "org.maia.SessionInterface", // Interface
+        QDBusConnection::sessionBus(), // Session D-Bus connection
         this
         );
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "[ERROR] Nie udało się połączyć z interfejsem D-Bus!";
+        qWarning() << "[ERROR] Failed to connect to the D-Bus interface!";
     }else{
         qDebug() << "[OK] Valid org.maia.SessionService d-bus";
     }
@@ -31,12 +31,12 @@ void MSessionManager::logout()
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_dbusInterface->isValid()) {
-        // Asynchroniczne wywołanie metody logout
+        // Asynchronous call to the logout method
         QDBusPendingCall call = m_dbusInterface->asyncCall("logout");
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
-        qWarning() << "D-Bus nie jest dostępny dla logout!";
+        qWarning() << "D-Bus is not available for logout!";
     }
 }
 
@@ -44,12 +44,12 @@ void MSessionManager::reboot()
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_dbusInterface->isValid()) {
-        // Asynchroniczne wywołanie metody reboot
+        // Asynchronous call to the reboot method
         QDBusPendingCall call = m_dbusInterface->asyncCall("reboot");
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
-        qWarning() << "D-Bus nie jest dostępny dla reboot!";
+        qDebug() << "[ERROR] D-Bus is not available for reboot!";
     }
 }
 
@@ -57,12 +57,12 @@ void MSessionManager::poweroff()
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_dbusInterface->isValid()) {
-        // Asynchroniczne wywołanie metody poweroff
+        // Asynchronous call to the poweroff method
         QDBusPendingCall call = m_dbusInterface->asyncCall("poweroff");
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
-        qWarning() << "D-Bus nie jest dostępny dla poweroff!";
+        qDebug() << "[ERROR] D-Bus is not available for poweroff!";
     }
 }
 
@@ -70,9 +70,9 @@ void MSessionManager::onCallFinished(QDBusPendingCallWatcher *watcher)
 {
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError()) {
-        qWarning() << "Błąd wywołania D-Bus:" << reply.error().message();
+        qDebug() << "[ERROR] D-Bus call error:" << reply.error().message();
     } else {
-        //qDebug() << "Wywołanie D-Bus zakończone sukcesem";
+        //qDebug() << "D-Bus call completed successfully";
     }
     watcher->deleteLater();
 }

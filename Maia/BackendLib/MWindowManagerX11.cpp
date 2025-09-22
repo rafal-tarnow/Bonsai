@@ -13,7 +13,7 @@ MWindowManagerX11::MWindowManagerX11(QObject *parent)
                                          this);
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "[ERROR] Nie udało się połączyć z interfejsem D-Bus!";
+        qWarning() << "[ERROR] Failed to connect to the D-Bus interface!";
     } else {
         qDebug() << "[OK] Valid org.maia.WindowManagerX11Service d-bus";
     }
@@ -29,7 +29,7 @@ void MWindowManagerX11::reconfigure()
     qDebug() << __PRETTY_FUNCTION__;
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "D-Bus nie jest dostępny dla logout!";
+        qWarning() << "D-Bus is not available for reconfigure!";
         return;
     }
 
@@ -43,7 +43,7 @@ void MWindowManagerX11::unloadEffect(const QString &effectName)
     //qDebug() << __PRETTY_FUNCTION__;
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "D-Bus nie jest dostępny dla logout!";
+        qWarning() << "D-Bus is not available for unloadEffect!";
         return;
     }
 
@@ -60,7 +60,7 @@ void MWindowManagerX11::hideFromTaskbar(const QWindow *window, const bool hide)
         return;
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "[ERROR] D-Bus nie jest dostępny dla logout!";
+        qWarning() << "[ERROR] D-Bus is not available for hideFromTaskbar!";
         return;
     }
 
@@ -77,7 +77,7 @@ void MWindowManagerX11::hideFromPager(const QWindow *window, const bool hide)
         return;
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "D-Bus nie jest dostępny dla logout!";
+        qWarning() << "D-Bus is not available for hideFromPager!";
         return;
     }
 
@@ -94,7 +94,7 @@ void MWindowManagerX11::hideFromSwitcher(const QWindow *window, const bool hide)
         return;
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "D-Bus nie jest dostępny dla logout!";
+        qWarning() << "D-Bus is not available for hideFromSwitcher!";
         return;
     }
 
@@ -107,9 +107,9 @@ void MWindowManagerX11::onCallFinished(QDBusPendingCallWatcher *watcher)
 {
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError()) {
-        qWarning() << "Błąd wywołania D-Bus:" << reply.error().message();
+        qWarning() << "D-Bus call error:" << reply.error().message();
     } else {
-        //qDebug() << "Wywołanie D-Bus zakończone sukcesem";
+        //qDebug() << "D-Bus call completed successfully";
     }
     watcher->deleteLater();
 }

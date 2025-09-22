@@ -2,32 +2,6 @@ import QtQuick.Controls.Material
 import QtQuick
 import QtQuick.Controls
 
-// Button{
-//     id: rightButton
-//     implicitWidth: 100
-//     implicitHeight: 100
-
-//     Button{
-//         id: leftButton
-//         implicitWidth: 120
-//         implicitHeight: parent.height
-
-//         Component.onCompleted: {
-//             leftButton.background.color = "red"
-//         }
-
-//     }
-// }
-
-
-// Button{
-//         Button{
-//             anchors.fill: parent
-//             background: Rectangle{
-//                 anchors.fill: parent
-//             }
-//         }
-// }
 
 Button{
     id: root
@@ -134,17 +108,5 @@ Button{
             }
         }
     }
-
 }
 
-// Row{
-//     id: rightButton
-//     // implicitWidth: 100
-//     // implicitHeight: 100
-//     Button{
-
-//     }
-//     Button{
-
-//     }
-// }

@@ -62,7 +62,7 @@ protected:
         QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
         QString itemText = index.data(ApplicationModel::NameRole).toString();
 
-        // Użyj filterRegExp().pattern() jako wzoru
+        // Use filterRegularExpression().pattern() as the pattern
         return itemText.contains(filterRegularExpression().pattern(), Qt::CaseInsensitive);// && (sourceRow > 1) && (sourceRow < 1000);
     }
 };

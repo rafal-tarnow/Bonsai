@@ -19,7 +19,7 @@ SessionService::SessionService(QObject *parent)
         qDebug() << "[Warning] DBUS_SESSION_BUS_ADDRESS is not set.";
     }
 
-    // Rejestrujemy obiekt i jego metody na D-Busie
+    // Register the object and its methods on D-Bus
     QDBusConnection bus = QDBusConnection::sessionBus();
 
     if (bus.isConnected()) {
@@ -43,22 +43,19 @@ SessionService::~SessionService() {}
 
 void SessionService::logout() {
     qDebug() << "[D-Bus] Logout received";
-    qDebug() << "QQQQQQQQQQQQQQQQQQQQQQQQQ";
     emit logoutRequest();
 }
 
 void SessionService::reboot() {
     qDebug() << "[D-Bus] Reboot received";
-    qDebug() << "QQQQQQQQQQQQQQQQQQQQQQQQQ";
     emit rebootRequest();
-    executeReboot();
+    executeFreedesktopReboot();
 }
 
 void SessionService::poweroff() {
     qDebug() << "[D-Bus] Poweroff received";
-    qDebug() << "QQQQQQQQQQQQQQQQQQQQQQQQQ";
     emit poweroffRequest();
-    executePoweroff();
+    executeFreedesktopPoweroff();
 }
 
 void SessionService::onCallFinished(QDBusPendingCallWatcher *watcher)
@@ -73,7 +70,7 @@ void SessionService::onCallFinished(QDBusPendingCallWatcher *watcher)
     watcher->deleteLater();
 }
 
-void SessionService::executeReboot()
+void SessionService::executeFreedesktopReboot()
 {
     qDebug() << __PRETTY_FUNCTION__;
     QDBusMessage message = QDBusMessage::createMethodCall(
@@ -90,7 +87,7 @@ void SessionService::executeReboot()
     connect(watcher, &QDBusPendingCallWatcher::finished, this, &SessionService::onCallFinished);
 }
 
-void SessionService::executePoweroff()
+void SessionService::executeFreedesktopPoweroff()
 {
     qDebug() << __PRETTY_FUNCTION__;
     QDBusMessage message = QDBusMessage::createMethodCall(

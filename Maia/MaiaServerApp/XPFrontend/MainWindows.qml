@@ -36,6 +36,8 @@ Window {
         backend.setAuroraeTheme("XBoomer")
         //backend.setDefaultWindowDecoration()
 
+
+
     }
 
 
@@ -50,7 +52,7 @@ Window {
 
 
     Timer {
-        interval:  128//128 * 3 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        interval:  128 * 3 //Wait 3 seconds to ensure KWin has started, initialize KWin effects.
         //8ms - FAIL
         //16ms - FAIL
         //32ms - FAIL
@@ -68,7 +70,6 @@ Window {
 
             MWindowManagerX11.unloadEffect("fadingpopups")
             MWindowManagerX11.unloadEffect("scale")
-
 
             MWindowManagerX11.hideFromTaskbar(root, true);
             MWindowManagerX11.hideFromSwitcher(root, true);
@@ -101,7 +102,7 @@ Window {
     //     anchors.top: parent.top
     //     anchors.right: parent.right
     //     anchors.margins: 20
-    //     url: "https://www.youtube.com/watch?v=izaO5-_nyp0&list=RDGMEMQ1dJ7wXfLlqCjwV0xfSNbA&index=2"  // Link osadzonego filmu z YouTube
+    //     url: "https://www.youtube.com/watch?v=izaO5-_nyp0&list=RDGMEMQ1dJ7wXfLlqCjwV0xfSNbA&index=2"  // Youtube link
     // }
 
 
@@ -127,7 +128,7 @@ Window {
     //     id: cube
     //     source: "#Cube"
     //     // materials: DefaultMaterial {
-    //     //     diffuseColor: Qt.rgba(1, 0, 0, 1) // Ustaw kolor na czerwony
+    //     //     diffuseColor: Qt.rgba(1, 0, 0, 1) // Set color to black
     //     // }
     //     materials: DefaultMaterial {
     //         diffuseMap: Texture {
@@ -441,15 +442,11 @@ Window {
                                     anchors.fill: parent
                                     anchors.margins: 10
 
-                                    placeholderText: "New note..."
+                                    placeholderText: qsTr("New note...")
                                     wrapMode: Text.WordWrap
                                     font.family: "NeverMind Handwriting"
                                     font.pointSize: 12
                                     color: "#000099"
-
-                                    onTextChanged: {
-                                        ustawienia.setValue("tekstNotatki", text);
-                                    }
 
                                     Settings {
                                         property alias noteText: noteTxt.text

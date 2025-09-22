@@ -14,7 +14,6 @@ MProxyWindow::MProxyWindow(QQuickItem *parent)
     , m_serverName(QString("/tmp/MProxyWindowServer%1")
                        .arg(QUuid::createUuid().toString(QUuid::WithoutBraces).remove('-')))
 {
-    //qDebug() << "111111111111111111111111111111111111111111111 ---- " << __PRETTY_FUNCTION__;
     setFlag(ItemHasContents, false);
     setVisible(false);
 
@@ -23,7 +22,7 @@ MProxyWindow::MProxyWindow(QQuickItem *parent)
 
     connect(m_process, &QProcess::started, this, &MProxyWindow::onProcessStarted);
     connect(m_process, &QProcess::errorOccurred, this, [this](QProcess::ProcessError error) {
-        qWarning() << "MProxyWindow: Failed to start process. Error:" << error;
+        qDebug() << "[ERROR] MProxyWindow: Failed to start process. Error:" << error;
     });
     connect(m_process,
             &QProcess::readyReadStandardOutput,
@@ -51,7 +50,7 @@ MProxyWindow::~MProxyWindow()
 {
     //qDebug() << __PRETTY_FUNCTION__ << "Process state:" << m_process->state();
 
-    // Sprzątamy kontroler
+    // Clean up the controller
     //qDebug() << "Disconnecting and deleting ProxyWindowController...";
     m_winController->disconnect();
     m_winController->deleteLater();
@@ -62,27 +61,25 @@ MProxyWindow::~MProxyWindow()
     connect(m_process, &QProcess::finished, m_process, &QObject::deleteLater);
     stopProcess();
 
-    // Usuwamy gniazdo Unixowe
+    // Remove the Unix socket
     qDebug() << "Removing Unix socket:" << m_serverName;
     QFile::remove(m_serverName);
 }
 
 void MProxyWindow::setSource(const QUrl &source)
 {
-    //qDebug() << "4444444444444444444" << source;
-
     QUrl finalSource = source;
 
     if (finalSource.isRelative() && !finalSource.isEmpty()) {
-        // Poprawne użycie metody statycznej. Nie potrzebujemy wskaźnika na silnik.
+        // Proper use of the static method. We don't need a pointer to the engine.
         QQmlContext *context = QQmlEngine::contextForObject(this);
 
         if (context) {
-            // Używamy kontekstu do rozwiązania względnego URL.
+            // Use the context to resolve the relative URL.
             finalSource = context->resolvedUrl(source);
         } else {
-            // Ten błąd może się pojawić, jeśli obiekt nie został utworzony przez silnik QML
-            // (np. został stworzony ręcznie w C++ i nie jest powiązany z kontekstem).
+            // This error may occur if the object was not created by the QML engine
+            // (e.g., it was created manually in C++ and is not associated with a context).
             qWarning() << "MProxyWindow: Could not get QML context for object. Cannot resolve "
                           "relative URL:"
                        << source;
@@ -103,7 +100,6 @@ bool MProxyWindow::proxyVisible() const
 
 void MProxyWindow::setProxyVisible(bool visible)
 {
-    //qDebug() << "66666666666666666 " << __PRETTY_FUNCTION__ << " visible=" << visible;
     if (m_proxyWindowVisible != visible) {
         m_proxyWindowVisible = visible;
         m_winController->setVisible(m_proxyWindowVisible);
@@ -137,17 +133,15 @@ void MProxyWindow::onWindowChanged(QQuickWindow *window)
 
 void MProxyWindow::onAfterSynchronizing()
 {
-    //qDebug() << "222222222222222" << __PRETTY_FUNCTION__;
     startProcess(); //we start windows after synchornization becaouse after synchronization window geomerty is calculated
     disconnect(window(),
                &QQuickWindow::afterSynchronizing,
                this,
-               &MProxyWindow::onAfterSynchronizing); // Odłączamy, aby uniknąć wielokrotnych wywołań
+               &MProxyWindow::onAfterSynchronizing); // Disconnect to avoid multiple calls
 }
 
 void MProxyWindow::startProcess()
 {
-    //qDebug() << "33333333333333333333333333" << __PRETTY_FUNCTION__;
     if (m_process->state() == QProcess::Running) {
         return;
     }
@@ -191,24 +185,23 @@ void MProxyWindow::onProcessStarted()
 
 void MProxyWindow::onProcessReadyReadStandardOutput()
 {
-    // Odczytaj wszystko, co jest dostępne na standardowym wyjściu
+    // Read everything available on standard output
     const QByteArray data = m_process->readAllStandardOutput();
-    // Wypisz to w konsoli głównego procesu z prefiksem, aby było wiadomo, skąd pochodzi
-    // Używamy noquote() aby uniknąć dodatkowych cudzysłowów i trimmed() aby usunąć białe znaki z końca
+    // Print it to the console of the main process with a prefix to indicate its source
+    // Use noquote() to avoid extra quotes and trimmed() to remove trailing whitespace
     //qDebug().noquote() << "[REMOTE STDOUT]" << QString::fromLocal8Bit(data).trimmed();
 }
 
 void MProxyWindow::onProcessReadyReadStandardError()
 {
-    // Odczytaj wszystko, co jest dostępne na standardowym błędzie
+    // Read everything available on standard error
     const QByteArray data = m_process->readAllStandardError();
-    // Wypisz to jako ostrzeżenie w konsoli głównego procesu z odpowiednim prefiksem
+    // Print it as a warning to the console of the main process with an appropriate prefix
     //qDebug().noquote() << "[REMOTE STDERR]" << QString::fromLocal8Bit(data).trimmed();
 }
 
 void MProxyWindow::handleVisibleReceived(bool visible)
 {
-    //qDebug() << "7777777777777" << __PRETTY_FUNCTION__ << "visible=" << visible;
     if (m_proxyWindowVisible != visible) {
         m_proxyWindowVisible = visible;
         emit proxyVisibleChanged();
@@ -222,7 +215,6 @@ void MProxyWindow::handleProxyWindowConnected()
 
 void MProxyWindow::stopProcess()
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (m_process->state() != QProcess::NotRunning) {
         m_process->terminate();
     }

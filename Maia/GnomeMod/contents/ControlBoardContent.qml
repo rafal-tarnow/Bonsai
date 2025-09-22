@@ -279,7 +279,7 @@ Rectangle {
                     GMenuItem{
                         Layout.fillWidth: true
                         Layout.preferredHeight: 37
-                        text: "Power Off..."
+                        text: qsTr("Power Off...")
                         onTriggered: {
                             MSessionManager.poweroff()
                         }
@@ -290,7 +290,7 @@ Rectangle {
                     GMenuItem{
                         Layout.fillWidth: true
                         Layout.preferredHeight: 37
-                        text: "Log out..."
+                        text: qsTr("Log out...")
                         onTriggered: {
                             MSessionManager.logout()
                         }
@@ -298,7 +298,7 @@ Rectangle {
                     GMenuItem{
                         Layout.fillWidth: true
                         Layout.preferredHeight: 37
-                        text: "Switch User..."
+                        text: qsTr("Switch User...")
                         onTriggered: {
                             MSessionManager.logout()
                         }
@@ -469,7 +469,7 @@ Rectangle {
                 width: 160
                 height: parent.height + 12
                 anchors.verticalCenter: parent.verticalCenter
-                leftText: "Power Profile"
+                leftText: qsTr("Power Profile")
                 leftIconSource: "../images/network-wireless-connected-symbolic.svg"
                 enabled: false
                 active: false

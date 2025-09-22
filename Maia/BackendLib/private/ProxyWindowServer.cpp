@@ -44,13 +44,11 @@ bool ProxyWindowLocalServer::startServer(const QString &proxyWindowAddress)
         qDebug() << "[ERROR] Failed to start Proxy Window Local Socket Server";
         return false;
     }
-    qDebug() << "[OK] Proxy Window Local Server Listening on: " << proxyWindowAddress;
     return true;
 }
 
 void ProxyWindowLocalServer::handleNewConnection()
 {
-    qDebug() << "[INFO] " << "Proxy Window handle new connection";
     while (m_server.hasPendingConnections()) {
         QLocalSocket *client = m_server.nextPendingConnection();
         m_clients.append(client);
@@ -78,13 +76,11 @@ void ProxyWindowLocalServer::handleClientDisconnected()
         m_clients.removeAll(clientSocket);
         m_clientBlockSizes.remove(clientSocket);
         clientSocket->deleteLater();
-        qDebug() << "Server: Client disconnected.";
     }
 }
 
 void ProxyWindowLocalServer::handleClientReadyRead()
 {
-    qDebug() << "[INFO] Window Proxy Server Recived data";
     QLocalSocket *clientSocket = qobject_cast<QLocalSocket *>(sender());
     if (clientSocket) {
         parseCommand(clientSocket);
@@ -93,7 +89,6 @@ void ProxyWindowLocalServer::handleClientReadyRead()
 
 void ProxyWindowLocalServer::parseCommand(QLocalSocket *clientSocket)
 {
-    qDebug() << __PRETTY_FUNCTION__;
     QDataStream in(clientSocket);
 
     quint32 &nextBlockSize = m_clientBlockSizes[clientSocket];
@@ -108,7 +103,7 @@ void ProxyWindowLocalServer::parseCommand(QLocalSocket *clientSocket)
         if (clientSocket->bytesAvailable() < nextBlockSize)
             break;
 
-        // Mamy całą komendę
+        // We have the entire command
         quint8 commandRaw;
         in >> commandRaw;
 
@@ -124,18 +119,16 @@ void ProxyWindowLocalServer::parseCommand(QLocalSocket *clientSocket)
 
             if (m_window->isVisible() != requestedVisible) {
                 m_window->setVisible(requestedVisible);
-                // Zmiana widoczności wywoła onWindowVisibleChanged,
-                // które roześle stan do wszystkich klientów.
+                // Visibility change will trigger onWindowVisibleChanged,
+                // which will broadcast the state to all clients.
             }
         } else if (command == CommandReceived::QUIT_PROCESS) {
-            //qDebug() << __PRETTY_FUNCTION__
-            //         << " 222222222222222222222222 Proxy Window received command: "
-            //            "CommandReceived::QUIT_PROCESS";
+
         } else {
-            qWarning() << "Server: Received unknown command type:" << commandRaw;
+            qDebug() << "[ERROR] ProxyWindowLocalServer: Received unknown command type:" << commandRaw;
         }
 
-        nextBlockSize = 0; // Gotowi na następną komendę
+        nextBlockSize = 0; // Ready for the next command
     }
 }
 
@@ -146,8 +139,6 @@ void ProxyWindowLocalServer::onWindowVisibleChanged(bool visible)
     }
 
     broadcastVisibleState(m_window->isVisible());
-
-    //broadcastVisibleState(visible);
 }
 
 void ProxyWindowLocalServer::broadcastVisibleState(bool visible)
@@ -168,8 +159,6 @@ void ProxyWindowLocalServer::updateVisibleState(QLocalSocket *client, bool visib
 
     prepareVisibleFrame(block, visible);
 
-    qDebug() << "[INFO] Update proxy window visible on client";
-
     client->write(block);
     client->flush();
 }
@@ -178,7 +167,7 @@ void ProxyWindowLocalServer::prepareVisibleFrame(QByteArray &block, bool visible
 {
     QDataStream out(&block, QIODevice::WriteOnly);
 
-    out << (quint32) 0; // Miejsce na rozmiar
+    out << (quint32) 0; // Reserve space for size
     out << static_cast<uint8_t>(CommandSent::SET_VISIBLE);
     out << visible;
     out.device()->seek(0);

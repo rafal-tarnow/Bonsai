@@ -18,7 +18,7 @@ void StrutManager::reservePanelTopArea(QQuickWindow *window, int x, int y, int w
         QMetaObject::invokeMethod(this, [=]() {
             if (window) {
                 updateStructForWindow(window);
-                pendingUpdates.remove(window); // Usuń po wykonaniu
+                pendingUpdates.remove(window); // Remove after execution
             } else {
                 qDebug() << "window id is empty";
             }

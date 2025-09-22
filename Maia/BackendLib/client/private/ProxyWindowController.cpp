@@ -17,7 +17,6 @@ ProxyWindowController::ProxyWindowController(QObject *parent)
 
 ProxyWindowController::~ProxyWindowController()
 {
-    //qDebug() << __PRETTY_FUNCTION__ << "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
     if (m_socket.isOpen()) {
         m_socket.flush();
         m_socket.close();
@@ -27,7 +26,6 @@ ProxyWindowController::~ProxyWindowController()
 
 void ProxyWindowController::setVisible(bool visible)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     sendSetVisible(visible);
 }
 
@@ -82,13 +80,11 @@ void ProxyWindowController::connectToServer(const QString &serverName)
         return;
     }
     m_serverName = serverName;
-    //qDebug() << "ProxyWindowController: Attempting to connect to" << m_serverName;
     m_socket.connectToServer(m_serverName);
 }
 
 void ProxyWindowController::onSocketConnected()
 {
-    //qDebug("[OK] Connected to Proxy Window Server");
     reconnect_time = 0;
     emit proxyWindowConnected();
 }
@@ -101,40 +97,37 @@ void ProxyWindowController::onSocketReadyRead()
 
     forever {
         if (m_nextBlockSize == 0) {
-            // Jesteśmy na początku nowej ramki, spróbuj odczytać jej rozmiar
+            // We are at the beginning of a new frame, try to read its size
             if (m_socket.bytesAvailable() < (int) sizeof(quint32))
-                break; // Za mało danych, czekaj na więcej
+                break; // Not enough data, wait for more
             in >> m_nextBlockSize;
         }
 
         if (m_socket.bytesAvailable() < m_nextBlockSize) {
-            // Mamy rozmiar, ale cała ramka jeszcze nie przyszła
-            break; // Czekaj na resztę danych
+            // We have the size, but the entire frame hasn't arrived yet
+            break; // Wait for the rest of the data
         }
 
-        // Mamy całą ramkę, można ją przetworzyć
+        // We have the entire frame, it can be processed
         handleStateUpdate(in);
 
-        // Zresetuj rozmiar, aby być gotowym na następną ramkę
+        // Reset the size to be ready for the next frame
         m_nextBlockSize = 0;
     }
 }
 
 void ProxyWindowController::handleStateUpdate(QDataStream &stream)
 {
-    //qDebug() << "[INFO] Proxy Window Client, handle state update";
     quint8 updateTypeRaw;
     stream >> updateTypeRaw;
     auto updateType = static_cast<CommandReceived>(updateTypeRaw);
 
     if (updateType == CommandReceived::SET_VISIBLE) {
-        //qDebug() << "[INFO] Received visible update frame";
         bool serverVisible;
         stream >> serverVisible;
-        //qDebug() << "Controller: Received VisibleChanged, visible:" << serverVisible;
         emit visibleReceived(serverVisible);
     } else {
-        //qWarning() << "Controller: Received unknown state update type:" << updateTypeRaw;
+        qDebug() << "[ERROR] ProxyWindowController: Received unknown state update type:" << updateTypeRaw;
     }
 }
 

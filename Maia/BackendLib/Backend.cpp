@@ -40,7 +40,7 @@ Backend::Backend(QString homeEnv, QObject *parent)
 Backend::~Backend()
 {
     if (m_cpuFile.isOpen()) {
-        m_cpuFile.close(); // Zamknięcie pliku w destruktorze
+        m_cpuFile.close(); // Close the file in the destructor
     }
 }
 
@@ -165,7 +165,7 @@ bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetP
         return false;
     }
 
-    // Kopiowanie plików
+    // Copy files
     QDirIterator fileIt(":/" + sourcePath, QDir::Files | QDir::NoDotAndDotDot);
     while (fileIt.hasNext()) {
         fileIt.next();
@@ -177,7 +177,7 @@ bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetP
         }
     }
 
-    // Kopiowanie podkatalogów
+    // Copy subdirectories
     QDirIterator dirIt(":/" + sourcePath, QDir::Dirs | QDir::NoDotAndDotDot);
     while (dirIt.hasNext()) {
         dirIt.next();
@@ -226,8 +226,8 @@ void Backend::runCommand(const QString &cmd)
         }
     }
 
-    // Dlaczego filtrujemy zmienne środowiskowe, założmy ze mamy maia skompilowane z innymi bibliotekami niż aplikacja w docelowym systemie, jezeli w zmiennych bedzie
-    // LD_LIBRARY_PATH do sciezki z bibliotekami maia to aplikacja bedzie linkowala do bibliotek maia zamiast do bibliotek systemowych
+    // Why do we filter environment variables? Let's assume Maia is compiled with different libraries than the application in the target system.
+    // If LD_LIBRARY_PATH points to Maia's library path, the application will link to Maia's libraries instead of the system libraries.
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
     filterProcessEnvironment(env, QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + QString("/lib"));
@@ -257,13 +257,11 @@ void Backend::reservePanelTopArea(QQuickWindow *window, int x, int y, int width,
 #warning "add 'later' to method name"
 void Backend::reservePanelBottomArea(QQuickWindow *window, int x, int y, int width, int height)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     strutManager.reservePanelBottomArea(window, x, y, width, height);
 }
 
 void Backend::setX11WindowTypeAsNormal(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Normal);
     }
@@ -271,7 +269,6 @@ void Backend::setX11WindowTypeAsNormal(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Desktop);
     }
@@ -279,7 +276,6 @@ void Backend::setX11WindowTypeAsDesktop(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsDock(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Dock);
     }
@@ -287,7 +283,6 @@ void Backend::setX11WindowTypeAsDock(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsToolbar(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Toolbar);
     }
@@ -295,7 +290,6 @@ void Backend::setX11WindowTypeAsToolbar(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsMenu(QQuickWindow *window)
 {
-    qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Menu);
     }
@@ -303,7 +297,6 @@ void Backend::setX11WindowTypeAsMenu(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Override);
     }
@@ -311,7 +304,6 @@ void Backend::setX11WindowTypeAsOverride(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::TopMenu);
     }
@@ -319,7 +311,6 @@ void Backend::setX11WindowTypeAsTopMenu(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsPopupMenu(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::PopupMenu);
     }
@@ -327,7 +318,6 @@ void Backend::setX11WindowTypeAsPopupMenu(QQuickWindow *window)
 
 void Backend::setX11WindowTypeAsNotification(QQuickWindow *window)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (window) {
         KX11Extras::setType(window->winId(), NET::WindowType::Notification);
     }
@@ -356,25 +346,25 @@ bool Backend::measureCpuLoad() const
 void Backend::setMeasureCpuLoad(bool enable)
 {
     if (m_measureCpuLoad == enable)
-        return; // Sprawdzenie, czy stan się zmienił
+        return; // Check if the state has changed
 
     m_measureCpuLoad = enable;
     emit measureCpuLoadChanged();
 
     if (m_measureCpuLoad) {
-        // Włączenie pomiaru CPU
+        // Enable CPU measurement
         if (!m_cpuFile.isOpen()) {
             if (!m_cpuFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                qWarning() << "Nie można otworzyć pliku /proc/stat";
+                qDebug() << "[ERROR] Unable to open /proc/stat file";
                 return;
             }
         }
-        m_timer.start(1000); // Uruchomienie timera
+        m_timer.start(1000); // Start the timer
     } else {
-        // Wyłączenie pomiaru CPU
-        m_timer.stop(); // Zatrzymanie timera
+        // Disable CPU measurement
+        m_timer.stop(); // Stop the timer
         if (m_cpuFile.isOpen()) {
-            m_cpuFile.close(); // Zamknięcie pliku
+            m_cpuFile.close(); // Close the file
         }
     }
 }
@@ -382,11 +372,11 @@ void Backend::setMeasureCpuLoad(bool enable)
 void Backend::updateCpuLoad()
 {
     if (!m_cpuFile.isOpen()) {
-        qWarning() << "Plik /proc/stat nie jest otwarty";
+        qDebug() << "[ERROR] /proc/stat file is not open";
         return;
     }
 
-    // Ustawienie wskaźnika pliku na początek, aby odczytać nowe dane
+    // Reset the file pointer to the beginning to read new data
     m_cpuFile.seek(0);
 
     QTextStream in(&m_cpuFile);
@@ -440,7 +430,7 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
     if (themeUrl.scheme() == "qrc") {
         sourcePath = themeUrl.path();
         if (sourcePath.startsWith('/')) {
-            sourcePath = sourcePath.mid(1); // Usuń początkowy "/"
+            sourcePath = sourcePath.mid(1); // Remove leading "/"
         }
         sourceDir.setPath(":/" + sourcePath);
     } else if (themeUrl.scheme() == "file" || themeUrl.isLocalFile()) {
@@ -460,20 +450,20 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
     QString targetThemePath = targetDirPath + "/" + themeName;
     QDir targetThemeDir(targetThemePath);
 
-    // Sprawdź, czy motyw jest już zainstalowany z tym samym URL
+    // Check if the theme is already installed with the same URL
     if (!forceReinstall && isUrlInstalled(themeName, themeUrl)) {
         qDebug() << "Theme already installed with matching URL, skipping:" << themeName;
         return true;
     }
 
-    // Usuń stary/partial katalog i wpis w ustawieniach, jeśli istnieje
+    // Remove old/partial directory and settings entry if it exists
     if (targetThemeDir.exists()) {
         qDebug() << "Removing existing/partial theme directory:" << targetThemePath;
         targetThemeDir.removeRecursively();
     }
-    clearInstalledUrl(themeName); // Wyczyść stare ustawienie
+    clearInstalledUrl(themeName); // Clear old setting
 
-    // Kopiuj
+    // Copy
     bool success;
     if (themeUrl.scheme() == "qrc") {
         success = copyQrcDirectory(sourcePath, targetThemePath);
@@ -482,7 +472,7 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
     }
 
     if (success) {
-        // Weryfikacja metadanych
+        // Verify metadata
         QString requiredFile;
         if (targetDirPath.endsWith("/aurorae/themes")) {
             requiredFile = targetThemePath + "/metadata.desktop";
@@ -495,12 +485,12 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
             clearInstalledUrl(themeName);
             success = false;
         } else {
-            // Zapisz w ustawieniach
+            // Save to settings
             saveInstalledUrl(themeName, themeUrl);
             qDebug() << "Theme installed successfully and marked in settings:" << targetThemePath;
         }
     } else {
-        // Usuń partial po błędzie
+        // Remove partial after error
         if (targetThemeDir.exists()) {
             targetThemeDir.removeRecursively();
         }
@@ -535,7 +525,7 @@ void Backend::saveInstalledUrl(const QString &themeName, const QUrl &themeUrl)
     settings.beginGroup("[Installed_themes_URLs]");
     settings.setValue(themeName, themeUrl.toString());
     settings.endGroup();
-    settings.sync(); // Zapewnij zapis na dysk
+    settings.sync(); // Ensure saving to disk
 }
 
 void Backend::clearInstalledUrl(const QString &themeName)

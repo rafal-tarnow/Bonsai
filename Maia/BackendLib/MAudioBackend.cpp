@@ -1,4 +1,4 @@
-#include "AudioBackend.hpp"
+#include "MAudioBackend.hpp"
 
 #include <QQmlEngine>
 
@@ -26,7 +26,7 @@ static QJSValue pulseaudio_singleton(QQmlEngine *engine, QJSEngine *scriptEngine
     return object;
 }
 
-void AudioBackend::registerTypes(const char *uri)
+void MAudioBackend::registerTypes(const char *uri)
 {
     PulseAudioQt::Context::setApplicationId(QStringLiteral("org.kde.plasma-pa"));
 
@@ -94,7 +94,7 @@ void AudioBackend::registerTypes(const char *uri)
     qmlRegisterAnonymousType<PulseAudioQt::Source>(uri, 1);
 }
 
-AudioBackend::AudioBackend(QObject *parent) : QObject(parent)
+MAudioBackend::MAudioBackend(QObject *parent) : QObject(parent)
 {
     registerTypes("org.maia.Audio");
 
@@ -103,25 +103,25 @@ AudioBackend::AudioBackend(QObject *parent) : QObject(parent)
         connect(prefferedDevice.get(),
                 &MPreferredDevice::sinkChanged,
                 this,
-                &AudioBackend::updatePreferredSink);
+                &MAudioBackend::updatePreferredSink);
     }
 }
 
 
-void AudioBackend::updatePreferredSink() {
+void MAudioBackend::updatePreferredSink() {
     static PulseAudioQt::Sink *previousSink = nullptr;
     auto currentSink = prefferedDevice->sink();
 
     // Disconnect previous sink signals
     if (previousSink) {
-        disconnect(previousSink, &PulseAudioQt::Sink::volumeChanged, this, &AudioBackend::prefferedOutputVolumeChanged);
-        disconnect(previousSink, &PulseAudioQt::Sink::mutedChanged, this, &AudioBackend::prefferedOutputMutedChanged);
+        disconnect(previousSink, &PulseAudioQt::Sink::volumeChanged, this, &MAudioBackend::prefferedOutputVolumeChanged);
+        disconnect(previousSink, &PulseAudioQt::Sink::mutedChanged, this, &MAudioBackend::prefferedOutputMutedChanged);
     }
 
     // Connect new sink signals
     if (currentSink) {
-        connect(currentSink, &PulseAudioQt::Sink::volumeChanged, this, &AudioBackend::prefferedOutputVolumeChanged);
-        connect(currentSink, &PulseAudioQt::Sink::mutedChanged, this, &AudioBackend::prefferedOutputMutedChanged);
+        connect(currentSink, &PulseAudioQt::Sink::volumeChanged, this, &MAudioBackend::prefferedOutputVolumeChanged);
+        connect(currentSink, &PulseAudioQt::Sink::mutedChanged, this, &MAudioBackend::prefferedOutputMutedChanged);
 
         // Emit signals to notify about the current sink's state
         emit prefferedOutputVolumeChanged();
@@ -132,19 +132,19 @@ void AudioBackend::updatePreferredSink() {
 }
 
 
-double AudioBackend::normalVolume() const
+double MAudioBackend::normalVolume() const
 {
     return (double)PulseAudioQt::normalVolume();
 }
 
-void AudioBackend::setPrefferedOutputVolume(qint64 vol)
+void MAudioBackend::setPrefferedOutputVolume(qint64 vol)
 {
     if(prefferedDevice && prefferedDevice->sink()){
         prefferedDevice->sink()->setVolume(vol);
     }
 }
 
-qint64 AudioBackend::prefferedOutputVolume()
+qint64 MAudioBackend::prefferedOutputVolume()
 {
     if(prefferedDevice && prefferedDevice->sink()){
         return prefferedDevice->sink()->volume();
@@ -152,14 +152,14 @@ qint64 AudioBackend::prefferedOutputVolume()
     return 0;
 }
 
-bool AudioBackend::isPrefferedOutputMuted() const {
+bool MAudioBackend::isPrefferedOutputMuted() const {
     if (prefferedDevice && prefferedDevice->sink()) {
         return prefferedDevice->sink()->isMuted();
     }
     return false;
 }
 
-void AudioBackend::setPrefferedOutputMuted(bool muted) {
+void MAudioBackend::setPrefferedOutputMuted(bool muted) {
     if (prefferedDevice && prefferedDevice->sink()) {
         if (prefferedDevice->sink()->isMuted() != muted) {
             prefferedDevice->sink()->setMuted(muted);

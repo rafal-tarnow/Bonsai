@@ -26,7 +26,7 @@ Image {
         height: parent.height
         width: 101
         source: "qrc:/assets/images/images/start_normal.bmp"
-        fillMode: Image.TileHorizontally // lub inna opcja w zależności od wymagań
+        fillMode: Image.TileHorizontally // or another option depending on the requirements.
 
         Component.onCompleted: {
             console.log("WARNING TODO: It seems that a more optimal solution, instead of replacing the source for the Image, would be to create three Image elements and switch between them")
@@ -184,7 +184,6 @@ Image {
         }
 
 
-        //Dodaj Text dla daty i godziny
         Text {
             id: dateTimeDisplay
             anchors.right: parent.right
@@ -203,9 +202,8 @@ Image {
             text: Qt.formatDateTime(new Date(), "hh:mm")
             //text: Qt.formatDateTime(new Date(), "yyyy-MM-dd hh:mm:ss")
 
-            // Timer do aktualizacji co sekundę
             Timer {
-                interval: 10000 // Odświeżanie co 10 sekund
+                interval: 10000 // refresh each 10 sec
                 running: true
                 repeat: true
                 onTriggered: {

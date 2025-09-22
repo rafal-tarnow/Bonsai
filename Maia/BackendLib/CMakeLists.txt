@@ -40,16 +40,10 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES BackendAppsIconsProvider.hpp
     SOURCES TaskbarIconProvider.hpp
     SOURCES TaskbarIconProvider.cpp
-
-    RESOURCES
-    SOURCES AudioBackend.hpp
-    SOURCES AudioBackend.cpp
-    SOURCES
-    SOURCES
+    SOURCES MAudioBackend.hpp
+    SOURCES MAudioBackend.cpp
     SOURCES ThemesModel.hpp
     SOURCES ThemesModel.cpp
-    SOURCES
-    SOURCES
     SOURCES helper/Process.hpp
     SOURCES helper/Process.cpp
     SOURCES private/Mask.hpp
@@ -60,8 +54,6 @@ qt_add_qml_module(${PROJECT_NAME}
     SOURCES private/MaskAlgorithm.cpp
     SOURCES private/MaskTracker.hpp
     SOURCES private/MaskTracker.cpp
-    SOURCES
-    SOURCES
     SOURCES strut/Strut.hpp
     SOURCES strut/StrutManager.hpp
     SOURCES strut/StrutManager.cpp
@@ -134,11 +126,11 @@ target_link_libraries(MaiaBackendLib PRIVATE MaiaBackend)
 include(GNUInstallDirs)
 
 install(TARGETS ${PROJECT_NAME}
-    # Pliki wykonywalne (runtime) idą do podfolderu /bin
+    # Executable files (runtime) go to the /bin subdirectory
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    # Biblioteki (.so, .dll) idą do podfolderu /lib
+    # Libraries (.so, .dll) go to the /lib subdirectory
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    # Pliki dla archiwizatora/linkera idą do podfolderu /lib
+    # Files for the archiver/linker go to the /lib subdirectory
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 

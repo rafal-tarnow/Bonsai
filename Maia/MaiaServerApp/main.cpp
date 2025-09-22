@@ -15,7 +15,7 @@
 #include <QtWebEngineQuick>
 
 #include <AppsListModel.hpp>
-#include <AudioBackend.hpp>
+#include <MAudioBackend.hpp>
 #include <MSessionManager.hpp>
 #include <Backend.hpp>
 #include <BackendAppsIconsProvider.hpp>
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
         engine.rootContext()->setContextProperty("backend", &backend);
 
         //Audio backend
-        AudioBackend audioBackend;
+        MAudioBackend audioBackend;
         engine.rootContext()->setContextProperty("audioBackend", &audioBackend);
 
         QObject::connect(

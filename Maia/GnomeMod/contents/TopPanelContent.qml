@@ -22,7 +22,7 @@ Rectangle{
         color: "#FFFFFF"
 
         Timer {
-            interval: 10000 // Odświeżanie co 10 sekund
+            interval: 10000 // Refresh time 10s
             running: true
             repeat: true
             onTriggered: {

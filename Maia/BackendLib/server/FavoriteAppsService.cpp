@@ -11,14 +11,14 @@ FavoriteAppsDBus::FavoriteAppsDBus(QObject *parent)
 
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
     if (!sessionBus.registerService("org.maia.FavoriteApplications")) {
-        qFatal("Failed to register D-Bus service: %s", qPrintable(sessionBus.lastError().message()));
+        qDebug("[ERROR] Failed to register D-Bus service: %s", qPrintable(sessionBus.lastError().message()));
     }
 
     if (!sessionBus.registerObject("/FavoriteApplications",
                                    this,
                                    QDBusConnection::ExportScriptableSlots
                                        | QDBusConnection::ExportScriptableSignals)) {
-        qFatal("Failed to register D-Bus object: %s", qPrintable(sessionBus.lastError().message()));
+        qDebug("[ERROR] Failed to register D-Bus object: %s", qPrintable(sessionBus.lastError().message()));
     }
 }
 
@@ -52,9 +52,7 @@ void FavoriteAppsDBus::setFavoritesModel(FavoriteAppsProxyModel *model)
 
 void FavoriteAppsDBus::addFavorite(const QString &appId)
 {
-    qDebug() << "1111111111111111111" << __PRETTY_FUNCTION__;
     if (m_favoritesModel) {
-        qDebug() << "2222222222222222" << __PRETTY_FUNCTION__;
         m_favoritesModel->addFavorite(appId);
     } else {
         qWarning() << "Favorite model not set in DBus adaptor!";
@@ -100,7 +98,6 @@ QVector<FavApplication> FavoriteAppsDBus::getFavorites()
 
 void FavoriteAppsDBus::_onFavoriteAdded(const QString &appId)
 {
-    qDebug() << "5555555555555555555" << __PRETTY_FUNCTION__;
     if (!m_favoritesModel)
         return;
 
@@ -115,7 +112,7 @@ void FavoriteAppsDBus::_onFavoriteAdded(const QString &appId)
         return;
 
     FavApplication favApp{appData.id, appData.name, appData.exec, appData.icon};
-    qDebug() << "66666666666666666666666" << __PRETTY_FUNCTION__;
+
     emit favoriteAdded(favApp);
 }
 
@@ -135,7 +132,7 @@ void FavoriteAppsDBus::_onFavoriteRemoved(const QString &appId)
         return;
 
     FavApplication favApp{appData.id, appData.name, appData.exec, appData.icon};
-    qDebug() << "EEEEEEEEEEEEemit signal : emit favoriteRemoved(favApp); ";
+
     emit favoriteRemoved(favApp);
 }
 

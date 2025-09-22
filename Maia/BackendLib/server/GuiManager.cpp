@@ -35,11 +35,8 @@ void GuiManager::startGui(const FrontendInfo &frontend)
     //START KWIN
     startKwinAndWaitForReady(m_kwin);
 
-    //---- Start Gui ----
     m_qmlGui.initQmlEngine();
-
     m_currentFrontend = frontend;
-    //loadFrontend();
 
     connect(&m_x11WindowManagerService,
             &WindowManagerX11Service::reconfigureFinished,
@@ -155,22 +152,24 @@ void GuiManager::loadFrontend()
 
 bool startKwinAndWaitForReady(QProcess &process, int timeoutMs)
 {
-    // Sprawdź, czy KWin już nie działa
+#warning "This code should be modified; it should be handled in a state machine."
+
+    // Check if KWin is already running
     QDBusConnection sessionBus = QDBusConnection::sessionBus();
     if (sessionBus.interface()->isServiceRegistered("org.kde.KWin")) {
-        qDebug() << "KWin już działa, nie uruchamiam nowego procesu.";
+        qDebug() << "[ERROR] KWin is already running, not starting a new process.";
         return true;
     }
 
-    qDebug() << "Uruchamianie procesu kwin...";
+    qDebug() << "Starting kwin process...";
 
-    // NOWOŚĆ: Utwórz i uruchom stoper do mierzenia czasu
+    //Create and start a timer to measure time
     QElapsedTimer startupTimer;
     startupTimer.start();
 
-    // Ustawienie środowiska tak jak poprzednio
-    // Dlaczego filtrujemy zmienne środowiskowe, założmy ze mamy maia skompilowane z innymi bibliotekami niż kwin w docelowym systemi, jezeli w zmiennych bedzie
-    // LD_LIBRARY_PATH do sciezki z bibliotekami maia to kwin bedzie linkowal do bibliotek maia zamiast do bibliotek systemowych
+    // Set the environment as before
+    // Why do we filter environment variables? Let's assume Maia is compiled with different libraries than KWin in the target system.
+    // If LD_LIBRARY_PATH points to Maia's library path, KWin will link to Maia's libraries instead of the system libraries.
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
     QString homePath = qgetenv("HOME");
@@ -178,54 +177,54 @@ bool startKwinAndWaitForReady(QProcess &process, int timeoutMs)
     filterProcessEnvironment(env, QString("/opt/Maia/Maia_") + QString(MAIA_VERSION_STRING) + QString("/lib"));
     process.setProcessEnvironment(env);
 
-    // Start procesu
-    process.start("kwin_x11"); // lub "kwin_wayland" w zależności od sesji
+    // Start the process
+    process.start("kwin_x11"); // or "kwin_wayland" depending on the session
 
     if (!process.waitForStarted(5000)) {
-        qDebug() << "Nie udało się uruchomić procesu kwin! Błąd:" << process.errorString();
+        qDebug() << "[ERROR] Failed to start kwin process! Error:" << process.errorString();
         return false;
     }
 
-    qDebug() << "[STARTUP INFO] Proces kwin uruchomiony. Czekam na rejestrację usługi D-Bus "
+    qDebug() << "[STARTUP INFO] KWin process started. Waiting for D-Bus service registration "
                 "'org.kde.KWin'...";
 
-    // Użyj QDBusServiceWatcher do czekania na gotowość
+    // Use QDBusServiceWatcher to wait for readiness
     QDBusServiceWatcher watcher("org.kde.KWin",
                                 sessionBus,
                                 QDBusServiceWatcher::WatchForRegistration);
 
-    // Utwórz pętlę zdarzeń, aby czekać na sygnał bez blokowania wszystkiego
+    // Create an event loop to wait for the signal without blocking everything
     QEventLoop loop;
 
-    // Połącz sygnał pojawienia się usługi z wyjściem z pętli zdarzeń
+    // Connect the service registration signal to exit the event loop
     QObject::connect(&watcher, &QDBusServiceWatcher::serviceRegistered, &loop, &QEventLoop::quit);
 
-    // Ustaw timeout, aby nie czekać w nieskończoność
-    QTimer timeoutTimer; // Zmiana nazwy dla czytelności
+    // Set a timeout to avoid waiting indefinitely
+    QTimer timeoutTimer; // Renamed for clarity
     timeoutTimer.setSingleShot(true);
     QObject::connect(&timeoutTimer, &QTimer::timeout, &loop, &QEventLoop::quit);
     timeoutTimer.start(timeoutMs);
 
-    // Uruchom pętlę zdarzeń. Wyjdzie z niej, gdy usługa się zarejestruje lub gdy minie timeout.
+    // Run the event loop. It will exit when the service registers or the timeout expires.
     loop.exec();
 
-    // Sprawdź, dlaczego wyszliśmy z pętli
+    // Check why we exited the loop
     if (timeoutTimer.isActive()) {
-        // Timer jest wciąż aktywny, co oznacza, że to sygnał z watchera zakończył pętlę
+        // Timer is still active, meaning the watcher's signal ended the loop
         timeoutTimer.stop();
 
-        // NOWOŚĆ: Pobierz i wyświetl czas, jaki upłynął
+        // Get and display the elapsed time
         qint64 elapsedMs = startupTimer.elapsed();
-        qDebug().nospace() << "[STARTUP INFO] KWin jest gotowy (usługa D-Bus zarejestrowana). "
-                              "Uruchomienie zajęło: "
+        qDebug().nospace() << "[STARTUP INFO] KWin is ready (D-Bus service registered). "
+                              "Startup took: "
                            << elapsedMs << " ms.";
 
         return true;
     } else {
-        // Timer się skończył
-        qDebug() << "[STARTUP ERROR] Timeout! KWin nie zarejestrował swojej usługi D-Bus w ciągu"
+        // Timer expired
+        qDebug() << "[STARTUP ERROR] Timeout! KWin did not register its D-Bus service within "
                  << timeoutMs << "ms.";
-        process.terminate(); // Zakończ proces, który prawdopodobnie zawisł
+process.terminate(); // Terminate the process, which likely hung
         process.waitForFinished(1000);
         return false;
     }

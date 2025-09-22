@@ -16,7 +16,7 @@ MaskTracker::MaskTracker(QQuickItem *parent, bool useSignals):
 
     if (!trackedItem) return;
 
-    // Dodaj ten element do listy instancji
+    // Add this item to the list of instances
     QQuickWindow *win = trackedItem->window();
     if(win)
         instances[win].insert(trackedItem);
@@ -51,7 +51,7 @@ MaskTracker::~MaskTracker()
 {
     //qDebug() << __PRETTY_FUNCTION__;
     instances[trackedItem->window()].remove(trackedItem);
-    scheduleMaskUpdateForWindow(trackedItem->window()); // Zgłoś aktualizację dla okna przy usuwaniu
+    scheduleMaskUpdateForWindow(trackedItem->window()); // Schedule an update for the window upon removal
 }
 
 void MaskTracker::onWindowChanged(QQuickWindow *newWindow)
@@ -71,7 +71,6 @@ void MaskTracker::onWindowChanged(QQuickWindow *newWindow)
 
 void MaskTracker::scheduleMaskUpdateForWindow(QQuickWindow *win)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if (!win || pendingUpdates.contains(win)) return;
 
     pendingUpdates.insert(win);
@@ -86,7 +85,6 @@ void MaskTracker::scheduleMaskUpdateForWindow(QQuickWindow *win)
 
 void MaskTracker::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if(m_useSignals)
         return;
 
@@ -103,7 +101,6 @@ void MaskTracker::itemChange(QQuickItem::ItemChange change, const QQuickItem::It
 
 void MaskTracker::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
-    //qDebug() << __PRETTY_FUNCTION__;
     if(m_useSignals)
         return;
 

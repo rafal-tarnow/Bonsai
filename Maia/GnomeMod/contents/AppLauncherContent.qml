@@ -151,7 +151,6 @@ Rectangle{
         GMenuItem{
             text: qsTr("Pin to Dash")
             onTriggered: {
-                console.log("Add to Favorites triggered !! app_id = " + contextMenu.app_id)
                 favoriteAppsModel.addFavorite(contextMenu.app_id);
             }
         }

@@ -105,12 +105,10 @@ void MFavoritesAppsModel::removeFavorite(const QString &appId)
 
 void MFavoritesAppsModel::handleFavoriteAdded(const FavApplication &favApp)
 {
-    qDebug() << "777777777777777777777" << __PRETTY_FUNCTION__;
-    qDebug() << "favApp.id = " << favApp.id;
-    qDebug() << "favApp.name = " << favApp.name;
-    qDebug() << "favApp.exec = " << favApp.exec;
-    qDebug() << "favApp.icon = " << favApp.icon;
-    qDebug() << "8888888888888888888888888888888888888888888888888888888888888888888";
+    // qDebug() << "favApp.id = " << favApp.id;
+    // qDebug() << "favApp.name = " << favApp.name;
+    // qDebug() << "favApp.exec = " << favApp.exec;
+    // qDebug() << "favApp.icon = " << favApp.icon;
 
     // Check if the app is already in the list to avoid duplicates
     for (int i = 0; i < favApps.size(); ++i) {
@@ -128,7 +126,6 @@ void MFavoritesAppsModel::handleFavoriteAdded(const FavApplication &favApp)
 
 void MFavoritesAppsModel::handleFavoriteRemoved(const FavApplication &favApp)
 {
-    qDebug() << "9999999999999999999999" << __PRETTY_FUNCTION__;
     qDebug() << "favApp.id = " << favApp.id;
     qDebug() << "favApp.name = " << favApp.name;
     qDebug() << "favApp.exec = " << favApp.exec;

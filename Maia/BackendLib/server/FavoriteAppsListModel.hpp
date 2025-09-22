@@ -18,12 +18,11 @@ public:
 
     Q_INVOKABLE void addFavorite(const QString &appId)
     {
-        qDebug() << "333333333333333333333" << __PRETTY_FUNCTION__;
         if (!favoriteAppsIds.contains(appId)) {
             favoriteAppsIds.append(appId);
             saveFavoritesAsync();
             invalidateFilter();
-            qDebug() << "4444444444444444444444" << __PRETTY_FUNCTION__;
+
             emit favoriteAdded(appId);
             emit favoritesChanged();
         }
