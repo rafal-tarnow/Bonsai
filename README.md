@@ -1,3 +1,5 @@
+# Maia Shell
+
 sudo nano /usr/share/xsessions/maia_version-desktop.desktop
 
 sudo apt update
