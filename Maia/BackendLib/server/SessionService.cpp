@@ -30,12 +30,12 @@ SessionService::SessionService(QObject *parent)
     }
 
     if(!bus.registerService("org.maia.SessionService")){
-        qWarning() << "[ERROR] Failed to register D-Bus service";
+        qDebug() << "[ERROR] Failed to register D-Bus service";
         return;
     }
 
     if(!bus.registerObject("/Session", this, QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals)) {
-        qWarning() << "[ERROR] Failed to register D-Bus object.";
+        qDebug() << "[ERROR] Failed to register D-Bus object.";
     }
 }
 
@@ -63,7 +63,7 @@ void SessionService::onCallFinished(QDBusPendingCallWatcher *watcher)
     QString operation = watcher->property("operation").toString();
     QDBusPendingReply<> reply = *watcher;
     if (reply.isError()) {
-        qWarning() << "Failed to" << operation << ":" << reply.error().message();
+        qDebug() << "Failed to" << operation << ":" << reply.error().message();
     } else {
         qDebug() << operation << "command sent successfully.";
     }

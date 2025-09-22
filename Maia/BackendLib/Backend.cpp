@@ -107,7 +107,7 @@ void Backend::setDefaultWindowDecoration()
     decorationGroup.deleteGroup();
 
     if (!config->sync()) {
-        qWarning() << "[ERROR] Failed to save kwinrc configuration after removing [org.kde.kdecoration2]";
+        qDebug() << "[ERROR] Failed to save kwinrc configuration after removing [org.kde.kdecoration2]";
         return;
     }
 
@@ -121,7 +121,7 @@ bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targe
     QDir targetDir(targetPath);
 
     if (!targetDir.exists() && !targetDir.mkpath(".")) {
-        qWarning() << "Failed to create target directory:" << targetPath;
+        qDebug() << "Failed to create target directory:" << targetPath;
         return false;
     }
 
@@ -132,7 +132,7 @@ bool Backend::copyLocalDirectory(const QString &sourcePath, const QString &targe
         QString srcFilePath = fileIt.filePath();
         QString dstFilePath = targetDir.absoluteFilePath(fileIt.fileName());
         if (!QFile::copy(srcFilePath, dstFilePath)) {
-            qWarning() << "Failed to copy file:" << srcFilePath << "to" << dstFilePath;
+            qDebug() << "Failed to copy file:" << srcFilePath << "to" << dstFilePath;
             return false;
         }
     }
@@ -155,13 +155,13 @@ bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetP
 {
     QDir targetDir(targetPath);
     if (!targetDir.exists() && !targetDir.mkpath(".")) {
-        qWarning() << "Failed to create target directory:" << targetPath;
+        qDebug() << "Failed to create target directory:" << targetPath;
         return false;
     }
 
     QDir qrcDir(":/" + sourcePath);
     if (!qrcDir.exists()) {
-        qWarning() << "QRC directory not found:" << sourcePath;
+        qDebug() << "QRC directory not found:" << sourcePath;
         return false;
     }
 
@@ -172,7 +172,7 @@ bool Backend::copyQrcDirectory(const QString &sourcePath, const QString &targetP
         QString srcFilePath = fileIt.filePath();
         QString dstFilePath = targetDir.absoluteFilePath(fileIt.fileName());
         if (!QFile::copy(srcFilePath, dstFilePath)) {
-            qWarning() << "Failed to copy qrc file:" << srcFilePath << "to" << dstFilePath;
+            qDebug() << "Failed to copy qrc file:" << srcFilePath << "to" << dstFilePath;
             return false;
         }
     }
@@ -204,7 +204,7 @@ void Backend::minimalizeAllWindows()
             KX11Extras::minimizeWindow(windowId);
         }
     } else {
-        qWarning() << "Minimize all windows is not supported on this platform.";
+        qDebug() << "Minimize all windows is not supported on this platform.";
     }
 }
 
@@ -415,13 +415,13 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
 
     if (!targetDir.exists()) {
         if (!targetDir.mkpath(".")) {
-            qWarning() << "[ERROR] Failed to create target directory:" << targetDirPath;
+            qDebug() << "[ERROR] Failed to create target directory:" << targetDirPath;
             return false;
         }
     }
 
     if (!themeUrl.isValid()) {
-        qWarning() << "Invalid theme URL:" << themeUrl;
+        qDebug() << "Invalid theme URL:" << themeUrl;
         return false;
     }
 
@@ -437,12 +437,12 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
         sourcePath = themeUrl.toLocalFile();
         sourceDir.setPath(sourcePath);
     } else {
-        qWarning() << "Unsupported scheme in theme URL:" << themeUrl.scheme();
+        qDebug() << "Unsupported scheme in theme URL:" << themeUrl.scheme();
         return false;
     }
 
     if (!sourceDir.exists()) {
-        qWarning() << "Source directory does not exist:" << sourcePath;
+        qDebug() << "Source directory does not exist:" << sourcePath;
         return false;
     }
 
@@ -480,7 +480,7 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
             requiredFile = targetThemePath + "/index.theme";
         }
         if (!requiredFile.isEmpty() && !QFile::exists(requiredFile)) {
-            qWarning() << "Required metadata file missing after install, removing partial theme:" << requiredFile;
+            qDebug() << "Required metadata file missing after install, removing partial theme:" << requiredFile;
             targetThemeDir.removeRecursively();
             clearInstalledUrl(themeName);
             success = false;
@@ -495,7 +495,7 @@ bool Backend::installDirInternal(const QUrl &themeUrl, const QString &targetDirP
             targetThemeDir.removeRecursively();
         }
         clearInstalledUrl(themeName);
-        qWarning() << "Failed to install theme from:" << sourcePath;
+        qDebug() << "Failed to install theme from:" << sourcePath;
     }
     return success;
 }

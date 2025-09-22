@@ -105,7 +105,7 @@ QString TaskbarIconsProvider::getProcessNameByPid(qint64 pid) {
         file.close();
         return processName;
     } else {
-        qWarning() << "Failed to open file:" << filePath;
+        qDebug() << "Failed to open file:" << filePath;
         return QString();
     }
 }

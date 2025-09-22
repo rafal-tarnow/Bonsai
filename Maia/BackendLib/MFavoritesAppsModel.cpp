@@ -85,7 +85,7 @@ void MFavoritesAppsModel::addFavorite(const QString &appId)
 {
     qDebug() << "Adding favorite with ID:" << appId << __PRETTY_FUNCTION__;
     if (!m_dbusInterface || !m_dbusInterface->isValid()) {
-        qWarning() << "[ERROR] D-Bus interface is not valid";
+        qDebug() << "[ERROR] D-Bus interface is not valid";
         return;
     }
 
@@ -96,7 +96,7 @@ void MFavoritesAppsModel::removeFavorite(const QString &appId)
 {
     qDebug() << "Removing favorite with ID:" << appId << __PRETTY_FUNCTION__;
     if (!m_dbusInterface || !m_dbusInterface->isValid()) {
-        qWarning() << "[ERROR] D-Bus interface is not valid";
+        qDebug() << "[ERROR] D-Bus interface is not valid";
         return;
     }
 

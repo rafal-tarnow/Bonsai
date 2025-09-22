@@ -230,7 +230,7 @@ void getCmdLineOptions(const QCoreApplication &app,
         if (value == "server" || value == "client") {
             modeOption = value;
         } else {
-            qWarning() << "Invalid --mode value:" << value << "(expected: server or client)";
+            qDebug() << "Invalid --mode value:" << value << "(expected: server or client)";
         }
     }
 
@@ -247,7 +247,7 @@ void getCmdLineOptions(const QCoreApplication &app,
         } else if (value == "false") {
             proxyVisible = false;
         } else {
-            qWarning() << "Invalid --proxy-visible value:" << value << "(expected: true or false)";
+            qDebug() << "Invalid --proxy-visible value:" << value << "(expected: true or false)";
         }
     }
 
@@ -259,7 +259,7 @@ void getCmdLineOptions(const QCoreApplication &app,
             if (ok && value >= 0) {
                 target = value;
             } else {
-                qWarning() << "Invalid" << name << "value:" << parser.value(opt)
+                qDebug() << "Invalid" << name << "value:" << parser.value(opt)
                            << "(expected: non-negative integer)";
             }
         }
@@ -276,14 +276,14 @@ void setWindowGeometry(
     QQmlApplicationEngine &engine, int x, int y, int width, int height, bool visible)
 {
     if (engine.rootObjects().isEmpty()) {
-        qWarning() << "No root objects available to set geometry.";
+        qDebug() << "No root objects available to set geometry.";
     }
 
     QObject *rootObject = engine.rootObjects().first();
     QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
 
     if (!window) {
-        qWarning() << "Root object is not a QQuickWindow!";
+        qDebug() << "Root object is not a QQuickWindow!";
     }
 
     window->setGeometry(x, y, width, height);

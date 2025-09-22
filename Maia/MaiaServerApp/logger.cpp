@@ -43,7 +43,7 @@ void Logger::run()
         bool ok;
         logChannel = qEnvironmentVariable("MAIA_LOG_CHANNEL").toInt(&ok);
         if (!ok) {
-            qWarning() << "Nie udało się skonwertować MAIA_LOG_CHANNEL na liczbę, używam "
+            qDebug() << "Nie udało się skonwertować MAIA_LOG_CHANNEL na liczbę, używam "
                           "domyślnej wartości 0";
             logChannel = 0; // Powrót do domyślnej wartości, jeśli konwersja się nie powiodła
         }
@@ -137,7 +137,7 @@ void Logger::connectToServer(const QString &serverName)
 {
     //qDebug() << __PRETTY_FUNCTION__;
     if (m_socket.state() == QLocalSocket::ConnectedState) {
-        qWarning() << "[ERROR] " << __PRETTY_FUNCTION__ << " QLocalSocket::ConnectedState";
+        qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " QLocalSocket::ConnectedState";
         return;
     }
     m_serverName = serverName;

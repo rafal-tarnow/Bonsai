@@ -32,7 +32,7 @@ void ProxyWindowController::setVisible(bool visible)
 void ProxyWindowController::quitRemoteProcess()
 {
     if (m_socket.state() != QLocalSocket::ConnectedState) {
-        qWarning() << "[ERROR] " << __PRETTY_FUNCTION__
+        qDebug() << "[ERROR] " << __PRETTY_FUNCTION__
                    << " Controller: Socket not connected. Cannot send command.";
         return;
     }
@@ -54,7 +54,7 @@ void ProxyWindowController::sendSetVisible(bool visible)
 {
     qDebug() << __PRETTY_FUNCTION__;
     if (m_socket.state() != QLocalSocket::ConnectedState) {
-        qWarning() << "[ERROR] " << __PRETTY_FUNCTION__
+        qDebug() << "[ERROR] " << __PRETTY_FUNCTION__
                    << " Controller: Socket not connected. Cannot send command.";
         return;
     }
@@ -76,7 +76,7 @@ void ProxyWindowController::sendSetVisible(bool visible)
 void ProxyWindowController::connectToServer(const QString &serverName)
 {
     if (m_socket.state() == QLocalSocket::ConnectedState) {
-        qWarning() << "[ERROR] " << __PRETTY_FUNCTION__ << " QLocalSocket::ConnectedState";
+        qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " QLocalSocket::ConnectedState";
         return;
     }
     m_serverName = serverName;

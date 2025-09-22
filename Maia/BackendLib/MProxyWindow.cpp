@@ -80,7 +80,7 @@ void MProxyWindow::setSource(const QUrl &source)
         } else {
             // This error may occur if the object was not created by the QML engine
             // (e.g., it was created manually in C++ and is not associated with a context).
-            qWarning() << "MProxyWindow: Could not get QML context for object. Cannot resolve "
+            qDebug() << "MProxyWindow: Could not get QML context for object. Cannot resolve "
                           "relative URL:"
                        << source;
         }

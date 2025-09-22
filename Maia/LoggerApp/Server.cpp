@@ -84,7 +84,7 @@ void Server::parseCommand(QLocalSocket *clientSocket)
             int clientId = m_clientIds.value(clientSocket, 0);
             emit messageReceived(clientId, clientSocket, message);
         } else {
-            qWarning() << "[ERROR] LoggerServer: Received unknown command type:" << commandRaw;
+            qDebug() << "[ERROR] LoggerServer: Received unknown command type:" << commandRaw;
         }
 
         nextBlockSize = 0; // Gotowi na następną komendę

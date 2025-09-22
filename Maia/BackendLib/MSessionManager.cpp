@@ -16,7 +16,7 @@ MSessionManager::MSessionManager(QObject *parent)
         );
 
     if (!m_dbusInterface->isValid()) {
-        qWarning() << "[ERROR] Failed to connect to the D-Bus interface!";
+        qDebug() << "[ERROR] Failed to connect to the D-Bus interface!";
     }else{
         qDebug() << "[OK] Valid org.maia.SessionService d-bus";
     }
@@ -36,7 +36,7 @@ void MSessionManager::logout()
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &MSessionManager::onCallFinished);
     } else {
-        qWarning() << "D-Bus is not available for logout!";
+        qDebug() << "D-Bus is not available for logout!";
     }
 }
 

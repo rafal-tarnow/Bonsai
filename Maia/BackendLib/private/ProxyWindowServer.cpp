@@ -17,7 +17,7 @@ ProxyWindowLocalServer::~ProxyWindowLocalServer() {}
 void ProxyWindowLocalServer::installWindow(QQmlApplicationEngine &engine)
 {
     if (engine.rootObjects().isEmpty()) {
-        qWarning() << "No root objects available to set geometry.";
+        qDebug() << "No root objects available to set geometry.";
         return;
     }
 
@@ -25,7 +25,7 @@ void ProxyWindowLocalServer::installWindow(QQmlApplicationEngine &engine)
     QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
 
     if (!window) {
-        qWarning() << "Root object is not a QQuickWindow!";
+        qDebug() << "Root object is not a QQuickWindow!";
         return;
     }
 

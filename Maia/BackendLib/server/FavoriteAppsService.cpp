@@ -55,7 +55,7 @@ void FavoriteAppsDBus::addFavorite(const QString &appId)
     if (m_favoritesModel) {
         m_favoritesModel->addFavorite(appId);
     } else {
-        qWarning() << "Favorite model not set in DBus adaptor!";
+        qDebug() << "Favorite model not set in DBus adaptor!";
     }
 }
 
@@ -64,7 +64,7 @@ void FavoriteAppsDBus::removeFavorite(const QString &appId)
     if (m_favoritesModel) {
         m_favoritesModel->removeFavorite(appId);
     } else {
-        qWarning() << "Favorite model not set in DBus adaptor!";
+        qDebug() << "Favorite model not set in DBus adaptor!";
     }
 }
 
@@ -72,13 +72,13 @@ QVector<FavApplication> FavoriteAppsDBus::getFavorites()
 {
     QVector<FavApplication> favApplications;
     if (!m_favoritesModel) {
-        qWarning() << "Favorite model not set in DBus adaptor!";
+        qDebug() << "Favorite model not set in DBus adaptor!";
         return favApplications;
     }
 
     auto *sourceModel = dynamic_cast<ApplicationModel *>(m_favoritesModel->sourceModel());
     if (!sourceModel) {
-        qWarning() << "Invalid source model!";
+        qDebug() << "Invalid source model!";
         return favApplications;
     }
 

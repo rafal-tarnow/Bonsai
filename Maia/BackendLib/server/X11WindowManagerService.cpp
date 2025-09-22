@@ -30,14 +30,14 @@ WindowManagerX11Service::WindowManagerX11Service(QObject *parent)
     }
 
     if (!bus.registerService("org.maia.WindowManagerX11Service")) {
-        qWarning() << "[ERROR] Failed to register D-Bus service";
+        qDebug() << "[ERROR] Failed to register D-Bus service";
         return;
     }
 
     if (!bus.registerObject("/WindowManagerX11",
                             this,
                             QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals)) {
-        qWarning() << "[ERROR] Failed to register D-Bus object.";
+        qDebug() << "[ERROR] Failed to register D-Bus object.";
     }
 
     QDBusConnection::sessionBus().connect("org.kde.KWin",                // Service name
