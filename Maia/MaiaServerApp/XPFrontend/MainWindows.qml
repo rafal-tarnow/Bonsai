@@ -65,7 +65,7 @@ Window {
 
 
     Timer {
-        interval:  128 * 4 //Wait 3 seconds to ensure KWin has started, initialize KWin effects.
+        interval:  128 * 5 //Wait 3 seconds to ensure KWin has started, initialize KWin effects.
         //8ms - FAIL
         //16ms - FAIL
         //32ms - FAIL
