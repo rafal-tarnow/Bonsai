@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
+
 import Maia.Client
+
 import "./contents"
 import "./style"
 import "./popups"
@@ -198,7 +200,6 @@ Window {
         }
 
         onClicked: {
-            console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCLICKED !!")
             controlBoard.visible = !controlBoard.visible
         }
     }
