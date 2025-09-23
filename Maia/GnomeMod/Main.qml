@@ -22,6 +22,10 @@ Window {
         //backend.windowManager.reconfigure();
         backend.setX11WindowTypeAsDesktop(root)
         backend.setDefaultWindowDecoration()
+
+        MWindowManagerX11.hideFromTaskbar(root, true);
+        MWindowManagerX11.hideFromSwitcher(root, true);
+        MWindowManagerX11.hideFromPager(root, true);
     }
 
     FontLoader {
@@ -116,7 +120,7 @@ Window {
 
     Timer {
         id: initTimer
-        interval: 1 //czekaj 3 sekund zeby upewnić sie ze kwin sie uruchomił, inicjuj efekty kwin
+        interval: 1 //wait for 1000ms to ensure that kwin has started
         running: true
         repeat: false
         onTriggered: {

@@ -36,8 +36,21 @@ Window {
         backend.setAuroraeTheme("XBoomer")
         //backend.setDefaultWindowDecoration()
 
+        //unload unesesery kwin effects
+        MWindowManagerX11.unloadEffect("kwin4_effect_fadingpopups")
+        MWindowManagerX11.unloadEffect("kwin4_effect_scale")
+        MWindowManagerX11.unloadEffect("fadingpopups")
+        MWindowManagerX11.unloadEffect("scale")
+        MWindowManagerX11.unloadEffect("cutefish_squash")
+        MWindowManagerX11.unloadEffect("cutefish_scale")
+        MWindowManagerX11.unloadEffect("cutefish_popups")
 
 
+        MWindowManagerX11.hideFromTaskbar(root, true);
+        MWindowManagerX11.hideFromSwitcher(root, true);
+        MWindowManagerX11.hideFromPager(root, true);
+
+        backend.setX11WindowTypeAsDesktop(root)
     }
 
 
@@ -52,7 +65,7 @@ Window {
 
 
     Timer {
-        interval:  128 * 3 //Wait 3 seconds to ensure KWin has started, initialize KWin effects.
+        interval:  128 * 4 //Wait 3 seconds to ensure KWin has started, initialize KWin effects.
         //8ms - FAIL
         //16ms - FAIL
         //32ms - FAIL
@@ -67,9 +80,11 @@ Window {
 
             MWindowManagerX11.unloadEffect("kwin4_effect_fadingpopups")
             MWindowManagerX11.unloadEffect("kwin4_effect_scale")
-
             MWindowManagerX11.unloadEffect("fadingpopups")
             MWindowManagerX11.unloadEffect("scale")
+            MWindowManagerX11.unloadEffect("cutefish_squash")
+            MWindowManagerX11.unloadEffect("cutefish_scale")
+            MWindowManagerX11.unloadEffect("cutefish_popups")
 
             MWindowManagerX11.hideFromTaskbar(root, true);
             MWindowManagerX11.hideFromSwitcher(root, true);

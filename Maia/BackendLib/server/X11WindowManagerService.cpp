@@ -55,11 +55,10 @@ void WindowManagerX11Service::unloadEffect(const QString &effectName)
 {
     //qDebug() << __PRETTY_FUNCTION__ << " effectName = " << effectName;
 
-    //qDebug() << __PRETTY_FUNCTION__ << effectName;
-    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.KWin",         // Serwis
-                                                          "/Effects",             // Ścieżka
-                                                          "org.kde.kwin.Effects", // Interfejs
-                                                          "unloadEffect"          // Metoda
+    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.KWin",         // Service
+                                                          "/Effects",             // Path
+                                                          "org.kde.kwin.Effects", // Interface
+                                                          "unloadEffect"          // Method
     );
 
     message << effectName;
@@ -72,11 +71,11 @@ void WindowManagerX11Service::unloadEffect(const QString &effectName)
         QDBusPendingReply<> reply = *watcher;
         if (reply.isError()) {
             //emit errorOccurred(effectName, reply.error().message());
-            qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " Błąd D-Bus dla efektu" << effectName
+            qDebug() << "[ERROR] " << __PRETTY_FUNCTION__ << " D-Bus unloadEffect error, effectName=" << effectName
                      << ":" << reply.error().message();
         } else {
             //emit effectUnloaded(effectName);
-            //qDebug() << "Efekt" << effectName << "został pomyślnie rozładowany";
+            //qDebug() << "[OK] Successfull unload " << effectName << " effect";
         }
         watcher->deleteLater();
     });

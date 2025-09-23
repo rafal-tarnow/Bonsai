@@ -158,6 +158,8 @@ Rectangle{
                     border.width: 0
                     radius: 12
 
+
+
                     Behavior on color {
                         ColorAnimation {
                             duration: 150
@@ -168,6 +170,13 @@ Rectangle{
                 onClicked: {
                     backend.activateWindow(model.windowId)
                 }
+
+                // Text{
+                //     anchors.centerIn: parent
+                //     font.pointSize: 8
+                //     color: "red"
+                //     text: model.windowName
+                // }
 
             }
         }

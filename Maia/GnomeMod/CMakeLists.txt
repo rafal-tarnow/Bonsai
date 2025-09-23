@@ -12,7 +12,7 @@ qt_add_library(GnomeFrontend STATIC)
 
 set(GNOME_QML_FILES
         Main.qml
-        SidePanel.qml
+
         SidePanelContent.qml
 
         common_qml/ActionButton.qml

@@ -107,7 +107,7 @@ Image {
 
         Repeater {
             id: taskbarRepeater
-            //model: backend_taskbarModel
+
             model: taskbarModel
 
             TaskbarButton{
