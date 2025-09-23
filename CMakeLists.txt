@@ -87,7 +87,7 @@ add_subdirectory(Maia/MaiaServerApp/)
 # scripts thats will be copied while deploy
 add_subdirectory(Maia/DeployFiles/)
 
-add_subdirectory(Experimental/gtk_simple_app/)
+#add_subdirectory(Experimental/gtk_simple_app/)
 
 add_custom_target(Documentation)
 target_sources(Documentation PRIVATE

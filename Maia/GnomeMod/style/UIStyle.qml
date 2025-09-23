@@ -10,7 +10,9 @@ QtObject {
 
 
     readonly property color primaryColor: "red"
-    readonly property color accentColor: "#0073e5"
+    //readonly property color accentColor: "#0073e5"
+    readonly property color accentColor: "#e95420"
+    readonly property color accentLightColor: "#ef8661"
     readonly property color disabledTextColor: "#9c9c9c"
     readonly property color disabledButtonColor: "#ececec"
 

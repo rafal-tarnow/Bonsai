@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import "../style"
+
 TextField {
     id :root
 
@@ -12,7 +14,7 @@ TextField {
     background: Rectangle{
         anchors.fill: parent
         color: root.activeFocus ? "#454545" : (root.hovered ? "#454545" : "#3b3b3b")
-        border.color: "#2d97ff"
+        border.color: UIStyle.accentLightColor //"#2d97ff"
         border.width: root.activeFocus ? 2 : 0
         radius: root.height/2
 
