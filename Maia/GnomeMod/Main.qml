@@ -137,8 +137,8 @@ Window {
     Image {
         id: wallpaper
         anchors.fill: parent
-        //source: "./images/warty-final-ubuntu.png"
-        source: "./images/3840x2160.svg"
+        source: "./images/warty-final-ubuntu.png"
+        //source: "./images/3840x2160.svg"
         //source: "./images/white_wallpaper.png"
         //source: "./images/blue_wallpaper.bmp"
         //source: "./images/red_wallpaper.bmp"
