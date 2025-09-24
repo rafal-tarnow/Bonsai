@@ -2,6 +2,10 @@
 
 Maia Shell is a lightweight, modular graphical shell for Linux, built with Qt and QML. It features a unique split architecture, separating the backend (powered by D-Bus for handling system functions like login, Wi-Fi, volume control, and application management) from the frontend (crafted in QML for customizable, switchable user interfaces). With Maia Shell, you can seamlessly switch between different frontend designs, such as Windows XP-inspired or GNOME-like layouts, all connected to a single, robust backend.
 
+
+![Maia simplified architecture](doc/simple_architecture.jpeg)
+
+
 sudo nano /usr/share/xsessions/maia_version-desktop.desktop
 
 sudo apt update
