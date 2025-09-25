@@ -6,9 +6,23 @@ Maia Shell is a lightweight, modular graphical shell for Linux, built with C++ a
 
 ## Limitations
 
-Maia Shell is an experimental proof-of-concept project. It supports basic functionality, including launching applications, managing a favorites list, session control (logout, reboot, power off), volume control, muting, and a functional taskbar. However, many features are not yet implemented, such as wallpaper settings, Wi-Fi and Bluetooth management, and multi-monitor support. This shell is ideal for enthusiasts who enjoy experimenting with early-stage software, but it is not a fully functional desktop environment for production use.
+Maia Shell is an experimental proof-of-concept project. It supports basic functionality, including launching applications, managing a favorites list, session control (logout, reboot, shutdown), volume control, muting, and a functional taskbar. However, many features are not yet implemented, such as wallpaper settings, Wi-Fi and Bluetooth management. It currently supports only single-monitor setups and has been tested solely at FHD (1920x1080) resolution. This shell is ideal for enthusiasts who enjoy experimenting with early-stage software, but it is not a production-ready desktop environment.
 
 ## Maia Shell in action
+
+
+## Instalation
+
+Install dependencies:
+
+```bash
+sudo apt install --no-install-recommends --no-install-suggests kwin-x11
+sudo apt install --no-install-recommends --no-install-suggests kwin-common
+sudo apt install --no-install-recommends --no-install-suggests kwin-data
+sudo apt install --no-install-recommends --no-install-suggests kwin-addons
+sudo apt install --no-install-recommends --no-install-suggests libkf5globalaccel-bin breeze libkf5kcmutils5
+```
+
 
 
 <img src="doc/simple_architecture.jpeg" width="400" alt="Maia simplified architecture">
