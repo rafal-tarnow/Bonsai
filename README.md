@@ -25,13 +25,19 @@ sudo apt install --no-install-recommends --no-install-suggests kwin-addons
 sudo apt install --no-install-recommends --no-install-suggests libkf5globalaccel-bin breeze libkf5kcmutils5
 ```
 2. Download and install:
-
-From github download released package, unzip it. Next go to directory and in console type:
+	Download the latest release package from GitHub.
+	Unzip the package and navigate to the extracted directory.
+	Run the installation script:
 
 ```bash
 chmod +x install_on_ubuntu.sh
 sudo ./install_on_ubuntu.sh
 ```
+
+3. Start Maia Shell:
+	Log out of your current session.
+	Select the "Maia" session from your login manager and log in.
+	
 
 Logout and login to Maia session.
 
