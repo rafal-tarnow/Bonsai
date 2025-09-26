@@ -15,7 +15,7 @@ Maia Shell is an experimental proof-of-concept project. It supports basic functi
 
 To install Maia Shell on Ubuntu, follow these steps:
 
-1. ***Install dependencies:**
+1. **Install dependencies:**
 
 ```bash
 sudo apt install --no-install-recommends --no-install-suggests kwin-x11
@@ -38,13 +38,14 @@ sudo ./install_on_ubuntu.sh
 	- Log out of your current session.
 	- Select the "Maia" session from your login manager and log in.
 	
-
-Logout and login to Maia session.
-
-
+	
+	
+## Basic Architecture
 
 <img src="doc/simple_architecture.jpeg" width="400" alt="Maia simplified architecture">
 
+
+# Contributing
 
 sudo nano /usr/share/xsessions/maia_version-desktop.desktop
 
