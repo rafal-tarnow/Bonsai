@@ -13,7 +13,9 @@ Maia Shell is an experimental proof-of-concept project. It supports basic functi
 
 ## Instalation
 
-Install dependencies:
+To install Maia Shell on Ubuntu, follow these steps:
+
+1. Install dependencies:
 
 ```bash
 sudo apt install --no-install-recommends --no-install-suggests kwin-x11
@@ -22,6 +24,16 @@ sudo apt install --no-install-recommends --no-install-suggests kwin-data
 sudo apt install --no-install-recommends --no-install-suggests kwin-addons
 sudo apt install --no-install-recommends --no-install-suggests libkf5globalaccel-bin breeze libkf5kcmutils5
 ```
+2. Download and install:
+
+From github download released package, unzip it. Next go to directory and in console type:
+
+```bash
+chmod +x install_on_ubuntu.sh
+sudo ./install_on_ubuntu.sh
+```
+
+Logout and login to Maia session.
 
 
 
@@ -366,6 +378,11 @@ Set install dir in Projects->Build & Run -> Build -> Build Settings -> Current C
 If you require the library to be installed upon completion of the build process, enable the 'install' target by checking the corresponding box in the build steps. You can find this option under: Projects -> Active Project -> Build -> Build Steps -> Targets -> install.
 
 ![Configure QtCreator to install module after build](doc/qtcreator_build_and_install_qt_module.png)
+
+
+
+
+
 
 
 
