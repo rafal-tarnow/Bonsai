@@ -15,7 +15,7 @@ Maia Shell is an experimental proof-of-concept project. It supports basic functi
 
 To install Maia Shell on Ubuntu, follow these steps:
 
-1. Install dependencies:
+**1. Install dependencies:**
 
 ```bash
 sudo apt install --no-install-recommends --no-install-suggests kwin-x11
@@ -24,7 +24,7 @@ sudo apt install --no-install-recommends --no-install-suggests kwin-data
 sudo apt install --no-install-recommends --no-install-suggests kwin-addons
 sudo apt install --no-install-recommends --no-install-suggests libkf5globalaccel-bin breeze libkf5kcmutils5
 ```
-2. Download and install:
+2. **Download and install:**
 	Download the latest release package from GitHub.
 	Unzip the package and navigate to the extracted directory.
 	Run the installation script:
@@ -34,7 +34,7 @@ chmod +x install_on_ubuntu.sh
 sudo ./install_on_ubuntu.sh
 ```
 
-3. Start Maia Shell:
+3. **Start Maia Shell:**
 	Log out of your current session.
 	Select the "Maia" session from your login manager and log in.
 	
